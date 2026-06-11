@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evento de Bellydance | LumoraEvents</title>
+  <meta
+    name="description"
+    content="Consulta la ficha detallada de un evento de Bellydance en este directorio estático de ejemplo de LumoraEvents."
+  >
+  <link rel="canonical" href="./event.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Evento de Bellydance | LumoraEvents">
+  <meta
+    property="og:description"
+    content="Ficha de ejemplo con información ampliada de un evento internacional de Bellydance."
+  >
+  <meta property="og:image" content="https://placehold.co/1200x630/f4ebe1/5f3d2e?text=LumoraEvents">
+  <meta property="og:locale" content="es_ES">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-sand: #f5eee4;
+      --color-ink: #261912;
+      --color-clove: #5d3a2a;
+      --color-dusk: #7d587d;
+      --color-gold: #c89b3c;
+      --color-rose: #d6a1a0;
+      --shadow-soft: 0 18px 45px rgba(88, 47, 31, 0.10);
+      --font-sans: "Manrope", sans-serif;
+      --font-display: "Cormorant Garamond", serif;
+    }
+
+    @layer base {
+      body {
+        @apply bg-sand text-ink;
+      }
+    }
+
+    @layer components {
+      .language-pill {
+        @apply rounded-full border border-white/70 bg-white/60 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-clove transition;
+      }
+
+      .language-pill.is-active {
+        @apply border-clove bg-clove text-white shadow-soft;
+      }
+
+      .detail-card {
+        @apply rounded-[1.8rem] border border-white/80 bg-white/88 shadow-soft;
+      }
+
+      .detail-pill {
+        @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-clove;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="absolute left-0 top-0 h-80 w-80 rounded-full bg-gold/20 blur-3xl"></div>
+    <div class="absolute right-0 top-10 h-96 w-96 rounded-full bg-dusk/20 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-rose/20 blur-3xl"></div>
+  </div>
+
+  <header class="px-4 pb-6 pt-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl rounded-[2rem] border border-white/70 bg-white/72 px-5 py-5 shadow-soft backdrop-blur md:px-8">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <a
+            href="./index.html"
+            class="inline-flex items-center gap-2 text-sm font-semibold text-clove transition hover:text-ink"
+            data-i18n="common.backToList"
+          >
+            Volver al listado
+          </a>
+          <p class="mt-3 text-xs font-semibold uppercase tracking-[0.3em] text-clove/80">LumoraEvents</p>
+        </div>
+
+        <nav
+          class="flex items-center gap-2 rounded-full border border-white/70 bg-white/75 p-1.5"
+          aria-label="Language switcher"
+          data-language-switcher
+        >
+          <button type="button" class="language-pill" data-lang="es">ES</button>
+          <button type="button" class="language-pill" data-lang="en">EN</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="px-4 pb-14 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <section id="event-view" aria-live="polite"></section>
+
+      <section
+        id="event-empty"
+        class="detail-card hidden p-8 text-center"
+        aria-live="polite"
+      >
+        <h1 class="font-display text-4xl text-ink" data-i18n="event.notFoundTitle">Evento no encontrado</h1>
+        <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-stone-700" data-i18n="event.notFoundText">
+          El evento solicitado no existe o ya no está disponible en esta demostración estática.
+        </p>
+        <a
+          href="./index.html"
+          class="mt-6 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink"
+          data-i18n="event.backHome"
+        >
+          Volver al directorio
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <script defer src="./js/data.js"></script>
+  <script defer src="./js/i18n.js"></script>
+  <script defer src="./js/event.js"></script>
+</body>
+</html>
