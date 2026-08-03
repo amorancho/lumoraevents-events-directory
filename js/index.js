@@ -317,7 +317,7 @@
       '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
       buildManagedBadge(eventItem),
       "</div>",
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 truncate font-display text-3xl leading-none text-ink">' + escapeHtml(eventItem.name) + "</h3>",
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">' + escapeHtml(eventItem.name) + "</h3>",
       "</div>",
       '<div class="text-sm leading-6 text-stone-700">',
       '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
