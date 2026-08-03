@@ -6,14 +6,14 @@
   <title>Directorio de eventos de Bellydance | LumoraEvents</title>
   <meta
     name="description"
-    content="Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con este directorio estático de ejemplo impulsado por LumoraEvents."
+    content="Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con el directorio de LumoraEvents."
   >
   <link rel="canonical" href="./index.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Directorio de eventos de Bellydance | LumoraEvents">
   <meta
     property="og:description"
-    content="Explora eventos internacionales de Bellydance con filtros por texto, país y mes."
+    content="Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con el directorio de LumoraEvents."
   >
   <meta property="og:image" content="https://placehold.co/1200x630/f4ebe1/5f3d2e?text=LumoraEvents">
   <meta property="og:locale" content="es_ES">
@@ -33,6 +33,7 @@
       --color-gold: #c89b3c;
       --color-rose: #d6a1a0;
       --shadow-soft: 0 18px 45px rgba(88, 47, 31, 0.10);
+      --shadow-hero: 0 32px 90px rgba(38, 25, 18, 0.28);
       --font-sans: "Manrope", sans-serif;
       --font-display: "Cormorant Garamond", serif;
     }
@@ -53,144 +54,255 @@
       }
 
       .filter-field {
-        @apply rounded-2xl border border-white/80 bg-white/80 px-4 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-stone-400 focus:border-clove focus:ring-2 focus:ring-clove/10;
+        @apply rounded-2xl border border-clove/10 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-stone-400 focus:border-gold focus:ring-2 focus:ring-gold/15;
+      }
+
+      .hero-shell {
+        @apply relative overflow-hidden rounded-[2.5rem] border border-white/10 text-white;
+        background:
+          radial-gradient(circle at 78% 24%, rgba(200, 155, 60, 0.30), transparent 24%),
+          radial-gradient(circle at 92% 88%, rgba(214, 161, 160, 0.28), transparent 30%),
+          linear-gradient(135deg, #24130f 0%, #542f28 48%, #6f466f 100%);
+        box-shadow: var(--shadow-hero);
+      }
+
+      .hero-grid {
+        background-image:
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(to left, black, transparent 80%);
+      }
+
+      .search-shell {
+        @apply rounded-[2rem] border border-white/90 bg-white/95 p-5 shadow-[0_22px_55px_rgba(65,35,24,0.16)] backdrop-blur-xl sm:p-6;
       }
 
       .premium-row {
-        @apply grid gap-4 rounded-[1.4rem] border border-white/80 bg-white/88 px-4 py-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-soft md:grid-cols-[minmax(0,2.2fr)_1.2fr_1fr_auto] md:items-center;
+        @apply grid gap-6 rounded-[1.8rem] border border-white/90 bg-white/90 px-5 py-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-soft sm:px-6 sm:py-6 md:grid-cols-[minmax(0,2.2fr)_1.2fr_1fr_auto] md:items-center;
       }
 
       .tag-chip {
         @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-clove;
       }
+
+      .lumora-managed-chip {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#fff6d8] to-[#f3dfa0] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove shadow-sm;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen overflow-x-hidden">
+<body class="flex min-h-screen flex-col overflow-x-clip">
   <div class="pointer-events-none fixed inset-0 -z-10">
     <div class="absolute left-0 top-0 h-80 w-80 rounded-full bg-gold/20 blur-3xl"></div>
     <div class="absolute right-0 top-16 h-96 w-96 rounded-full bg-dusk/20 blur-3xl"></div>
     <div class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-rose/20 blur-3xl"></div>
   </div>
 
-  <header class="px-4 pb-6 pt-4 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl rounded-[2rem] border border-white/70 bg-white/72 px-5 py-5 shadow-soft backdrop-blur md:px-8">
-      <div class="flex flex-col gap-8">
-        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div class="max-w-3xl">
-            <p class="text-xs font-semibold uppercase tracking-[0.32em] text-clove/80">LumoraEvents</p>
-            <h1
-              class="mt-3 max-w-3xl font-display text-4xl leading-none text-ink sm:text-5xl"
-              data-i18n="index.heroTitle"
-            >
-              Directorio de eventos de Bellydance
-            </h1>
-            <p
-              class="mt-4 max-w-2xl text-sm leading-7 text-stone-700 sm:text-base"
-              data-i18n="index.heroSubtitle"
-            >
-              Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.
-            </p>
-          </div>
+  <header class="px-4 pb-14 pt-4 sm:px-6 lg:px-8">
+    <div class="hero-shell mx-auto max-w-6xl px-6 py-7 sm:px-9 sm:py-9 lg:px-12 lg:py-11">
+      <div class="hero-grid pointer-events-none absolute inset-0 opacity-70"></div>
+      <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border border-white/10"></div>
+      <div class="pointer-events-none absolute -right-8 -top-10 h-56 w-56 rounded-full border border-gold/25"></div>
+      <div class="pointer-events-none absolute bottom-8 right-14 hidden h-28 w-28 rotate-12 rounded-[2rem] border border-white/15 bg-white/5 backdrop-blur lg:block"></div>
+      <div class="pointer-events-none absolute bottom-20 right-36 hidden h-4 w-4 rotate-45 bg-gold shadow-[0_0_45px_rgba(200,155,60,0.9)] lg:block"></div>
 
-          <div class="flex flex-col items-start gap-4 md:items-end">
-            <nav
-              class="flex items-center gap-2 rounded-full border border-white/70 bg-white/75 p-1.5"
-              aria-label="Language switcher"
-              data-language-switcher
+      <div class="relative z-10">
+        <div class="flex flex-wrap items-center justify-between gap-5">
+          <a
+            href="./index.html"
+            class="inline-flex rounded-2xl border border-white/70 bg-white px-4 py-3 shadow-xl shadow-black/10 transition hover:-translate-y-0.5"
+            aria-label="LumoraEvents"
+          >
+            <img
+              src="https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png"
+              alt="LumoraEvents"
+              width="289"
+              height="47"
+              class="h-8 w-auto sm:h-10"
             >
-              <button type="button" class="language-pill" data-lang="es">ES</button>
-              <button type="button" class="language-pill" data-lang="en">EN</button>
-            </nav>
+          </a>
 
-            <div class="max-w-sm rounded-[1.5rem] border border-clove/10 bg-gradient-to-br from-white to-[#f6ecdf] px-4 py-4 text-sm text-stone-700">
-              <p class="font-semibold uppercase tracking-[0.26em] text-clove/80" data-i18n="index.poweredByLabel">
-                Powered by LumoraEvents
-              </p>
-              <p class="mt-2 leading-6" data-i18n="index.poweredByText">
-                Un escaparate internacional preparado para conectar más adelante con la API de LumoraEvents.
-              </p>
-            </div>
-          </div>
+          <nav
+            class="flex items-center gap-2 rounded-full border border-white/40 bg-white/90 p-1.5 shadow-lg shadow-black/10 backdrop-blur"
+            aria-label="Language switcher"
+            data-language-switcher
+          >
+            <button type="button" class="language-pill" data-lang="es">ES</button>
+            <button type="button" class="language-pill" data-lang="en">EN</button>
+          </nav>
         </div>
 
-        <section aria-labelledby="filters-heading">
-          <div class="flex items-center justify-between gap-3">
-            <h2 id="filters-heading" class="text-sm font-semibold uppercase tracking-[0.26em] text-clove/80" data-i18n="index.filtersTitle">
-              Filtrar eventos
-            </h2>
-            <p class="text-xs uppercase tracking-[0.2em] text-stone-500" data-i18n="index.compactListLabel">
-              Vista compacta
-            </p>
+        <div class="mt-12 max-w-4xl pb-5 sm:mt-16 lg:pb-9">
+          <div class="mb-6 flex items-center gap-3" aria-hidden="true">
+            <span class="h-px w-12 bg-gold"></span>
+            <span class="h-2 w-2 rotate-45 border border-gold"></span>
           </div>
-
-          <form class="mt-4 grid gap-3 md:grid-cols-3" id="filters-form">
-            <label class="block">
-              <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.searchLabel">
-                Buscar
-              </span>
-              <input
-                id="search-input"
-                type="search"
-                class="filter-field w-full"
-                data-i18n-placeholder="index.searchPlaceholder"
-                placeholder="Nombre, ciudad, país o tipo"
-                autocomplete="off"
-              >
-            </label>
-
-            <label class="block">
-              <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.countryLabel">
-                País
-              </span>
-              <select id="country-select" class="filter-field w-full">
-                <option value="" data-i18n="index.allCountries">Todos los países</option>
-              </select>
-            </label>
-
-            <label class="block">
-              <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.monthLabel">
-                Mes
-              </span>
-              <select id="month-select" class="filter-field w-full">
-                <option value="" data-i18n="index.allMonths">Todos los meses</option>
-              </select>
-            </label>
-          </form>
-        </section>
+          <h1
+            class="max-w-4xl font-display text-5xl leading-[0.92] text-white sm:text-6xl lg:text-7xl"
+            data-i18n="index.heroTitle"
+          >
+            Directorio de eventos de Bellydance
+          </h1>
+          <p
+            class="mt-7 max-w-2xl text-base leading-8 text-white/75 sm:text-lg"
+            data-i18n="index.heroSubtitle"
+          >
+            Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.
+          </p>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="px-4 pb-14 sm:px-6 lg:px-8">
+  <section class="relative z-30 -mt-20 px-4 sm:px-6 lg:sticky lg:top-3 lg:px-8" aria-labelledby="filters-heading">
+    <div class="search-shell mx-auto max-w-6xl">
+      <h2
+        id="filters-heading"
+        class="text-sm font-semibold uppercase tracking-[0.26em] text-clove/80"
+        data-i18n="index.filtersTitle"
+      >
+        Buscar eventos
+      </h2>
+
+      <form
+        id="filters-form"
+        class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.75fr)_auto]"
+      >
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.nameLabel">
+            Nombre
+          </span>
+          <input
+            id="name-input"
+            type="search"
+            class="filter-field w-full"
+            data-i18n-placeholder="index.namePlaceholder"
+            placeholder="Nombre del evento"
+            maxlength="150"
+            autocomplete="off"
+          >
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.countryLabel">
+            País
+          </span>
+          <select id="country-select" class="filter-field w-full">
+            <option value="" data-i18n="index.allCountries">Todos los países</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.monthLabel">
+            Mes
+          </span>
+          <select id="month-select" class="filter-field w-full">
+            <option value="" data-i18n="index.allMonths">Todos los meses</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.pageSizeLabel">
+            Eventos por página
+          </span>
+          <select id="page-size-select" class="filter-field w-full">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+        </label>
+
+        <div class="flex items-end gap-2 md:col-span-2 xl:col-span-1">
+          <button
+            type="submit"
+            class="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-ink"
+            data-i18n="index.applyFilters"
+          >
+            Buscar
+          </button>
+          <button
+            id="clear-filters"
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center rounded-full border border-clove/20 bg-white px-4 py-3 text-sm font-semibold text-clove transition hover:border-clove hover:text-ink"
+            data-i18n="index.clearFilters"
+          >
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <main class="flex-1 px-4 pb-20 pt-7 sm:px-6 lg:px-8 lg:pt-9">
     <div class="mx-auto max-w-6xl">
-      <section aria-labelledby="results-heading" class="rounded-[2rem] border border-white/70 bg-white/60 p-5 shadow-soft backdrop-blur sm:p-6">
+      <section aria-labelledby="results-heading" class="rounded-[2rem] border border-white/70 bg-white/60 p-5 shadow-soft backdrop-blur sm:p-8">
         <div class="flex flex-col gap-3 border-b border-clove/10 pb-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 id="results-heading" class="font-display text-3xl leading-none text-ink" data-i18n="index.resultsTitle">
+            <h2 id="results-heading" class="scroll-mt-44 font-display text-3xl leading-none text-ink" data-i18n="index.resultsTitle">
               Próximos eventos
             </h2>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-stone-700" data-i18n="index.resultsIntro">
-              Explora un listado de ejemplo con festivales, competiciones y retiros internacionales pensados para una futura integración con LumoraEvents.
+              Explora los próximos festivales, competiciones, congresos y encuentros publicados en LumoraEvents.
             </p>
           </div>
           <p id="results-count" class="text-sm font-semibold text-clove">0 eventos</p>
         </div>
 
-        <div id="results-list" class="mt-6 grid gap-3"></div>
+        <div id="results-list" class="mt-7 grid gap-5 sm:gap-6" aria-live="polite"></div>
+        <nav
+          id="pagination"
+          class="mt-6 hidden flex flex-wrap items-center justify-center gap-2 border-t border-clove/10 pt-6"
+          data-i18n-aria-label="index.paginationLabel"
+          aria-label="Paginación de eventos"
+        ></nav>
       </section>
     </div>
   </main>
 
-  <footer class="px-4 pb-8 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl border-t border-clove/10 pt-6 text-sm text-stone-600">
-      <p data-i18n="index.footerText">
-        Esta primera versión estática está preparada para evolucionar hacia un directorio conectado a la API de LumoraEvents.
-      </p>
+  <footer class="mt-auto border-t border-gold/20 bg-ink px-4 py-12 text-white sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid gap-10 md:grid-cols-[1.4fr_0.8fr_1fr]">
+        <div>
+          <a href="./index.html" class="inline-flex rounded-xl bg-white px-3 py-2" aria-label="LumoraEvents">
+            <img
+              src="https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png"
+              alt="LumoraEvents"
+              width="289"
+              height="47"
+              class="h-7 w-auto"
+              loading="lazy"
+            >
+          </a>
+          <p class="mt-5 max-w-sm text-sm leading-7 text-white/60" data-i18n="footer.tagline">
+            Conectando artistas, organizadores y amantes de la danza oriental en todo el mundo.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-gold" data-i18n="footer.contactTitle">Contacto</h2>
+          <a href="mailto:info@lumoraevents.net" class="mt-4 inline-flex text-sm text-white/75 transition hover:text-white">
+            info@lumoraevents.net
+          </a>
+        </div>
+
+        <nav aria-label="Legal">
+          <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-gold" data-i18n="footer.legalTitle">Información legal</h2>
+          <div class="mt-4 flex flex-col items-start gap-3 text-sm text-white/65">
+            <a href="#" class="transition hover:text-white" data-i18n="footer.privacy">Política de privacidad</a>
+            <a href="#" class="transition hover:text-white" data-i18n="footer.cookies">Política de cookies</a>
+            <a href="#" class="transition hover:text-white" data-i18n="footer.legalNotice">Aviso legal</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="mt-10 border-t border-white/10 pt-6 text-xs text-white/45">
+        <p data-i18n="footer.rights">© 2026 LumoraEvents. Todos los derechos reservados.</p>
+      </div>
     </div>
   </footer>
 
-  <script defer src="./js/data.js"></script>
+  <script defer src="./js/api.js"></script>
   <script defer src="./js/i18n.js"></script>
   <script defer src="./js/index.js"></script>
 </body>

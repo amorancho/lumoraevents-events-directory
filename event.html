@@ -62,7 +62,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen overflow-x-hidden">
+<body class="flex min-h-screen flex-col overflow-x-clip">
   <div class="pointer-events-none fixed inset-0 -z-10">
     <div class="absolute left-0 top-0 h-80 w-80 rounded-full bg-gold/20 blur-3xl"></div>
     <div class="absolute right-0 top-10 h-96 w-96 rounded-full bg-dusk/20 blur-3xl"></div>
@@ -95,7 +95,7 @@
     </div>
   </header>
 
-  <main class="px-4 pb-14 sm:px-6 lg:px-8">
+  <main class="flex-1 px-4 pb-20 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-6xl">
       <section id="event-view" aria-live="polite"></section>
 
@@ -118,6 +118,48 @@
       </section>
     </div>
   </main>
+
+  <footer class="mt-auto border-t border-gold/20 bg-ink px-4 py-12 text-white sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid gap-10 md:grid-cols-[1.4fr_0.8fr_1fr]">
+        <div>
+          <a href="./index.html" class="inline-flex rounded-xl bg-white px-3 py-2" aria-label="LumoraEvents">
+            <img
+              src="https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png"
+              alt="LumoraEvents"
+              width="289"
+              height="47"
+              class="h-7 w-auto"
+              loading="lazy"
+            >
+          </a>
+          <p class="mt-5 max-w-sm text-sm leading-7 text-white/60" data-i18n="footer.tagline">
+            Conectando artistas, organizadores y amantes de la danza oriental en todo el mundo.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-gold" data-i18n="footer.contactTitle">Contacto</h2>
+          <a href="mailto:info@lumoraevents.net" class="mt-4 inline-flex text-sm text-white/75 transition hover:text-white">
+            info@lumoraevents.net
+          </a>
+        </div>
+
+        <nav aria-label="Legal">
+          <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-gold" data-i18n="footer.legalTitle">Información legal</h2>
+          <div class="mt-4 flex flex-col items-start gap-3 text-sm text-white/65">
+            <a href="#" class="transition hover:text-white" data-i18n="footer.privacy">Política de privacidad</a>
+            <a href="#" class="transition hover:text-white" data-i18n="footer.cookies">Política de cookies</a>
+            <a href="#" class="transition hover:text-white" data-i18n="footer.legalNotice">Aviso legal</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="mt-10 border-t border-white/10 pt-6 text-xs text-white/45">
+        <p data-i18n="footer.rights">© 2026 LumoraEvents. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
 
   <script defer src="./js/data.js"></script>
   <script defer src="./js/i18n.js"></script>

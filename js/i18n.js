@@ -7,32 +7,85 @@
     es: "es-ES",
     en: "en-GB"
   };
+  var countryCodes = (
+    "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ " +
+    "BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ " +
+    "CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ " +
+    "DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR " +
+    "GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY " +
+    "HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT " +
+    "JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ " +
+    "LA LB LC LI LK LR LS LT LU LV LY " +
+    "MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ " +
+    "NA NC NE NF NG NI NL NO NP NR NU NZ OM " +
+    "PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW " +
+    "SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ " +
+    "TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ " +
+    "UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW"
+  ).split(" ");
+  var eventTypeNames = {
+    es: {
+      FESTIVAL: "Festival",
+      WORKSHOP: "Taller",
+      CONGRESS: "Congreso",
+      SUMMIT: "Cumbre",
+      COMPETITION: "Competición",
+      RETREAT: "Retiro",
+      GATHERING: "Encuentro",
+      SHOWCASE: "Exhibición"
+    },
+    en: {
+      FESTIVAL: "Festival",
+      WORKSHOP: "Workshop",
+      CONGRESS: "Congress",
+      SUMMIT: "Summit",
+      COMPETITION: "Competition",
+      RETREAT: "Retreat",
+      GATHERING: "Gathering",
+      SHOWCASE: "Showcase"
+    }
+  };
+  var countryDisplayNames = {};
 
   var translations = {
     es: {
       index: {
         pageTitle: "Directorio de eventos de Bellydance | LumoraEvents",
-        metaDescription: "Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con este directorio estático de ejemplo impulsado por LumoraEvents.",
+        metaDescription: "Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con el directorio de LumoraEvents.",
         heroTitle: "Directorio de eventos de Bellydance",
         heroSubtitle: "Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.",
-        poweredByLabel: "Powered by LumoraEvents",
-        poweredByText: "Un escaparate internacional preparado para conectar más adelante con la API de LumoraEvents.",
-        filtersTitle: "Filtrar eventos",
-        compactListLabel: "Vista compacta",
-        searchLabel: "Buscar",
-        searchPlaceholder: "Nombre, ciudad, país o tipo",
+        filtersTitle: "Buscar eventos",
+        nameLabel: "Nombre",
+        namePlaceholder: "Nombre del evento",
         countryLabel: "País",
-        monthLabel: "Mes",
         allCountries: "Todos los países",
+        monthLabel: "Mes",
         allMonths: "Todos los meses",
+        pageSizeLabel: "Eventos por página",
+        applyFilters: "Buscar",
+        clearFilters: "Limpiar",
+        managedByLumora: "Gestionado por LumoraEvents",
         resultsTitle: "Próximos eventos",
-        resultsIntro: "Explora un listado de ejemplo con festivales, competiciones y retiros internacionales pensados para una futura integración con LumoraEvents.",
+        resultsIntro: "Explora los próximos festivales, competiciones, congresos y encuentros publicados en LumoraEvents.",
         viewDetails: "Ver detalles",
-        emptyTitle: "No hay resultados para esos filtros",
-        emptyText: "Prueba con otro país, otro mes o una búsqueda más amplia para descubrir más eventos.",
-        footerText: "Esta primera versión estática está preparada para evolucionar hacia un directorio conectado a la API de LumoraEvents.",
+        emptyTitle: "No hay próximos eventos",
+        emptyText: "Vuelve pronto para descubrir nuevas fechas y encuentros.",
+        emptyFilteredTitle: "No hay eventos para esta búsqueda",
+        emptyFilteredText: "Prueba con otro nombre, país o mes.",
+        loadingTitle: "Cargando eventos",
+        loadingText: "Estamos consultando los próximos eventos de LumoraEvents.",
+        loadingCount: "Cargando…",
+        unavailableCount: "No disponible",
+        errorTitle: "No hemos podido cargar los eventos",
+        errorText: "La conexión con LumoraEvents no está disponible en este momento. Inténtalo de nuevo.",
+        retryAction: "Reintentar",
+        paginationLabel: "Paginación de eventos",
+        previousPage: "Anterior",
+        nextPage: "Siguiente",
+        currentPage: "Página {page}, actual",
+        resultCountZero: "Mostrando 0 eventos",
         resultCountOne: "Mostrando 1 evento",
-        resultCountOther: "Mostrando {count} eventos"
+        resultCountRange: "Mostrando {start}–{end} de {total} eventos"
       },
       event: {
         fallbackTitle: "Evento de Bellydance | LumoraEvents",
@@ -59,32 +112,55 @@
         instagram: "Instagram",
         backToList: "Volver al listado",
         locationLabel: "Ubicación"
+      },
+      footer: {
+        tagline: "Conectando artistas, organizadores y amantes de la danza oriental en todo el mundo.",
+        contactTitle: "Contacto",
+        legalTitle: "Información legal",
+        privacy: "Política de privacidad",
+        cookies: "Política de cookies",
+        legalNotice: "Aviso legal",
+        rights: "© 2026 LumoraEvents. Todos los derechos reservados."
       }
     },
     en: {
       index: {
         pageTitle: "Bellydance Event Directory | LumoraEvents",
-        metaDescription: "Find Bellydance festivals, competitions, and gatherings around the world through this static sample directory powered by LumoraEvents.",
+        metaDescription: "Find Bellydance festivals, competitions, and gatherings around the world in the LumoraEvents directory.",
         heroTitle: "Bellydance Event Directory",
         heroSubtitle: "Find Bellydance festivals, competitions, and gatherings around the world.",
-        poweredByLabel: "Powered by LumoraEvents",
-        poweredByText: "An international showcase prepared for a future connection to the LumoraEvents API.",
-        filtersTitle: "Filter events",
-        compactListLabel: "Compact view",
-        searchLabel: "Search",
-        searchPlaceholder: "Name, city, country, or type",
+        filtersTitle: "Search events",
+        nameLabel: "Name",
+        namePlaceholder: "Event name",
         countryLabel: "Country",
-        monthLabel: "Month",
         allCountries: "All countries",
+        monthLabel: "Month",
         allMonths: "All months",
+        pageSizeLabel: "Events per page",
+        applyFilters: "Search",
+        clearFilters: "Clear",
+        managedByLumora: "Managed by LumoraEvents",
         resultsTitle: "Upcoming events",
-        resultsIntro: "Browse a sample listing of festivals, competitions, and retreats designed for a future LumoraEvents API integration.",
+        resultsIntro: "Browse upcoming festivals, competitions, congresses, and gatherings published on LumoraEvents.",
         viewDetails: "View details",
-        emptyTitle: "No results match these filters",
-        emptyText: "Try another country, month, or a broader search to discover more events.",
-        footerText: "This first static version is prepared to evolve into a directory connected to the LumoraEvents API.",
+        emptyTitle: "There are no upcoming events",
+        emptyText: "Check back soon to discover new dates and gatherings.",
+        emptyFilteredTitle: "No events match this search",
+        emptyFilteredText: "Try another name, country, or month.",
+        loadingTitle: "Loading events",
+        loadingText: "We are fetching the next events from LumoraEvents.",
+        loadingCount: "Loading…",
+        unavailableCount: "Unavailable",
+        errorTitle: "We could not load the events",
+        errorText: "LumoraEvents is currently unavailable. Please try again.",
+        retryAction: "Try again",
+        paginationLabel: "Event pagination",
+        previousPage: "Previous",
+        nextPage: "Next",
+        currentPage: "Page {page}, current",
+        resultCountZero: "Showing 0 events",
         resultCountOne: "Showing 1 event",
-        resultCountOther: "Showing {count} events"
+        resultCountRange: "Showing {start}–{end} of {total} events"
       },
       event: {
         fallbackTitle: "Bellydance Event | LumoraEvents",
@@ -111,6 +187,15 @@
         instagram: "Instagram",
         backToList: "Back to listing",
         locationLabel: "Location"
+      },
+      footer: {
+        tagline: "Connecting artists, organizers, and oriental dance lovers around the world.",
+        contactTitle: "Contact",
+        legalTitle: "Legal information",
+        privacy: "Privacy policy",
+        cookies: "Cookie policy",
+        legalNotice: "Legal notice",
+        rights: "© 2026 LumoraEvents. All rights reserved."
       }
     }
   };
@@ -235,19 +320,90 @@
   }
 
   function getMonthName(monthNumber, language) {
+    if (!monthNumber || monthNumber < 1 || monthNumber > 12) {
+      return "";
+    }
+
     var date = new Date(Date.UTC(2026, monthNumber - 1, 1));
     return new Intl.DateTimeFormat(localeMap[language || currentLanguage], {
       month: "long"
     }).format(date);
   }
 
+  function getCountryName(countryCode, language) {
+    var normalizedCode = String(countryCode || "").toUpperCase();
+    var activeLanguage = language || currentLanguage;
+
+    if (!normalizedCode) {
+      return "";
+    }
+
+    try {
+      if (!countryDisplayNames[activeLanguage]) {
+        countryDisplayNames[activeLanguage] = new Intl.DisplayNames(
+          [localeMap[activeLanguage]],
+          { type: "region" }
+        );
+      }
+
+      return countryDisplayNames[activeLanguage].of(normalizedCode) || normalizedCode;
+    } catch (error) {
+      return normalizedCode;
+    }
+  }
+
+  function getCountryCodes() {
+    return countryCodes.slice();
+  }
+
+  function formatMonthYear(value, language) {
+    var match = String(value || "").match(/^(\d{4})-(\d{2})$/);
+
+    if (!match) {
+      return "";
+    }
+
+    var activeLanguage = language || currentLanguage;
+    var date = new Date(Number(match[1]), Number(match[2]) - 1, 1, 12);
+
+    var monthName = new Intl.DateTimeFormat(localeMap[activeLanguage], {
+      month: "long"
+    }).format(date);
+
+    return monthName + " " + match[1];
+  }
+
+  function getEventTypeName(eventType, language) {
+    var normalizedType = String(eventType || "").toUpperCase();
+    var activeLanguage = language || currentLanguage;
+
+    if (!normalizedType) {
+      return "";
+    }
+
+    if (eventTypeNames[activeLanguage] && eventTypeNames[activeLanguage][normalizedType]) {
+      return eventTypeNames[activeLanguage][normalizedType];
+    }
+
+    return normalizedType
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/^./, function (firstLetter) {
+        return firstLetter.toUpperCase();
+      });
+  }
+
   function formatDateRange(startDate, endDate, language) {
     var activeLanguage = language || currentLanguage;
     var locale = localeMap[activeLanguage];
-    var start = new Date(startDate + "T00:00:00");
-    var end = new Date(endDate + "T00:00:00");
+    var start = parseApiDate(startDate);
+    var end = parseApiDate(endDate || startDate);
 
-    if (startDate === endDate) {
+    if (!start || !end) {
+      return "";
+    }
+
+    if (isSameDay(start, end)) {
       return new Intl.DateTimeFormat(locale, {
         day: "numeric",
         month: "long",
@@ -278,6 +434,22 @@
     return formatter.format(start) + " - " + formatter.format(end);
   }
 
+  function parseApiDate(value) {
+    var match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+    if (!match) {
+      return null;
+    }
+
+    return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12);
+  }
+
+  function isSameDay(left, right) {
+    return left.getFullYear() === right.getFullYear() &&
+      left.getMonth() === right.getMonth() &&
+      left.getDate() === right.getDate();
+  }
+
   function initPage() {
     applyDocumentLanguage();
     applyTranslations(document);
@@ -292,6 +464,10 @@
     initPage: initPage,
     onLanguageChange: onLanguageChange,
     getMonthName: getMonthName,
+    getCountryName: getCountryName,
+    getCountryCodes: getCountryCodes,
+    formatMonthYear: formatMonthYear,
+    getEventTypeName: getEventTypeName,
     formatDateRange: formatDateRange
   };
 })();

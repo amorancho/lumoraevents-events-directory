@@ -1,64 +1,190 @@
 (function () {
-  var dataApi = window.LumoraEventsData;
+  var api = window.LumoraEventsApi;
   var i18nApi = window.LumoraEventsI18n;
 
-  if (!dataApi || !i18nApi) {
+  if (!api || !i18nApi) {
     return;
   }
 
+  var DEFAULT_PAGE_SIZE = 10;
+  var PAGE_SIZE_OPTIONS = [10, 20, 30];
   var elements = {};
-  var filters = {
-    search: "",
-    countryCode: "",
-    month: ""
+  var state = {
+    events: [],
+    filters: {
+      name: "",
+      country: "",
+      month: "",
+      pageSize: DEFAULT_PAGE_SIZE
+    },
+    pagination: {
+      page: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+      totalItems: 0,
+      totalPages: 0
+    },
+    isLoading: false,
+    hasError: false
   };
+  var activeRequest = null;
 
   document.addEventListener("DOMContentLoaded", initIndexPage);
 
   function initIndexPage() {
     elements.filtersForm = document.getElementById("filters-form");
-    elements.searchInput = document.getElementById("search-input");
+    elements.nameInput = document.getElementById("name-input");
     elements.countrySelect = document.getElementById("country-select");
     elements.monthSelect = document.getElementById("month-select");
+    elements.pageSizeSelect = document.getElementById("page-size-select");
+    elements.clearFilters = document.getElementById("clear-filters");
     elements.resultsList = document.getElementById("results-list");
     elements.resultsCount = document.getElementById("results-count");
+    elements.pagination = document.getElementById("pagination");
     elements.metaDescription = document.querySelector('meta[name="description"]');
     elements.ogTitle = document.querySelector('meta[property="og:title"]');
     elements.ogDescription = document.querySelector('meta[property="og:description"]');
     elements.ogLocale = document.querySelector('meta[property="og:locale"]');
 
     i18nApi.initPage();
+    state.filters = getFiltersFromUrl();
     bindEvents();
     renderPageMeta();
     renderFilterOptions();
-    renderResults();
+    loadEvents(getPageFromUrl());
 
     i18nApi.onLanguageChange(function () {
       renderPageMeta();
       renderFilterOptions();
-      renderResults();
+      renderCurrentState();
     });
   }
 
   function bindEvents() {
     elements.filtersForm.addEventListener("submit", function (event) {
       event.preventDefault();
+      applyFiltersFromForm();
     });
 
-    elements.searchInput.addEventListener("input", function (event) {
-      filters.search = event.target.value;
-      renderResults();
+    elements.clearFilters.addEventListener("click", function () {
+      state.filters = {
+        name: "",
+        country: "",
+        month: "",
+        pageSize: DEFAULT_PAGE_SIZE
+      };
+      renderFilterOptions();
+      updateUrl(1, false);
+      loadEvents(1);
     });
 
-    elements.countrySelect.addEventListener("change", function (event) {
-      filters.countryCode = event.target.value;
-      renderResults();
+    elements.resultsList.addEventListener("click", function (event) {
+      var retryButton = event.target.closest("[data-retry]");
+
+      if (retryButton) {
+        loadEvents(state.pagination.page);
+      }
     });
 
-    elements.monthSelect.addEventListener("change", function (event) {
-      filters.month = event.target.value;
-      renderResults();
+    elements.pagination.addEventListener("click", function (event) {
+      var pageButton = event.target.closest("[data-page]");
+
+      if (!pageButton || pageButton.disabled) {
+        return;
+      }
+
+      navigateToPage(Number(pageButton.getAttribute("data-page")));
     });
+
+    window.addEventListener("popstate", function () {
+      state.filters = getFiltersFromUrl();
+      renderFilterOptions();
+      loadEvents(getPageFromUrl());
+    });
+  }
+
+  function applyFiltersFromForm() {
+    state.filters = normalizeFilters({
+      name: elements.nameInput.value,
+      country: elements.countrySelect.value,
+      month: elements.monthSelect.value,
+      pageSize: elements.pageSizeSelect.value
+    });
+    updateUrl(1, false);
+    loadEvents(1);
+  }
+
+  function navigateToPage(page) {
+    if (state.isLoading || page === state.pagination.page || page < 1) {
+      return;
+    }
+
+    updateUrl(page, false);
+    loadEvents(page);
+    document.getElementById("results-heading").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  function loadEvents(page) {
+    var requestedPage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+
+    if (activeRequest) {
+      activeRequest.abort();
+    }
+
+    activeRequest = new AbortController();
+    state.isLoading = true;
+    state.hasError = false;
+    state.pagination.page = requestedPage;
+    renderLoadingState();
+
+    api.getDirectoryEvents({
+      page: requestedPage,
+      pageSize: state.filters.pageSize,
+      name: state.filters.name,
+      country: state.filters.country,
+      month: state.filters.month,
+      signal: activeRequest.signal
+    }).then(function (result) {
+      if (result.pagination.totalPages > 0 && requestedPage > result.pagination.totalPages) {
+        updateUrl(result.pagination.totalPages, true);
+        loadEvents(result.pagination.totalPages);
+        return;
+      }
+
+      state.events = result.events;
+      state.pagination = result.pagination;
+      state.isLoading = false;
+      state.hasError = false;
+      updateUrl(state.pagination.page, true);
+      renderResults();
+      renderPagination();
+    }).catch(function (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+
+      state.events = [];
+      state.isLoading = false;
+      state.hasError = true;
+      renderErrorState();
+    });
+  }
+
+  function renderCurrentState() {
+    if (state.isLoading) {
+      renderLoadingState();
+      return;
+    }
+
+    if (state.hasError) {
+      renderErrorState();
+      return;
+    }
+
+    renderResults();
+    renderPagination();
   }
 
   function renderPageMeta() {
@@ -70,129 +196,117 @@
   }
 
   function renderFilterOptions() {
-    var activeLanguage = i18nApi.getCurrentLanguage();
-    var countryOptions = buildCountryOptions(activeLanguage);
-    var monthOptions = buildMonthOptions(activeLanguage);
+    var language = i18nApi.getCurrentLanguage();
+    var countryOptions = [{
+      value: "",
+      label: i18nApi.t("index.allCountries")
+    }];
 
-    elements.countrySelect.innerHTML = countryOptions;
-    elements.monthSelect.innerHTML = monthOptions;
-    elements.countrySelect.value = filters.countryCode;
-    elements.monthSelect.value = filters.month;
-  }
-
-  function buildCountryOptions(language) {
-    var countries = [];
-    var seen = {};
-
-    dataApi.events.forEach(function (eventItem) {
-      if (!seen[eventItem.countryCode]) {
-        seen[eventItem.countryCode] = true;
-        countries.push({
-          code: eventItem.countryCode,
-          label: dataApi.getLocalizedText(eventItem.country, language)
-        });
-      }
-    });
-
-    countries.sort(function (left, right) {
+    i18nApi.getCountryCodes().map(function (countryCode) {
+      return {
+        value: countryCode,
+        label: i18nApi.getCountryName(countryCode, language)
+      };
+    }).sort(function (left, right) {
       return left.label.localeCompare(right.label, language);
+    }).forEach(function (country) {
+      countryOptions.push(country);
     });
 
-    var options = ['<option value="">' + escapeHtml(i18nApi.t("index.allCountries")) + "</option>"];
+    elements.countrySelect.innerHTML = countryOptions.map(buildSelectOption).join("");
 
-    countries.forEach(function (country) {
-      options.push(
-        '<option value="' + escapeHtml(country.code) + '">' + escapeHtml(country.label) + "</option>"
-      );
-    });
+    var monthOptions = [{
+      value: "",
+      label: i18nApi.t("index.allMonths")
+    }].concat(getUpcomingMonths().map(function (month) {
+      return {
+        value: month,
+        label: i18nApi.formatMonthYear(month, language)
+      };
+    }));
 
-    return options.join("");
+    elements.monthSelect.innerHTML = monthOptions.map(buildSelectOption).join("");
+    elements.nameInput.value = state.filters.name;
+    elements.countrySelect.value = state.filters.country;
+    elements.monthSelect.value = state.filters.month;
+    elements.pageSizeSelect.value = String(state.filters.pageSize);
   }
 
-  function buildMonthOptions(language) {
-    var monthSet = {};
-
-    dataApi.events.forEach(function (eventItem) {
-      monthSet[eventItem.month] = true;
-    });
-
-    var monthValues = Object.keys(monthSet).sort(function (left, right) {
-      return Number(left) - Number(right);
-    });
-
-    var options = ['<option value="">' + escapeHtml(i18nApi.t("index.allMonths")) + "</option>"];
-
-    monthValues.forEach(function (month) {
-      options.push(
-        '<option value="' + month + '">' +
-          escapeHtml(capitalize(i18nApi.getMonthName(Number(month), language))) +
-        "</option>"
-      );
-    });
-
-    return options.join("");
+  function buildSelectOption(option) {
+    return '<option value="' + escapeHtml(option.value) + '">' + escapeHtml(option.label) + "</option>";
   }
 
-  function getFilteredEvents() {
-    var normalizedSearch = normalizeText(filters.search);
+  function getUpcomingMonths() {
+    var today = new Date();
+    var months = [];
 
-    return dataApi.events.filter(function (eventItem) {
-      if (filters.countryCode && eventItem.countryCode !== filters.countryCode) {
-        return false;
-      }
+    for (var offset = 0; offset < 12; offset += 1) {
+      var date = new Date(today.getFullYear(), today.getMonth() + offset, 1, 12);
+      months.push(date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0"));
+    }
 
-      if (filters.month && String(eventItem.month) !== String(filters.month)) {
-        return false;
-      }
+    return months;
+  }
 
-      if (!normalizedSearch) {
-        return true;
-      }
+  function renderLoadingState() {
+    elements.resultsCount.textContent = i18nApi.t("index.loadingCount");
+    elements.resultsList.setAttribute("aria-busy", "true");
+    elements.resultsList.innerHTML = [
+      '<article class="rounded-[1.6rem] border border-clove/10 bg-white/70 px-5 py-8 text-center shadow-sm">',
+      '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t("index.loadingTitle")) + "</h3>",
+      '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t("index.loadingText")) + "</p>",
+      "</article>"
+    ].join("");
+    elements.pagination.classList.add("hidden");
+    elements.pagination.innerHTML = "";
+  }
 
-      var haystack = [
-        dataApi.getLocalizedText(eventItem.name, "es"),
-        dataApi.getLocalizedText(eventItem.name, "en"),
-        dataApi.getLocalizedText(eventItem.description, "es"),
-        dataApi.getLocalizedText(eventItem.description, "en"),
-        dataApi.getLocalizedText(eventItem.country, "es"),
-        dataApi.getLocalizedText(eventItem.country, "en"),
-        dataApi.getLocalizedText(eventItem.type, "es"),
-        dataApi.getLocalizedText(eventItem.type, "en"),
-        eventItem.city
-      ].join(" ");
-
-      return normalizeText(haystack).indexOf(normalizedSearch) >= 0;
-    });
+  function renderErrorState() {
+    elements.resultsCount.textContent = i18nApi.t("index.unavailableCount");
+    elements.resultsList.setAttribute("aria-busy", "false");
+    elements.resultsList.innerHTML = [
+      '<article class="rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
+      '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t("index.errorTitle")) + "</h3>",
+      '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t("index.errorText")) + "</p>",
+      '<button type="button" data-retry class="mt-5 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">' + escapeHtml(i18nApi.t("index.retryAction")) + "</button>",
+      "</article>"
+    ].join("");
+    elements.pagination.classList.add("hidden");
+    elements.pagination.innerHTML = "";
   }
 
   function renderResults() {
     var activeLanguage = i18nApi.getCurrentLanguage();
-    var filteredEvents = getFilteredEvents();
 
-    elements.resultsCount.textContent = getResultCountLabel(filteredEvents.length);
+    elements.resultsList.setAttribute("aria-busy", "false");
+    elements.resultsCount.textContent = getResultCountLabel();
 
-    if (!filteredEvents.length) {
+    if (!state.events.length) {
+      var hasFilters = hasActiveSearchFilters();
       elements.resultsList.innerHTML = [
         '<article class="rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
-        '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t("index.emptyTitle")) + "</h3>",
-        '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t("index.emptyText")) + "</p>",
+        '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t(hasFilters ? "index.emptyFilteredTitle" : "index.emptyTitle")) + "</h3>",
+        '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t(hasFilters ? "index.emptyFilteredText" : "index.emptyText")) + "</p>",
         "</article>"
       ].join("");
       return;
     }
 
-    elements.resultsList.innerHTML = filteredEvents.map(function (eventItem) {
+    elements.resultsList.innerHTML = state.events.map(function (eventItem) {
       return buildEventRow(eventItem, activeLanguage);
     }).join("");
   }
 
+  function hasActiveSearchFilters() {
+    return Boolean(state.filters.name || state.filters.country || state.filters.month);
+  }
+
   function buildEventRow(eventItem, language) {
-    var eventName = dataApi.getLocalizedText(eventItem.name, language);
-    var eventType = dataApi.getLocalizedText(eventItem.type, language);
-    var countryName = dataApi.getLocalizedText(eventItem.country, language);
+    var eventType = i18nApi.getEventTypeName(eventItem.type, language);
+    var countryName = i18nApi.getCountryName(eventItem.countryCode, language);
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var monthLabel = capitalize(i18nApi.getMonthName(eventItem.month, language));
-    var locationLabel = eventItem.city + ", " + countryName;
+    var locationLabel = [eventItem.city, countryName].filter(Boolean).join(", ");
     var detailUrl = "./event.html?id=" + encodeURIComponent(eventItem.id);
 
     return [
@@ -201,9 +315,9 @@
       '<div class="flex flex-wrap items-center gap-2">',
       '<span class="tag-chip">' + escapeHtml(eventType) + "</span>",
       '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
+      buildManagedBadge(eventItem),
       "</div>",
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 truncate font-display text-3xl leading-none text-ink">' + escapeHtml(eventName) + "</h3>",
-      '<p class="mt-2 truncate text-sm text-stone-600">' + escapeHtml(locationLabel) + "</p>",
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 truncate font-display text-3xl leading-none text-ink">' + escapeHtml(eventItem.name) + "</h3>",
       "</div>",
       '<div class="text-sm leading-6 text-stone-700">',
       '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
@@ -220,18 +334,172 @@
     ].join("");
   }
 
-  function getResultCountLabel(count) {
-    return count === 1
-      ? i18nApi.t("index.resultCountOne")
-      : i18nApi.t("index.resultCountOther", { count: count });
+  function buildManagedBadge(eventItem) {
+    if (!eventItem.isLumoraEvent) {
+      return "";
+    }
+
+    return [
+      '<span class="lumora-managed-chip">',
+      '<svg aria-hidden="true" viewBox="0 0 20 20" class="h-3.5 w-3.5 shrink-0 fill-gold">',
+      '<path d="M10 1.75c.55 3.74 2.52 5.71 6.25 6.25-3.73.55-5.7 2.52-6.25 6.25C9.45 10.52 7.48 8.55 3.75 8 7.48 7.46 9.45 5.49 10 1.75Z" />',
+      '<path d="M15.6 12.1c.23 1.55 1.05 2.37 2.6 2.6-1.55.22-2.37 1.04-2.6 2.6-.22-1.56-1.04-2.38-2.6-2.6 1.56-.23 2.38-1.05 2.6-2.6Z" />',
+      "</svg>",
+      '<span>' + escapeHtml(i18nApi.t("index.managedByLumora")) + "</span>",
+      "</span>"
+    ].join("");
   }
 
-  function normalizeText(value) {
-    return String(value || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .trim();
+  function renderPagination() {
+    var pagination = state.pagination;
+
+    if (pagination.totalPages <= 1) {
+      elements.pagination.classList.add("hidden");
+      elements.pagination.innerHTML = "";
+      return;
+    }
+
+    var buttons = [];
+    var visiblePages = getVisiblePages(pagination.page, pagination.totalPages);
+
+    buttons.push(buildPageButton(
+      pagination.page - 1,
+      i18nApi.t("index.previousPage"),
+      pagination.page === 1,
+      false
+    ));
+
+    visiblePages.forEach(function (page) {
+      buttons.push(buildPageButton(page, String(page), false, page === pagination.page));
+    });
+
+    buttons.push(buildPageButton(
+      pagination.page + 1,
+      i18nApi.t("index.nextPage"),
+      pagination.page === pagination.totalPages,
+      false
+    ));
+
+    elements.pagination.innerHTML = buttons.join("");
+    elements.pagination.classList.remove("hidden");
+  }
+
+  function buildPageButton(page, label, disabled, isCurrent) {
+    var className = isCurrent
+      ? "border-clove bg-clove text-white"
+      : "border-clove/15 bg-white/80 text-clove hover:border-clove hover:text-ink";
+
+    return [
+      '<button type="button" data-page="' + page + '" class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ' + className + '"',
+      disabled ? " disabled" : "",
+      isCurrent ? ' aria-current="page"' : "",
+      isCurrent ? ' aria-label="' + escapeHtml(i18nApi.t("index.currentPage", { page: page })) + '"' : "",
+      ">" + escapeHtml(label) + "</button>"
+    ].join("");
+  }
+
+  function getVisiblePages(currentPage, totalPages) {
+    var firstPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
+    var lastPage = Math.min(totalPages, firstPage + 4);
+    var pages = [];
+
+    for (var page = firstPage; page <= lastPage; page += 1) {
+      pages.push(page);
+    }
+
+    return pages;
+  }
+
+  function getResultCountLabel() {
+    var pagination = state.pagination;
+
+    if (!pagination.totalItems) {
+      return i18nApi.t("index.resultCountZero");
+    }
+
+    if (pagination.totalItems === 1) {
+      return i18nApi.t("index.resultCountOne");
+    }
+
+    var start = (pagination.page - 1) * pagination.pageSize + 1;
+    var end = Math.min(start + state.events.length - 1, pagination.totalItems);
+
+    return i18nApi.t("index.resultCountRange", {
+      start: start,
+      end: end,
+      total: pagination.totalItems
+    });
+  }
+
+  function getPageFromUrl() {
+    var page = Number(new URLSearchParams(window.location.search).get("page"));
+    return Number.isInteger(page) && page > 0 ? page : 1;
+  }
+
+  function getFiltersFromUrl() {
+    var searchParams = new URLSearchParams(window.location.search);
+
+    return normalizeFilters({
+      name: searchParams.get("name"),
+      country: searchParams.get("country"),
+      month: searchParams.get("month"),
+      pageSize: searchParams.get("page_size")
+    });
+  }
+
+  function normalizeFilters(filters) {
+    var name = String(filters.name || "").trim().slice(0, 150);
+    var country = String(filters.country || "").toUpperCase();
+    var month = String(filters.month || "");
+    var pageSize = Number(filters.pageSize);
+
+    if (i18nApi.getCountryCodes().indexOf(country) === -1) {
+      country = "";
+    }
+
+    if (getUpcomingMonths().indexOf(month) === -1) {
+      month = "";
+    }
+
+    if (PAGE_SIZE_OPTIONS.indexOf(pageSize) === -1) {
+      pageSize = DEFAULT_PAGE_SIZE;
+    }
+
+    return {
+      name: name,
+      country: country,
+      month: month,
+      pageSize: pageSize
+    };
+  }
+
+  function updateUrl(page, replace) {
+    var url = new URL(window.location.href);
+
+    if (page > 1) {
+      url.searchParams.set("page", page);
+    } else {
+      url.searchParams.delete("page");
+    }
+
+    setOptionalSearchParam(url, "name", state.filters.name);
+    setOptionalSearchParam(url, "country", state.filters.country);
+    setOptionalSearchParam(url, "month", state.filters.month);
+    setOptionalSearchParam(
+      url,
+      "page_size",
+      state.filters.pageSize === DEFAULT_PAGE_SIZE ? "" : state.filters.pageSize
+    );
+
+    window.history[replace ? "replaceState" : "pushState"]({}, "", url);
+  }
+
+  function setOptionalSearchParam(url, name, value) {
+    if (value) {
+      url.searchParams.set(name, value);
+    } else {
+      url.searchParams.delete(name);
+    }
   }
 
   function capitalize(value) {
