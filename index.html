@@ -26,14 +26,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style type="text/tailwindcss">
     @theme {
-      --color-sand: #f5eee4;
-      --color-ink: #261912;
-      --color-clove: #5d3a2a;
-      --color-dusk: #7d587d;
-      --color-gold: #c89b3c;
-      --color-rose: #d6a1a0;
-      --shadow-soft: 0 18px 45px rgba(88, 47, 31, 0.10);
-      --shadow-hero: 0 32px 90px rgba(38, 25, 18, 0.28);
+      --color-sand: #f3f6f2;
+      --color-ink: #122019;
+      --color-clove: #245f47;
+      --color-dusk: #76658d;
+      --color-gold: #82c95a;
+      --color-rose: #d9cee6;
+      --shadow-soft: 0 18px 48px rgba(30, 73, 53, 0.10);
+      --shadow-hero: 0 28px 80px rgba(30, 73, 53, 0.12);
       --font-sans: "Manrope", sans-serif;
       --font-display: "Cormorant Garamond", serif;
     }
@@ -46,7 +46,7 @@
 
     @layer components {
       .language-pill {
-        @apply rounded-full border border-white/70 bg-white/60 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-clove transition;
+        @apply rounded-full border border-transparent bg-transparent px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-clove transition hover:bg-clove/5;
       }
 
       .language-pill.is-active {
@@ -54,64 +54,65 @@
       }
 
       .filter-field {
-        @apply rounded-2xl border border-clove/10 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition placeholder:text-stone-400 focus:border-gold focus:ring-2 focus:ring-gold/15;
+        @apply rounded-xl border border-clove/10 bg-[#f7f9f6] px-4 py-3 text-sm text-ink outline-none transition placeholder:text-stone-400 hover:border-clove/20 focus:border-clove focus:bg-white focus:ring-4 focus:ring-gold/15;
       }
 
       .hero-shell {
-        @apply relative overflow-hidden rounded-[2.5rem] border border-white/10 text-white;
+        @apply relative overflow-hidden rounded-[2.5rem] border border-clove/10 text-ink;
         background:
-          radial-gradient(circle at 78% 24%, rgba(200, 155, 60, 0.30), transparent 24%),
-          radial-gradient(circle at 92% 88%, rgba(214, 161, 160, 0.28), transparent 30%),
-          linear-gradient(135deg, #24130f 0%, #542f28 48%, #6f466f 100%);
+          radial-gradient(circle at 80% 18%, rgba(130, 201, 90, 0.32), transparent 25%),
+          radial-gradient(circle at 96% 88%, rgba(118, 101, 141, 0.20), transparent 34%),
+          linear-gradient(135deg, #fcfdfb 0%, #f0f6ef 55%, #f4f0f8 100%);
         box-shadow: var(--shadow-hero);
       }
 
       .hero-grid {
         background-image:
-          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+          linear-gradient(rgba(36,95,71,0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(36,95,71,0.055) 1px, transparent 1px);
         background-size: 42px 42px;
         mask-image: linear-gradient(to left, black, transparent 80%);
       }
 
       .search-shell {
-        @apply rounded-[2rem] border border-white/90 bg-white/95 p-5 shadow-[0_22px_55px_rgba(65,35,24,0.16)] backdrop-blur-xl sm:p-6;
+        @apply rounded-[1.6rem] border border-clove/10 bg-white/95 p-5 backdrop-blur-xl sm:p-6;
+        box-shadow: 0 20px 55px rgba(30, 73, 53, 0.13);
       }
 
       .premium-row {
-        @apply grid gap-6 rounded-[1.8rem] border border-white/90 bg-white/90 px-5 py-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-soft sm:px-6 sm:py-6 md:grid-cols-[minmax(0,2.2fr)_1.2fr_1fr_auto] md:items-center;
+        @apply grid gap-6 rounded-[1.4rem] border border-clove/10 bg-white px-5 py-5 transition duration-200 hover:-translate-y-0.5 hover:border-clove/20 hover:shadow-soft sm:px-6 sm:py-6 md:grid-cols-[minmax(0,2.2fr)_1.2fr_1fr_auto] md:items-center;
       }
 
       .tag-chip {
-        @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-clove;
+        @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-clove;
       }
 
       .lumora-managed-chip {
-        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#fff6d8] to-[#f3dfa0] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove shadow-sm;
+        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove;
       }
     }
   </style>
 </head>
 <body class="flex min-h-screen flex-col overflow-x-clip">
   <div class="pointer-events-none fixed inset-0 -z-10">
-    <div class="absolute left-0 top-0 h-80 w-80 rounded-full bg-gold/20 blur-3xl"></div>
-    <div class="absolute right-0 top-16 h-96 w-96 rounded-full bg-dusk/20 blur-3xl"></div>
-    <div class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-rose/20 blur-3xl"></div>
+    <div class="absolute left-0 top-0 h-80 w-80 rounded-full bg-gold/15 blur-3xl"></div>
+    <div class="absolute right-0 top-16 h-96 w-96 rounded-full bg-dusk/10 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-rose/25 blur-3xl"></div>
   </div>
 
   <header class="px-4 pb-14 pt-4 sm:px-6 lg:px-8">
     <div class="hero-shell mx-auto max-w-6xl px-6 py-7 sm:px-9 sm:py-9 lg:px-12 lg:py-11">
       <div class="hero-grid pointer-events-none absolute inset-0 opacity-70"></div>
-      <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border border-white/10"></div>
-      <div class="pointer-events-none absolute -right-8 -top-10 h-56 w-56 rounded-full border border-gold/25"></div>
-      <div class="pointer-events-none absolute bottom-8 right-14 hidden h-28 w-28 rotate-12 rounded-[2rem] border border-white/15 bg-white/5 backdrop-blur lg:block"></div>
-      <div class="pointer-events-none absolute bottom-20 right-36 hidden h-4 w-4 rotate-45 bg-gold shadow-[0_0_45px_rgba(200,155,60,0.9)] lg:block"></div>
+      <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border border-clove/10"></div>
+      <div class="pointer-events-none absolute -right-8 -top-10 h-56 w-56 rounded-full border border-gold/45"></div>
+      <div class="pointer-events-none absolute bottom-8 right-14 hidden h-28 w-28 rotate-12 rounded-[2rem] border border-clove/10 bg-white/45 backdrop-blur lg:block"></div>
+      <div class="pointer-events-none absolute bottom-20 right-36 hidden h-4 w-4 rotate-45 bg-gold shadow-[0_0_45px_rgba(130,201,90,0.75)] lg:block"></div>
 
       <div class="relative z-10">
         <div class="flex flex-wrap items-center justify-between gap-5">
           <a
             href="./index.html"
-            class="inline-flex rounded-2xl border border-white/70 bg-white px-4 py-3 shadow-xl shadow-black/10 transition hover:-translate-y-0.5"
+            class="inline-flex rounded-2xl border border-clove/10 bg-white/85 px-4 py-3 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:shadow-soft"
             aria-label="LumoraEvents"
           >
             <img
@@ -124,7 +125,7 @@
           </a>
 
           <nav
-            class="flex items-center gap-2 rounded-full border border-white/40 bg-white/90 p-1.5 shadow-lg shadow-black/10 backdrop-blur"
+            class="flex items-center gap-2 rounded-full border border-clove/10 bg-white/85 p-1.5 shadow-sm backdrop-blur"
             aria-label="Language switcher"
             data-language-switcher
           >
@@ -135,17 +136,17 @@
 
         <div class="mt-12 max-w-4xl pb-5 sm:mt-16 lg:pb-9">
           <div class="mb-6 flex items-center gap-3" aria-hidden="true">
-            <span class="h-px w-12 bg-gold"></span>
-            <span class="h-2 w-2 rotate-45 border border-gold"></span>
+            <span class="h-px w-12 bg-clove"></span>
+            <span class="h-2 w-2 rotate-45 border border-clove"></span>
           </div>
           <h1
-            class="max-w-4xl font-display text-5xl leading-[0.92] text-white sm:text-6xl lg:text-7xl"
+            class="max-w-4xl font-display text-5xl leading-[0.92] text-ink sm:text-6xl lg:text-7xl"
             data-i18n="index.heroTitle"
           >
             Directorio de eventos de Bellydance
           </h1>
           <p
-            class="mt-7 max-w-2xl text-base leading-8 text-white/75 sm:text-lg"
+            class="mt-7 max-w-2xl text-base leading-8 text-stone-600 sm:text-lg"
             data-i18n="index.heroSubtitle"
           >
             Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.
@@ -236,7 +237,7 @@
 
   <main class="flex-1 px-4 pb-20 pt-7 sm:px-6 lg:px-8 lg:pt-9">
     <div class="mx-auto max-w-6xl">
-      <section aria-labelledby="results-heading" class="rounded-[2rem] border border-white/70 bg-white/60 p-5 shadow-soft backdrop-blur sm:p-8">
+      <section aria-labelledby="results-heading" class="rounded-[1.8rem] border border-clove/10 bg-white/55 p-5 backdrop-blur sm:p-8">
         <div class="flex flex-col gap-3 border-b border-clove/10 pb-5 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 id="results-heading" class="scroll-mt-44 font-display text-3xl leading-none text-ink" data-i18n="index.resultsTitle">

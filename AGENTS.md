@@ -83,12 +83,14 @@ Parámetros opcionales confirmados:
 
 ## Sistema visual actual
 
-- El índice usa un hero oscuro de alto contraste con gradientes clove/dusk, acentos dorados, título editorial grande y el selector ES/EN dentro de una cápsula clara.
-- Logo oficial: `https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png` (289 × 47 px). Se muestra sobre fondo blanco en el hero y el footer para conservar contraste.
+- Dirección editorial contemporánea basada en el verde del logo: canvas mineral `#f3f6f2`, tinta verde oscuro `#122019`, verde principal `#245f47`, verde lima `#82c95a` y lavanda `#76658d` como acento secundario.
+- El hero es luminoso y limpio, con gradientes verde/lavanda muy suaves, retícula sutil, título editorial grande y bastante espacio en blanco. Evitar volver a marrones, dorados clásicos, fondos oscuros pesados o estética ornamental recargada.
+- Logo oficial: `https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png` (289 × 47 px).
 - No mostrar bloques ni textos `Powered by LumoraEvents`.
 - El buscador está separado del hero, lo solapa visualmente y se mantiene flotante en la parte superior al hacer scroll desde `lg` para evitar ocupar demasiado espacio en pantallas pequeñas.
-- Las filas de evento usan separación vertical amplia y padding generoso; conservar este ritmo al añadir contenido.
-- Índice y detalle comparten un footer oscuro con logo, `info@lumoraevents.net` y enlaces provisionales a privacidad, cookies y aviso legal.
+- Controles compactos con fondos minerales, foco verde y radios moderados; botones primarios verde oscuro.
+- Las filas de evento son tarjetas blancas limpias, con bordes verdes muy suaves, separación vertical amplia y padding generoso.
+- Índice y detalle comparten el mismo sistema cromático y un footer verde oscuro con logo, `info@lumoraevents.net` y enlaces provisionales a privacidad, cookies y aviso legal.
 
 ## Internacionalización y fechas
 
