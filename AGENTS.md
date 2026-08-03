@@ -85,10 +85,14 @@ Parámetros opcionales confirmados:
 
 ## Comportamiento del detalle
 
-- El índice enlaza a `event.html?id=<id>` y la ficha consulta `GET /public/directory-events/<id>`.
+- El índice enlaza a `event.html?id=<id>` y la ficha consulta `GET /public/directory-events/<id>`. La URL del listado se guarda en `sessionStorage` bajo `lumoraevents-directory-return-url`: así conserva filtros, paginación y tamaño al volver sin exponer el origen en la URL del detalle. La ficha valida que el valor corresponda a `index.html` en el mismo origen y usa el listado limpio como fallback.
 - Un 404 o la ausencia de `id` muestran el estado de evento no encontrado; otros errores muestran reintento.
-- Se presentan nombre, tipo, ubicación, venue, fechas, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización.
-- Si `is_lumora_event` es `true`, se muestra también la marca de gestión de LumoraEvents.
+- El resumen superior alinea los datos principales con un póster contenido y sin texto de pie. Bajo el nombre solo aparecen el tipo y, cuando corresponde, la marca Lumora; la ciudad y el país no se repiten ahí.
+- Lugar, ubicación combinada (`city`, país localizado) y fechas se presentan en una sola fila de tres datos: el icono y el valor son visibles, mientras el label se mantiene oculto para lectores de pantalla y como tooltip del icono.
+- Estilos y artistas pertenecen al mismo resumen superior y aparecen, en ese orden, dentro de dos paneles visuales equivalentes. Los estilos usan texto marcado con puntos verdes y los artistas muestran nombre más bandera; ninguno se repite en la zona inferior.
+- Se presentan nombre, tipo, ubicación, venue, fechas, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización. Si `description` está vacío o contiene solo espacios, no se renderizan ni el contenido ni el título de su sección.
+- Cada artista o maestro se presenta como un elemento visual independiente dentro del panel de artistas, nunca como una cadena separada por comas. El contrato esperado para cada elemento es `Nombre (ISO-2)`; la UI elimina el código y muestra junto al nombre una bandera SVG de `https://flagcdn.com/<iso-en-minúsculas>.svg`. El nombre localizado del país se conserva como texto alternativo y `title`. Los valores que no cumplan el patrón se muestran completos como fallback.
+- Si `is_lumora_event` es `true`, junto al tipo se reutiliza exactamente la insignia verde con destellos del listado.
 - Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.
 - `contact_email` es el destinatario preferente; si falta se usa `info@lumoraevents.net`.
 

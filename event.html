@@ -59,6 +59,18 @@
       .detail-pill {
         @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-clove;
       }
+
+      .lumora-managed-chip {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove;
+      }
+
+      .event-meta-panel {
+        @apply rounded-[1.2rem] border border-clove/15 bg-gradient-to-br from-[#f4faef] to-[#eaf3ec] px-5 py-4;
+      }
+
+      .event-meta-panel-title {
+        @apply text-xs font-bold uppercase tracking-[0.18em] text-clove;
+      }
     }
   </style>
 </head>
@@ -79,6 +91,7 @@
           <a
             href="./index.html"
             class="inline-flex items-center gap-2 text-sm font-semibold text-clove transition hover:text-ink"
+            data-back-to-list
             data-i18n="common.backToList"
           >
             Volver al listado
@@ -113,6 +126,7 @@
         <a
           href="./index.html"
           class="mt-6 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink"
+          data-back-to-list
           data-i18n="event.backHome"
         >
           Volver al directorio

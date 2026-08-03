@@ -7,9 +7,11 @@
   }
 
   var FALLBACK_CONTACT_EMAIL = "info@lumoraevents.net";
+  var RETURN_URL_STORAGE_KEY = "lumoraevents-directory-return-url";
   var elements = {};
   var state = {
     eventId: "",
+    returnUrl: "./index.html",
     currentEvent: null,
     isLoading: false,
     errorStatus: 0
@@ -31,6 +33,8 @@
     i18nApi.initPage();
     bindEvents();
     state.eventId = getEventIdFromUrl();
+    state.returnUrl = getReturnUrlFromSession();
+    applyBackToListUrls();
 
     if (state.eventId) {
       loadEvent();
@@ -52,6 +56,39 @@
 
   function getEventIdFromUrl() {
     return String(new URLSearchParams(window.location.search).get("id") || "").trim();
+  }
+
+  function getReturnUrlFromSession() {
+    var source = "";
+
+    try {
+      source = String(window.sessionStorage.getItem(RETURN_URL_STORAGE_KEY) || "").trim();
+    } catch (error) {
+      return "./index.html";
+    }
+
+    if (!source) {
+      return "./index.html";
+    }
+
+    try {
+      var expectedIndexUrl = new URL("./index.html", window.location.href);
+      var candidateUrl = new URL(source, window.location.href);
+
+      if (candidateUrl.origin !== expectedIndexUrl.origin || candidateUrl.pathname !== expectedIndexUrl.pathname) {
+        return "./index.html";
+      }
+
+      return "./index.html" + candidateUrl.search + candidateUrl.hash;
+    } catch (error) {
+      return "./index.html";
+    }
+  }
+
+  function applyBackToListUrls() {
+    document.querySelectorAll("[data-back-to-list]").forEach(function (link) {
+      link.setAttribute("href", state.returnUrl);
+    });
   }
 
   function loadEvent() {
@@ -139,7 +176,6 @@
     var countryName = i18nApi.getCountryName(eventItem.countryCode, language);
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var visualPosterUrl = eventItem.posterUrl || buildPosterPlaceholder(eventItem.name, countryName);
-    var posterCaptionKey = eventItem.posterUrl ? "event.posterLabel" : "event.posterFallbackLabel";
     var summaryDescription = buildSummaryDescription(eventItem.description);
     var contactEmail = eventItem.contactEmail || FALLBACK_CONTACT_EMAIL;
 
@@ -148,23 +184,31 @@
     elements.eventView.setAttribute("aria-busy", "false");
     elements.eventView.innerHTML = [
       '<article class="detail-card overflow-hidden">',
-      '<div class="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">',
       '<div class="p-6 sm:p-8 lg:p-10">',
+      '<div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(250px,320px)] lg:gap-10">',
+      '<div class="min-w-0">',
       '<p class="text-xs font-semibold uppercase tracking-[0.28em] text-clove/80">' + escapeHtml(i18nApi.t("event.detailsLabel")) + "</p>",
       '<h1 class="mt-4 font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">' + escapeHtml(eventItem.name) + "</h1>",
       '<div class="mt-5 flex flex-wrap items-center gap-2">',
       '<span class="detail-pill">' + escapeHtml(eventType) + "</span>",
-      '<span class="detail-pill">' + escapeHtml([eventItem.city, countryName].filter(Boolean).join(", ")) + "</span>",
       buildManagedPill(eventItem),
       "</div>",
-      '<dl class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">',
-      buildDetailItem(i18nApi.t("common.venue"), eventItem.venue),
-      buildDetailItem(i18nApi.t("common.city"), eventItem.city),
-      buildDetailItem(i18nApi.t("common.country"), countryName),
-      buildDetailItem(i18nApi.t("common.dates"), dateLabel),
-      "</dl>",
+      '<div class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-3">',
+      buildDetailItem(i18nApi.t("common.venue"), eventItem.venue, "venue"),
+      buildDetailItem(i18nApi.t("common.locationLabel"), [eventItem.city, countryName].filter(Boolean).join(", "), "location"),
+      buildDetailItem(i18nApi.t("common.dates"), dateLabel, "dates"),
+      "</div>",
+      buildStylesSection(eventItem.danceStyles),
+      buildArtistsSection(eventItem, language),
+      "</div>",
+      '<figure class="mx-auto w-full max-w-[320px] lg:mx-0 lg:justify-self-end">',
+      '<div class="overflow-hidden rounded-[1.5rem] border border-clove/10 bg-[#eef4ef] shadow-soft">',
+      '<img data-event-poster src="' + escapeAttribute(visualPosterUrl) + '" alt="' + escapeAttribute(eventItem.name) + '" class="aspect-[5/7] max-h-[470px] w-full object-contain">',
+      "</div>",
+      "</figure>",
+      "</div>",
+      '<div class="mt-10 border-t border-clove/10">',
       buildDescriptionSection(eventItem.description),
-      buildProgramSection(eventItem),
       buildLinksSection(eventItem),
       '<section class="mt-10 rounded-[1.5rem] border border-clove/10 bg-gradient-to-br from-[#f4faef] to-[#eef5f0] p-6">',
       '<h2 class="font-display text-2xl font-bold tracking-[-0.025em] text-ink">' + escapeHtml(i18nApi.t("event.contactTitle")) + "</h2>",
@@ -173,15 +217,8 @@
       '<div><a href="' + escapeAttribute(buildContactHref(eventItem.name, contactEmail)) + '" class="mt-5 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">' + escapeHtml(i18nApi.t("event.contactAction")) + "</a></div>",
       "</section>",
       buildUpdatedAt(eventItem.updatedAt, language),
-      '<a href="./index.html" class="mt-8 inline-flex text-sm font-semibold text-clove transition hover:text-ink">' + escapeHtml(i18nApi.t("common.backToList")) + "</a>",
+      '<a href="' + escapeAttribute(state.returnUrl) + '" class="mt-8 inline-flex text-sm font-semibold text-clove transition hover:text-ink">' + escapeHtml(i18nApi.t("common.backToList")) + "</a>",
       "</div>",
-      '<aside class="border-t border-clove/10 bg-[#eef4ef] p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">',
-      '<div class="overflow-hidden rounded-[1.5rem] border border-clove/10 bg-white shadow-soft">',
-      '<img data-event-poster src="' + escapeAttribute(visualPosterUrl) + '" alt="' + escapeAttribute(eventItem.name) + '" class="h-full min-h-[320px] w-full object-cover">',
-      "</div>",
-      '<p data-poster-caption class="mt-4 text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">' + escapeHtml(i18nApi.t(posterCaptionKey)) + "</p>",
-      '<p class="mt-2 text-sm leading-6 text-stone-700">' + escapeHtml(summaryDescription) + "</p>",
-      "</aside>",
       "</div>",
       "</article>"
     ].join("");
@@ -226,75 +263,138 @@
     updateCanonical(eventItem.id);
   }
 
-  function buildDetailItem(label, value) {
+  function buildDetailItem(label, value, iconName) {
     if (!value) {
       return "";
     }
 
     return [
-      '<div class="rounded-[1.2rem] border border-clove/10 bg-clove/5 px-4 py-4">',
-      '<dt class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">' + escapeHtml(label) + "</dt>",
-      '<dd class="mt-2 text-sm leading-7 text-stone-700">' + escapeHtml(value) + "</dd>",
+      '<div class="flex min-w-0 items-center gap-3">',
+      '<span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-clove/8 text-clove" title="' + escapeAttribute(label) + '" aria-hidden="true">',
+      buildDetailIcon(iconName),
+      "</span>",
+      '<p class="min-w-0 text-sm font-semibold leading-6 text-stone-700"><span class="sr-only">' + escapeHtml(label) + ": </span>" + escapeHtml(value) + "</p>",
       "</div>"
     ].join("");
   }
 
+  function buildStylesSection(styles) {
+    if (!styles.length) {
+      return "";
+    }
+
+    return [
+      '<div class="event-meta-panel mt-8" role="group" aria-labelledby="event-styles-title">',
+      '<h2 id="event-styles-title" class="event-meta-panel-title">' + escapeHtml(i18nApi.t("common.danceStyles")) + "</h2>",
+      '<ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2.5" role="list">',
+      styles.map(function (style) {
+        return [
+          '<li class="inline-flex items-center gap-2 text-sm font-semibold text-ink">',
+          '<span class="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true"></span>',
+          escapeHtml(formatEnumLabel(style)),
+          "</li>"
+        ].join("");
+      }).join(""),
+      "</ul>",
+      "</div>"
+    ].join("");
+  }
+
+  function buildDetailIcon(iconName) {
+    var paths = {
+      venue: '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M5.25 21V5.25A2.25 2.25 0 0 1 7.5 3h9a2.25 2.25 0 0 1 2.25 2.25V21M9 7.5h.008v.008H9V7.5Zm0 3.75h.008v.008H9v-.008Zm0 3.75h.008v.008H9V15Zm3-7.5h.008v.008H12V7.5Zm0 3.75h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm3-7.5h.008v.008H15V7.5Zm0 3.75h.008v.008H15v-.008ZM15 15h.008v.008H15V15Z" />',
+      location: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21s6-5.12 6-11a6 6 0 1 0-12 0c0 5.88 6 11 6 11Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 10a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />',
+      dates: '<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M5.25 4.5h13.5A1.5 1.5 0 0 1 20.25 6v13.5h-16.5V6a1.5 1.5 0 0 1 1.5-1.5Z" />'
+    };
+
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">' + (paths[iconName] || paths.location) + "</svg>";
+  }
+
   function buildManagedPill(eventItem) {
-    return eventItem.isLumoraEvent
-      ? '<span class="detail-pill border-gold/50 bg-gold/15">' + escapeHtml(i18nApi.t("event.managedByLumora")) + "</span>"
-      : "";
+    if (!eventItem.isLumoraEvent) {
+      return "";
+    }
+
+    return [
+      '<span class="lumora-managed-chip">',
+      '<svg aria-hidden="true" viewBox="0 0 20 20" class="h-3.5 w-3.5 shrink-0 fill-gold">',
+      '<path d="M10 1.75c.55 3.74 2.52 5.71 6.25 6.25-3.73.55-5.7 2.52-6.25 6.25C9.45 10.52 7.48 8.55 3.75 8 7.48 7.46 9.45 5.49 10 1.75Z" />',
+      '<path d="M15.6 12.1c.23 1.55 1.05 2.37 2.6 2.6-1.55.22-2.37 1.04-2.6 2.6-.22-1.56-1.04-2.38-2.6-2.6 1.56-.23 2.38-1.05 2.6-2.6Z" />',
+      "</svg>",
+      '<span>' + escapeHtml(i18nApi.t("event.managedByLumora")) + "</span>",
+      "</span>"
+    ].join("");
   }
 
   function buildDescriptionSection(description) {
-    if (!description) {
+    var normalizedDescription = String(description || "").trim();
+
+    if (!normalizedDescription) {
       return "";
     }
 
     return [
       '<section class="mt-10" aria-labelledby="event-description-title">',
       '<h2 id="event-description-title" class="font-display text-2xl font-bold tracking-[-0.025em] text-ink">' + escapeHtml(i18nApi.t("event.descriptionTitle")) + "</h2>",
-      '<p class="mt-4 text-sm leading-8 text-stone-700">' + escapeHtml(description) + "</p>",
+      '<p class="mt-4 text-sm leading-8 text-stone-700">' + escapeHtml(normalizedDescription) + "</p>",
       "</section>"
     ].join("");
   }
 
-  function buildProgramSection(eventItem) {
-    if (!eventItem.masters.length && !eventItem.danceStyles.length) {
+  function buildArtistsSection(eventItem, language) {
+    if (!eventItem.masters.length) {
       return "";
     }
 
-    var content = [];
+    return [
+      '<div class="event-meta-panel mt-4" role="group" aria-labelledby="event-artists-title">',
+      '<h2 id="event-artists-title" class="event-meta-panel-title">' + escapeHtml(i18nApi.t("common.masters")) + "</h2>",
+      '<ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2.5" role="list">',
+      eventItem.masters.map(function (master) {
+        return buildMasterItem(master, language);
+      }).join(""),
+      "</ul>",
+      "</div>"
+    ].join("");
+  }
 
-    if (eventItem.masters.length) {
-      content.push([
-        '<div class="rounded-[1.2rem] border border-clove/10 bg-white p-5">',
-        '<p class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">' + escapeHtml(i18nApi.t("common.masters")) + "</p>",
-        '<p class="mt-3 text-sm leading-7 text-stone-700">' + escapeHtml(eventItem.masters.join(", ")) + "</p>",
-        "</div>"
-      ].join(""));
-    }
-
-    if (eventItem.danceStyles.length) {
-      content.push([
-        '<div class="rounded-[1.2rem] border border-clove/10 bg-white p-5">',
-        '<p class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">' + escapeHtml(i18nApi.t("common.danceStyles")) + "</p>",
-        '<div class="mt-3 flex flex-wrap gap-2">',
-        eventItem.danceStyles.map(function (style) {
-          return '<span class="detail-pill">' + escapeHtml(formatEnumLabel(style)) + "</span>";
-        }).join(""),
-        "</div>",
-        "</div>"
-      ].join(""));
-    }
+  function buildMasterItem(value, language) {
+    var master = parseMaster(value, language);
+    var flag = master.countryCode
+      ? '<img src="' + escapeAttribute(buildFlagUrl(master.countryCode)) + '" alt="' + escapeAttribute(master.countryName) + '" title="' + escapeAttribute(master.countryName) + '" width="24" height="18" loading="lazy" decoding="async" class="h-[18px] w-6 rounded-[0.2rem] object-cover shadow-sm">'
+      : "";
 
     return [
-      '<section class="mt-10" aria-labelledby="event-program-title">',
-      '<h2 id="event-program-title" class="font-display text-2xl font-bold tracking-[-0.025em] text-ink">' + escapeHtml(i18nApi.t("event.programTitle")) + "</h2>",
-      '<div class="mt-4 grid gap-4 sm:grid-cols-2">',
-      content.join(""),
-      "</div>",
-      "</section>"
+      '<li class="inline-flex items-center gap-2 text-sm font-semibold text-ink">',
+      '<p class="text-sm font-semibold leading-6 text-ink">' + escapeHtml(master.name) + "</p>",
+      flag,
+      "</li>"
     ].join("");
+  }
+
+  function parseMaster(value, language) {
+    var rawValue = String(value || "").trim();
+    var match = rawValue.match(/^(.*?)\s*\(([A-Za-z]{2})\)\s*$/);
+
+    if (!match || !match[1].trim()) {
+      return { name: rawValue, countryCode: "", countryName: "" };
+    }
+
+    var countryCode = match[2].toUpperCase();
+
+    if (i18nApi.getCountryCodes().indexOf(countryCode) === -1) {
+      return { name: rawValue, countryCode: "", countryName: "" };
+    }
+
+    return {
+      name: match[1].trim(),
+      countryCode: countryCode,
+      countryName: i18nApi.getCountryName(countryCode, language)
+    };
+  }
+
+  function buildFlagUrl(countryCode) {
+    return "https://flagcdn.com/" + String(countryCode || "").toLowerCase() + ".svg";
   }
 
   function buildLinksSection(eventItem) {
@@ -337,7 +437,7 @@
 
   function buildSummaryDescription(description) {
     var fallback = i18nApi.t("event.fallbackDescription");
-    var text = description || fallback;
+    var text = String(description || "").trim() || fallback;
     return text.length > 150 ? text.slice(0, 147) + "..." : text;
   }
 
@@ -347,12 +447,10 @@
     }
 
     var image = elements.eventView.querySelector("[data-event-poster]");
-    var caption = elements.eventView.querySelector("[data-poster-caption]");
 
     image.addEventListener("error", function handlePosterError() {
       image.removeEventListener("error", handlePosterError);
       image.src = buildPosterPlaceholder(eventName, countryName);
-      caption.textContent = i18nApi.t("event.posterFallbackLabel");
     });
   }
 

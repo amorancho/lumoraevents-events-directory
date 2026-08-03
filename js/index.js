@@ -8,6 +8,7 @@
 
   var DEFAULT_PAGE_SIZE = 10;
   var PAGE_SIZE_OPTIONS = [10, 20, 30];
+  var RETURN_URL_STORAGE_KEY = "lumoraevents-directory-return-url";
   var elements = {};
   var state = {
     events: [],
@@ -47,6 +48,7 @@
 
     i18nApi.initPage();
     state.filters = getFiltersFromUrl();
+    saveCurrentListUrl();
     bindEvents();
     renderPageMeta();
     renderFilterOptions();
@@ -97,6 +99,7 @@
 
     window.addEventListener("popstate", function () {
       state.filters = getFiltersFromUrl();
+      saveCurrentListUrl();
       renderFilterOptions();
       loadEvents(getPageFromUrl());
     });
@@ -307,7 +310,7 @@
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var monthLabel = capitalize(i18nApi.getMonthName(eventItem.month, language));
     var locationLabel = [eventItem.city, countryName].filter(Boolean).join(", ");
-    var detailUrl = "./event.html?id=" + encodeURIComponent(eventItem.id);
+    var detailUrl = buildDetailUrl(eventItem.id);
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
@@ -348,6 +351,25 @@
       '<span>' + escapeHtml(i18nApi.t("index.managedByLumora")) + "</span>",
       "</span>"
     ].join("");
+  }
+
+  function buildDetailUrl(eventId) {
+    var searchParams = new URLSearchParams();
+
+    searchParams.set("id", eventId);
+
+    return "./event.html?" + searchParams.toString();
+  }
+
+  function saveCurrentListUrl() {
+    try {
+      window.sessionStorage.setItem(
+        RETURN_URL_STORAGE_KEY,
+        "./index.html" + window.location.search + window.location.hash
+      );
+    } catch (error) {
+      // sessionStorage can be unavailable in restrictive browser modes.
+    }
   }
 
   function renderPagination() {
@@ -492,6 +514,7 @@
     );
 
     window.history[replace ? "replaceState" : "pushState"]({}, "", url);
+    saveCurrentListUrl();
   }
 
   function setOptionalSearchParam(url, name, value) {
