@@ -45,7 +45,7 @@
       signal: settings.signal
     }).then(function (response) {
       if (!response.ok) {
-        throw new Error("Directory events request failed with status " + response.status);
+        throw createRequestError("Directory events request failed", response.status);
       }
 
       return response.json();
@@ -60,6 +60,44 @@
         events: events,
         pagination: normalizePagination(payload.pagination, page, pageSize, events.length)
       };
+    });
+  }
+
+  function getDirectoryEvent(id, options) {
+    var eventId = String(id || "").trim();
+    var settings = options || {};
+
+    if (!eventId) {
+      return Promise.reject(createRequestError("Directory event id is required", 400));
+    }
+
+    var url = new URL(
+      "/public/directory-events/" + encodeURIComponent(eventId),
+      getApiBaseUrl()
+    );
+
+    return window.fetch(url.toString(), {
+      headers: {
+        Accept: "application/json"
+      },
+      signal: settings.signal
+    }).then(function (response) {
+      if (!response.ok) {
+        throw createRequestError("Directory event request failed", response.status);
+      }
+
+      return response.json();
+    }).then(function (payload) {
+      var eventItem = payload && payload.data && !Array.isArray(payload.data)
+        ? payload.data
+        : payload;
+      var normalizedEvent = normalizeDirectoryEventDetail(eventItem);
+
+      if (!normalizedEvent) {
+        throw createRequestError("Directory event response has an invalid shape", 502);
+      }
+
+      return normalizedEvent;
     });
   }
 
@@ -81,6 +119,30 @@
       isLumoraEvent: eventItem.is_lumora_event === true,
       month: getMonthNumber(startDate)
     };
+  }
+
+  function normalizeDirectoryEventDetail(eventItem) {
+    var summary = normalizeDirectoryEvent(eventItem);
+
+    if (!summary) {
+      return null;
+    }
+
+    return Object.assign({}, summary, {
+      description: String(eventItem.description || ""),
+      venue: String(eventItem.venue || ""),
+      websiteUrl: normalizeHttpUrl(eventItem.website_url),
+      registrationUrl: normalizeHttpUrl(eventItem.registration_url),
+      instagramUrl: normalizeHttpUrl(eventItem.instagram_url),
+      facebookUrl: normalizeHttpUrl(eventItem.facebook_url),
+      tiktokUrl: normalizeHttpUrl(eventItem.tiktok_url),
+      youtubeUrl: normalizeHttpUrl(eventItem.youtube_url),
+      contactEmail: normalizeEmail(eventItem.contact_email),
+      posterUrl: normalizeHttpUrl(eventItem.poster_url),
+      danceStyles: splitCommaSeparatedValue(eventItem.dance_styles),
+      masters: splitCommaSeparatedValue(eventItem.masters),
+      updatedAt: String(eventItem.updated_at || "")
+    });
   }
 
   function normalizePagination(pagination, requestedPage, requestedPageSize, eventCount) {
@@ -108,6 +170,39 @@
     return match ? Number(match[1]) : 0;
   }
 
+  function normalizeHttpUrl(value) {
+    if (!value) {
+      return "";
+    }
+
+    try {
+      var url = new URL(String(value));
+      return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function normalizeEmail(value) {
+    var email = String(value || "").trim();
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "";
+  }
+
+  function splitCommaSeparatedValue(value) {
+    return String(value || "")
+      .split(",")
+      .map(function (item) {
+        return item.trim();
+      })
+      .filter(Boolean);
+  }
+
+  function createRequestError(message, status) {
+    var error = new Error(message + " with status " + status);
+    error.status = status;
+    return error;
+  }
+
   function toPositiveInteger(value, fallback) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : fallback;
@@ -125,6 +220,7 @@
 
   window.LumoraEventsApi = {
     getApiBaseUrl: getApiBaseUrl,
-    getDirectoryEvents: getDirectoryEvents
+    getDirectoryEvents: getDirectoryEvents,
+    getDirectoryEvent: getDirectoryEvent
   };
 })();

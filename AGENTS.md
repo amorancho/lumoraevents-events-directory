@@ -15,8 +15,7 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 
 - `index.html` + `js/index.js`: vista de listado y estados de carga, error, vacío y paginación.
 - `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI.
-- `event.html` + `js/event.js`: vista detalle todavía basada en el mock.
-- `js/data.js`: mock heredado, usado únicamente por la ficha detalle mientras no exista o se integre su endpoint.
+- `event.html` + `js/event.js`: vista detalle conectada a la API, con estados de carga, error y 404.
 - `js/i18n.js`: textos ES/EN, formato de fechas, países ISO y tipos de evento.
 
 No introducir herramientas de build sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
@@ -26,6 +25,7 @@ No introducir herramientas de build sin una razón explícita. Mantener JavaScri
 - Local: `http://127.0.0.1:3000`
 - Producción: `https://api.lumoraevents.net`
 - Listado actual: `GET /public/directory-events`
+- Detalle actual: `GET /public/directory-events/<id>`
 
 `js/api.js` selecciona local si la web se abre desde `file:`, `localhost` o `127.0.0.1`; en cualquier otro host utiliza producción. Para pruebas puntuales se puede definir `window.LUMORA_EVENTS_API_BASE_URL` antes de cargar `api.js`.
 
@@ -45,7 +45,7 @@ Respuesta confirmada del listado:
 
 El índice solo consume estos campos de cada evento:
 
-- `id`: se conserva en el enlace `event.html?id=<id>` para la futura ficha real.
+- `id`: se conserva en el enlace `event.html?id=<id>` y se utiliza para solicitar la ficha real.
 - `name`
 - `start_date`
 - `end_date`
@@ -55,6 +55,8 @@ El índice solo consume estos campos de cada evento:
 - `is_lumora_event`: booleano; si es `true`, la fila muestra una insignia dorada localizada que indica que LumoraEvents gestiona el evento.
 
 No acoplar el índice al resto de propiedades devueltas por la API.
+
+La ficha detalle consume además `description`, `venue`, `website_url`, `registration_url`, todas las redes sociales disponibles, `contact_email`, `poster_url`, `dance_styles`, `masters` y `updated_at`. Las URLs externas se validan como HTTP/HTTPS y el correo se valida antes de renderizarse.
 
 Parámetros opcionales confirmados:
 
@@ -81,6 +83,15 @@ Parámetros opcionales confirmados:
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
 
+## Comportamiento del detalle
+
+- El índice enlaza a `event.html?id=<id>` y la ficha consulta `GET /public/directory-events/<id>`.
+- Un 404 o la ausencia de `id` muestran el estado de evento no encontrado; otros errores muestran reintento.
+- Se presentan nombre, tipo, ubicación, venue, fechas, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización.
+- Si `is_lumora_event` es `true`, se muestra también la marca de gestión de LumoraEvents.
+- Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.
+- `contact_email` es el destinatario preferente; si falta se usa `info@lumoraevents.net`.
+
 ## Sistema visual actual
 
 - Dirección contemporánea basada en el verde del logo: canvas mineral `#f3f6f2`, tinta verde oscuro `#122019`, verde principal `#245f47`, verde lima `#82c95a` y lavanda `#76658d` como acento secundario.
@@ -102,7 +113,7 @@ Parámetros opcionales confirmados:
 ## Estado y decisiones pendientes
 
 - El listado está conectado al endpoint real.
-- La ficha detalle sigue con `data.js` porque todavía no se ha definido su endpoint público. Los IDs numéricos del listado ya se incluyen en los enlaces, pero no resolverán una ficha real hasta hacer esa integración.
+- La ficha detalle está conectada al endpoint público por ID.
 - El listado permite filtrar por nombre, país y mes, y escoger 10, 20 o 30 resultados por página.
 - Verificación del 2026-08-03: local respondió correctamente; producción devolvió HTTP 403 desde el entorno de desarrollo. Verificar despliegue, reglas de acceso y CORS antes de publicar el dominio.
 - Confirmar el dominio web definitivo y actualizar canonical/SEO cuando se conozca.
