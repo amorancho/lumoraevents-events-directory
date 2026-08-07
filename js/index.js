@@ -314,13 +314,13 @@
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
-      '<div class="min-w-0">',
-      '<div class="flex flex-wrap items-center gap-2">',
+      '<div class="flex flex-wrap items-center gap-2 md:col-span-4">',
       '<span class="tag-chip">' + escapeHtml(eventType) + "</span>",
       '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
       buildManagedBadge(eventItem),
       "</div>",
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">' + escapeHtml(eventItem.name) + "</h3>",
+      '<div class="min-w-0">',
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">' + escapeHtml(eventItem.name) + "</h3>",
       "</div>",
       '<div class="text-sm leading-6 text-stone-700">',
       '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
