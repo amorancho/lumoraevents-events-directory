@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Evento de Bellydance | LumoraEvents</title>
+  <title>Política de cookies | Bellydance Directory | LumoraEvents</title>
   <meta
     name="description"
-    content="Consulta la ficha detallada de un evento de Bellydance publicado en LumoraEvents."
+    content="Consulta la política de cookies y el uso de Counter.dev en Bellydance Directory."
   >
-  <link rel="canonical" href="./event.html">
+  <link rel="canonical" href="./cookie-policy.html">
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon32.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Evento de Bellydance | LumoraEvents">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Política de cookies | Bellydance Directory | LumoraEvents">
   <meta
     property="og:description"
-    content="Información, fechas, artistas y enlaces de un evento internacional de Bellydance."
+    content="Consulta la política de cookies y el uso de Counter.dev en Bellydance Directory."
   >
-  <meta property="og:image" content="https://placehold.co/1200x630/f4ebe1/5f3d2e?text=LumoraEvents">
+  <meta property="og:image" content="https://placehold.co/1200x630/eef4ef/245f47?text=LumoraEvents">
   <meta property="og:locale" content="es_ES">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,29 +54,29 @@
         @apply border-clove bg-clove text-white shadow-soft;
       }
 
-      .detail-card {
+      .legal-card {
         @apply rounded-[1.8rem] border border-clove/10 bg-white shadow-soft;
       }
 
-      .detail-pill {
-        @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-clove;
+      .legal-section {
+        @apply mt-10;
       }
 
-      .lumora-managed-chip {
-        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove;
+      .legal-section h2 {
+        @apply font-display text-xl font-bold tracking-[-0.02em] text-ink sm:text-2xl;
       }
 
-      .event-meta-panel {
-        @apply rounded-[1.2rem] border border-clove/15 bg-gradient-to-br from-[#f4faef] to-[#eaf3ec] px-5 py-4;
+      .legal-section p {
+        @apply mt-4 text-sm leading-8 text-stone-700 sm:text-base;
       }
 
-      .event-meta-panel-title {
-        @apply text-xs font-bold uppercase tracking-[0.18em] text-clove;
+      .legal-section p + p {
+        @apply mt-3;
       }
     }
   </style>
 </head>
-<body class="flex min-h-screen flex-col overflow-x-clip">
+<body class="flex min-h-screen flex-col overflow-x-clip" data-legal-page="cookiePolicy">
   <header class="px-4 pb-6 pt-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-6xl rounded-[1.5rem] border border-clove/10 bg-white/90 px-5 py-4 shadow-soft backdrop-blur md:px-6">
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -93,7 +93,6 @@
           <a
             href="./index.html"
             class="inline-flex items-center gap-2 text-sm font-semibold text-clove transition hover:text-ink"
-            data-back-to-list
             data-i18n="common.backToList"
           >
             Volver al listado
@@ -113,28 +112,46 @@
   </header>
 
   <main class="flex-1 px-4 pb-20 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-6xl">
-      <section id="event-view" aria-live="polite"></section>
-
-      <section
-        id="event-empty"
-        class="detail-card hidden p-8 text-center"
-        aria-live="polite"
+    <article class="legal-card mx-auto max-w-4xl p-6 sm:p-8 lg:p-10" aria-labelledby="cookies-title">
+      <h1
+        id="cookies-title"
+        class="font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl"
+        data-i18n="cookiePolicy.title"
       >
-        <h1 class="font-display text-4xl text-ink" data-i18n="event.notFoundTitle">Evento no encontrado</h1>
-        <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-stone-700" data-i18n="event.notFoundText">
-          El evento solicitado no existe o ya no está disponible.
+        Política de cookies
+      </h1>
+
+      <div class="mt-8 border-t border-clove/10">
+        <section class="legal-section" aria-labelledby="cookie-use-title">
+          <h2 id="cookie-use-title" data-i18n="cookiePolicy.useTitle">Uso de cookies</h2>
+          <p data-i18n="cookiePolicy.useParagraph1">Bellydance Directory no utiliza actualmente cookies publicitarias ni cookies destinadas a realizar seguimiento personalizado de los visitantes.</p>
+          <p data-i18n="cookiePolicy.useParagraph2">Para obtener estadísticas básicas y agregadas sobre el uso del sitio utilizamos Counter.dev.</p>
+          <p data-i18n="cookiePolicy.useParagraph3">Counter.dev se utiliza como herramienta de analítica sencilla y respetuosa con la privacidad, sin utilizarla para crear perfiles publicitarios de los visitantes.</p>
+          <p data-i18n="cookiePolicy.useParagraph4">Por este motivo, actualmente no mostramos un banner de aceptación de cookies no esenciales.</p>
+        </section>
+
+        <section class="legal-section" aria-labelledby="analytics-title">
+          <h2 id="analytics-title" data-i18n="cookiePolicy.analyticsTitle">Analítica</h2>
+          <p data-i18n="cookiePolicy.analyticsParagraph1">Las estadísticas obtenidas mediante Counter.dev se utilizan para conocer de forma general el uso del directorio y mejorar su funcionamiento y contenido.</p>
+          <p data-i18n="cookiePolicy.analyticsParagraph2">No utilizamos Google Analytics, Meta Pixel ni herramientas de publicidad comportamental.</p>
+        </section>
+
+        <section class="legal-section" aria-labelledby="third-party-services-title">
+          <h2 id="third-party-services-title" data-i18n="cookiePolicy.thirdPartyTitle">Servicios de terceros</h2>
+          <p data-i18n="cookiePolicy.thirdPartyParagraph1">Algunos enlaces pueden dirigir al usuario a servicios externos, como Instagram o las páginas oficiales de los eventos.</p>
+          <p data-i18n="cookiePolicy.thirdPartyParagraph2">Estos sitios tienen sus propias políticas de privacidad y cookies y LumoraEvents no controla las tecnologías utilizadas por ellos una vez que el usuario abandona este sitio web.</p>
+        </section>
+
+        <section class="legal-section" aria-labelledby="policy-changes-title">
+          <h2 id="policy-changes-title" data-i18n="cookiePolicy.changesTitle">Cambios en esta política</h2>
+          <p data-i18n="cookiePolicy.changesParagraph">Si en el futuro incorporamos herramientas de analítica, publicidad u otras tecnologías que requieran consentimiento, esta política y el sistema de consentimiento del sitio serán actualizados cuando corresponda.</p>
+        </section>
+
+        <p class="mt-10 border-t border-clove/10 pt-6 text-xs font-semibold text-stone-500" data-i18n="cookiePolicy.updatedAt">
+          Última actualización: agosto de 2026.
         </p>
-        <a
-          href="./index.html"
-          class="mt-6 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink"
-          data-back-to-list
-          data-i18n="event.backHome"
-        >
-          Volver al directorio
-        </a>
-      </section>
-    </div>
+      </div>
+    </article>
   </main>
 
   <footer class="mt-auto border-t border-gold/20 bg-ink px-4 py-12 text-white sm:px-6 lg:px-8">
@@ -167,7 +184,7 @@
           <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-gold" data-i18n="footer.legalTitle">Información legal</h2>
           <div class="mt-4 flex flex-col items-start gap-3 text-sm text-white/65">
             <a href="./privacy-policy.html" class="transition hover:text-white" data-i18n="footer.privacy">Política de privacidad</a>
-            <a href="./cookie-policy.html" class="transition hover:text-white" data-i18n="footer.cookies">Política de cookies</a>
+            <a href="./cookie-policy.html" class="transition hover:text-white" data-i18n="footer.cookies" aria-current="page">Política de cookies</a>
             <a href="./legal-notice.html" class="transition hover:text-white" data-i18n="footer.legalNotice">Aviso legal</a>
           </div>
         </nav>
@@ -179,8 +196,7 @@
     </div>
   </footer>
 
-  <script defer src="./js/api.js"></script>
   <script defer src="./js/i18n.js"></script>
-  <script defer src="./js/event.js"></script>
+  <script defer src="./js/legal.js"></script>
 </body>
 </html>

@@ -4,10 +4,13 @@ Este archivo es la referencia funcional y técnica viva del repositorio. Actual�
 
 ## Objetivo
 
-Directorio web público de eventos de Bellydance de LumoraEvents. La experiencia prevista tiene dos vistas:
+Directorio web público de eventos de Bellydance de LumoraEvents. La experiencia prevista incluye el directorio, la ficha de evento y las páginas legales básicas:
 
 - `index.html`: listado paginado de próximos eventos.
 - `event.html?id=<id>`: ficha completa de un evento.
+- `legal-notice.html`: aviso legal.
+- `privacy-policy.html`: política de privacidad.
+- `cookie-policy.html`: política de cookies.
 
 El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una aplicación estática sin build: HTML, Tailwind CSS cargado desde CDN y JavaScript del navegador.
 
@@ -16,6 +19,7 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 - `index.html` + `js/index.js`: vista de listado y estados de carga, error, vacío y paginación.
 - `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI.
 - `event.html` + `js/event.js`: vista detalle conectada a la API, con estados de carga, error y 404.
+- `legal-notice.html`, `privacy-policy.html` y `cookie-policy.html` + `js/legal.js`: páginas legales estáticas con contenido y metadatos localizados.
 - `js/i18n.js`: textos ES/EN, formato de fechas, países ISO y tipos de evento.
 
 No introducir herramientas de build sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
@@ -106,13 +110,19 @@ Parámetros opcionales confirmados:
 - El buscador está separado del hero, lo solapa visualmente y se mantiene flotante en la parte superior al hacer scroll desde `lg` para evitar ocupar demasiado espacio en pantallas pequeñas.
 - Controles compactos con fondos minerales, foco verde y radios moderados; botones primarios verde oscuro.
 - Las filas de evento son tarjetas blancas limpias, con bordes verdes muy suaves, separación vertical amplia y padding generoso.
-- Índice y detalle comparten el mismo sistema cromático y un footer verde oscuro con logo, `info@lumoraevents.net` y enlaces provisionales a privacidad, cookies y aviso legal.
+- Índice, detalle y páginas legales comparten el mismo sistema cromático y un footer verde oscuro con logo, `info@lumoraevents.net` y enlaces a privacidad, cookies y aviso legal.
 
 ## Internacionalización y fechas
 
 - Idiomas de interfaz: español (`es-ES`) e inglés (`en-GB`).
 - La preferencia se guarda en `localStorage` con la clave `lumoraevents-language`.
 - Las fechas de la API son ISO con hora UTC. La UI extrae el componente `YYYY-MM-DD` para evitar cambios de día por zona horaria.
+
+## Analítica y cookies
+
+- Todas las páginas cargan Counter.dev desde `https://cdn.counter.dev/script.js` con el identificador público del sitio para obtener estadísticas básicas y agregadas.
+- No se utilizan Google Analytics, Meta Pixel ni otros sistemas adicionales de tracking o publicidad comportamental.
+- No se muestra un banner de cookies mientras el uso técnico del sitio no requiera consentimiento para cookies no esenciales.
 
 ## Estado y decisiones pendientes
 
