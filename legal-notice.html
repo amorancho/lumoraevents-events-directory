@@ -112,55 +112,19 @@
   </header>
 
   <main class="flex-1 px-4 pb-20 sm:px-6 lg:px-8">
-    <article class="legal-card mx-auto max-w-4xl p-6 sm:p-8 lg:p-10" aria-labelledby="legal-title">
-      <h1
-        id="legal-title"
-        class="font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl"
-        data-i18n="legalNotice.title"
-      >
-        Aviso legal
+    <article
+      id="legal-content"
+      class="legal-card mx-auto max-w-4xl p-6 sm:p-8 lg:p-10"
+      aria-labelledby="legal-title"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <h1 id="legal-title" class="font-display text-3xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-4xl" data-i18n="legalPage.loadingTitle">
+        Cargando información legal
       </h1>
-
-      <div class="mt-8 border-t border-clove/10">
-        <section class="legal-section" aria-labelledby="general-information-title">
-          <h2 id="general-information-title" data-i18n="legalNotice.generalTitle">Información general</h2>
-          <p data-i18n="legalNotice.generalParagraph1">Este sitio web forma parte de LumoraEvents y tiene como objetivo facilitar información sobre eventos, competiciones, festivales y actividades relacionadas con la danza.</p>
-          <p data-i18n="legalNotice.generalParagraph2">Puedes contactar con LumoraEvents a través de los medios de contacto publicados en este sitio web.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="directory-content-title">
-          <h2 id="directory-content-title" data-i18n="legalNotice.directoryTitle">Contenido del directorio</h2>
-          <p data-i18n="legalNotice.directoryParagraph1">La información publicada en este directorio se obtiene principalmente de fuentes públicas, incluyendo páginas web oficiales, redes sociales y otros canales públicos utilizados por los propios eventos u organizaciones.</p>
-          <p data-i18n="legalNotice.directoryParagraph2">LumoraEvents intenta mantener la información actualizada y correcta, pero no garantiza que todos los datos publicados sean completos, exactos o estén permanentemente actualizados.</p>
-          <p data-i18n="legalNotice.directoryParagraph3">Las fechas, ubicaciones, enlaces, precios y demás información relativa a los eventos deben confirmarse siempre en los canales oficiales del propio evento.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="information-updates-title">
-          <h2 id="information-updates-title" data-i18n="legalNotice.updatesTitle">Actualización o retirada de información</h2>
-          <p data-i18n="legalNotice.updatesParagraph">Los responsables de un evento pueden solicitar la corrección, actualización o retirada de información publicada en el directorio contactando con LumoraEvents.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="external-links-title">
-          <h2 id="external-links-title" data-i18n="legalNotice.externalLinksTitle">Enlaces externos</h2>
-          <p data-i18n="legalNotice.externalLinksParagraph1">Este sitio contiene enlaces a páginas web y perfiles de terceros.</p>
-          <p data-i18n="legalNotice.externalLinksParagraph2">LumoraEvents no es responsable del contenido, disponibilidad, seguridad o políticas de privacidad de dichos sitios externos.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="intellectual-property-title">
-          <h2 id="intellectual-property-title" data-i18n="legalNotice.intellectualPropertyTitle">Propiedad intelectual</h2>
-          <p data-i18n="legalNotice.intellectualPropertyParagraph1">El diseño, estructura y desarrollo de este sitio web pertenecen a LumoraEvents.</p>
-          <p data-i18n="legalNotice.intellectualPropertyParagraph2">Las marcas, logotipos, carteles, fotografías y demás contenidos pertenecientes a eventos u organizaciones mantienen la titularidad de sus respectivos propietarios y se utilizan únicamente con finalidad informativa.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="liability-title">
-          <h2 id="liability-title" data-i18n="legalNotice.liabilityTitle">Responsabilidad</h2>
-          <p data-i18n="legalNotice.liabilityParagraph">LumoraEvents no organiza necesariamente los eventos incluidos en este directorio y no se responsabiliza de cambios, cancelaciones, incidencias, pagos, inscripciones o cualquier otra circunstancia relacionada con ellos.</p>
-        </section>
-
-        <p class="mt-10 border-t border-clove/10 pt-6 text-xs font-semibold text-stone-500" data-i18n="legalNotice.updatedAt">
-          Última actualización: agosto de 2026.
-        </p>
-      </div>
+      <p class="mt-4 text-sm leading-7 text-stone-700" data-i18n="legalPage.loadingText">
+        Estamos preparando el contenido de esta página.
+      </p>
     </article>
   </main>
 
@@ -207,6 +171,7 @@
   </footer>
 
   <script defer src="./js/i18n.js"></script>
+  <script defer src="./js/legal-content-loader.js"></script>
   <script defer src="./js/legal.js"></script>
 </body>
 </html>

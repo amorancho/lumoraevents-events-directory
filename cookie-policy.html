@@ -112,45 +112,19 @@
   </header>
 
   <main class="flex-1 px-4 pb-20 sm:px-6 lg:px-8">
-    <article class="legal-card mx-auto max-w-4xl p-6 sm:p-8 lg:p-10" aria-labelledby="cookies-title">
-      <h1
-        id="cookies-title"
-        class="font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl"
-        data-i18n="cookiePolicy.title"
-      >
-        Política de cookies
+    <article
+      id="legal-content"
+      class="legal-card mx-auto max-w-4xl p-6 sm:p-8 lg:p-10"
+      aria-labelledby="legal-title"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <h1 id="legal-title" class="font-display text-3xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-4xl" data-i18n="legalPage.loadingTitle">
+        Cargando información legal
       </h1>
-
-      <div class="mt-8 border-t border-clove/10">
-        <section class="legal-section" aria-labelledby="cookie-use-title">
-          <h2 id="cookie-use-title" data-i18n="cookiePolicy.useTitle">Uso de cookies</h2>
-          <p data-i18n="cookiePolicy.useParagraph1">Bellydance Directory no utiliza actualmente cookies publicitarias ni cookies destinadas a realizar seguimiento personalizado de los visitantes.</p>
-          <p data-i18n="cookiePolicy.useParagraph2">Para obtener estadísticas básicas y agregadas sobre el uso del sitio utilizamos Counter.dev.</p>
-          <p data-i18n="cookiePolicy.useParagraph3">Counter.dev se utiliza como herramienta de analítica sencilla y respetuosa con la privacidad, sin utilizarla para crear perfiles publicitarios de los visitantes.</p>
-          <p data-i18n="cookiePolicy.useParagraph4">Por este motivo, actualmente no mostramos un banner de aceptación de cookies no esenciales.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="analytics-title">
-          <h2 id="analytics-title" data-i18n="cookiePolicy.analyticsTitle">Analítica</h2>
-          <p data-i18n="cookiePolicy.analyticsParagraph1">Las estadísticas obtenidas mediante Counter.dev se utilizan para conocer de forma general el uso del directorio y mejorar su funcionamiento y contenido.</p>
-          <p data-i18n="cookiePolicy.analyticsParagraph2">No utilizamos Google Analytics, Meta Pixel ni herramientas de publicidad comportamental.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="third-party-services-title">
-          <h2 id="third-party-services-title" data-i18n="cookiePolicy.thirdPartyTitle">Servicios de terceros</h2>
-          <p data-i18n="cookiePolicy.thirdPartyParagraph1">Algunos enlaces pueden dirigir al usuario a servicios externos, como Instagram o las páginas oficiales de los eventos.</p>
-          <p data-i18n="cookiePolicy.thirdPartyParagraph2">Estos sitios tienen sus propias políticas de privacidad y cookies y LumoraEvents no controla las tecnologías utilizadas por ellos una vez que el usuario abandona este sitio web.</p>
-        </section>
-
-        <section class="legal-section" aria-labelledby="policy-changes-title">
-          <h2 id="policy-changes-title" data-i18n="cookiePolicy.changesTitle">Cambios en esta política</h2>
-          <p data-i18n="cookiePolicy.changesParagraph">Si en el futuro incorporamos herramientas de analítica, publicidad u otras tecnologías que requieran consentimiento, esta política y el sistema de consentimiento del sitio serán actualizados cuando corresponda.</p>
-        </section>
-
-        <p class="mt-10 border-t border-clove/10 pt-6 text-xs font-semibold text-stone-500" data-i18n="cookiePolicy.updatedAt">
-          Última actualización: agosto de 2026.
-        </p>
-      </div>
+      <p class="mt-4 text-sm leading-7 text-stone-700" data-i18n="legalPage.loadingText">
+        Estamos preparando el contenido de esta página.
+      </p>
     </article>
   </main>
 
@@ -197,6 +171,7 @@
   </footer>
 
   <script defer src="./js/i18n.js"></script>
+  <script defer src="./js/legal-content-loader.js"></script>
   <script defer src="./js/legal.js"></script>
 </body>
 </html>

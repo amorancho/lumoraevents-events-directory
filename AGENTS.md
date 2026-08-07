@@ -19,8 +19,10 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 - `index.html` + `js/index.js`: vista de listado y estados de carga, error, vacío y paginación.
 - `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI.
 - `event.html` + `js/event.js`: vista detalle conectada a la API, con estados de carga, error y 404.
-- `legal-notice.html`, `privacy-policy.html` y `cookie-policy.html` + `js/legal.js`: páginas legales estáticas con contenido y metadatos localizados.
-- `js/i18n.js`: textos ES/EN, formato de fechas, países ISO y tipos de evento.
+- `legal-notice.html`, `privacy-policy.html` y `cookie-policy.html` + `js/legal.js`: shells estáticos de las páginas legales y renderizado compartido del documento activo.
+- `js/legal-content-loader.js`: carga bajo demanda únicamente el documento legal y el idioma activos; usa `import()` en HTTP/HTTPS y carga de script dinámica como fallback en `file:`.
+- `js/content/legal/*.js`: seis recursos independientes, uno por documento (`legal`, `privacy`, `cookies`) e idioma (`es`, `en`).
+- `js/i18n.js`: textos cortos de UI ES/EN, formato de fechas, países ISO y tipos de evento; no contiene el cuerpo de los documentos legales.
 
 No introducir herramientas de build sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
 
@@ -116,6 +118,7 @@ Parámetros opcionales confirmados:
 
 - Idiomas de interfaz: español (`es-ES`) e inglés (`en-GB`).
 - La preferencia se guarda en `localStorage` con la clave `lumoraevents-language`.
+- Las páginas legales reaccionan al mismo cambio de idioma y cargan el recurso específico del documento activo; los recursos legales no se importan desde `index.html`, `event.html` ni `js/i18n.js`.
 - Las fechas de la API son ISO con hora UTC. La UI extrae el componente `YYYY-MM-DD` para evitar cambios de día por zona horaria.
 
 ## Analítica y cookies
