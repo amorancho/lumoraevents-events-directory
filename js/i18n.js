@@ -26,6 +26,9 @@
   var eventTypeNames = {
     es: {
       FESTIVAL: "Festival",
+      GALA: "Gala",
+      WORKSHOPS: "Talleres",
+      MASTERCLASSES: "Clases magistrales",
       WORKSHOP: "Taller",
       CONGRESS: "Congreso",
       SUMMIT: "Cumbre",
@@ -36,6 +39,9 @@
     },
     en: {
       FESTIVAL: "Festival",
+      GALA: "Gala",
+      WORKSHOPS: "Workshops",
+      MASTERCLASSES: "Masterclasses",
       WORKSHOP: "Workshop",
       CONGRESS: "Congress",
       SUMMIT: "Summit",

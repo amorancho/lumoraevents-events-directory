@@ -1,7 +1,7 @@
 (function () {
   var LOCAL_API_BASE_URL = "http://127.0.0.1:3000";
   var PRODUCTION_API_BASE_URL = "https://api.lumoraevents.net";
-  var POSTER_THUMBNAIL_TRANSFORMATION = "c_limit,w_160,h_220,q_auto:eco,f_auto";
+  var POSTER_THUMBNAIL_TRANSFORMATION = "c_limit,w_200,h_275,q_auto:eco,f_auto";
 
   function getApiBaseUrl() {
     if (window.LUMORA_EVENTS_API_BASE_URL) {
@@ -117,6 +117,7 @@
       city: String(eventItem.city || ""),
       countryCode: String(eventItem.country_code || "").toUpperCase(),
       type: String(eventItem.event_type || ""),
+      types: normalizeEventTypes(eventItem.event_type),
       isLumoraEvent: eventItem.is_lumora_event === true,
       posterUrl: normalizeHttpUrl(eventItem.poster_url),
       month: getMonthNumber(startDate)
@@ -214,6 +215,22 @@
     return url.toString();
   }
 
+  function normalizeEventTypes(value) {
+    var sourceValues = Array.isArray(value) ? value : [value];
+
+    return sourceValues.reduce(function (eventTypes, sourceValue) {
+      String(sourceValue == null ? "" : sourceValue).split(",").forEach(function (item) {
+        var normalizedType = item.trim().toUpperCase();
+
+        if (normalizedType && eventTypes.indexOf(normalizedType) === -1) {
+          eventTypes.push(normalizedType);
+        }
+      });
+
+      return eventTypes;
+    }, []);
+  }
+
   function normalizeEmail(value) {
     var email = String(value || "").trim();
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "";
@@ -253,6 +270,7 @@
     getApiBaseUrl: getApiBaseUrl,
     getDirectoryEvents: getDirectoryEvents,
     getDirectoryEvent: getDirectoryEvent,
-    getPosterThumbnailUrl: getPosterThumbnailUrl
+    getPosterThumbnailUrl: getPosterThumbnailUrl,
+    normalizeEventTypes: normalizeEventTypes
   };
 })();

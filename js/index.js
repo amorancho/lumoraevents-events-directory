@@ -314,7 +314,7 @@
     elements.resultsCount.textContent = i18nApi.t("index.loadingCount");
     elements.resultsList.setAttribute("aria-busy", "true");
     elements.resultsList.innerHTML = [
-      '<article class="rounded-[1.6rem] border border-clove/10 bg-white/70 px-5 py-8 text-center shadow-sm">',
+      '<article class="results-state-card rounded-[1.6rem] border border-clove/10 bg-white/70 px-5 py-8 text-center shadow-sm">',
       '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t("index.loadingTitle")) + "</h3>",
       '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t("index.loadingText")) + "</p>",
       "</article>"
@@ -327,7 +327,7 @@
     elements.resultsCount.textContent = i18nApi.t("index.unavailableCount");
     elements.resultsList.setAttribute("aria-busy", "false");
     elements.resultsList.innerHTML = [
-      '<article class="rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
+      '<article class="results-state-card rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
       '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t("index.errorTitle")) + "</h3>",
       '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t("index.errorText")) + "</p>",
       '<button type="button" data-retry class="mt-5 inline-flex rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">' + escapeHtml(i18nApi.t("index.retryAction")) + "</button>",
@@ -346,7 +346,7 @@
     if (!state.events.length) {
       var hasFilters = hasActiveSearchFilters();
       elements.resultsList.innerHTML = [
-        '<article class="rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
+        '<article class="results-state-card rounded-[1.6rem] border border-dashed border-clove/20 bg-white/70 px-5 py-8 text-center shadow-sm">',
         '<h3 class="font-display text-3xl text-ink">' + escapeHtml(i18nApi.t(hasFilters ? "index.emptyFilteredTitle" : "index.emptyTitle")) + "</h3>",
         '<p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-stone-700">' + escapeHtml(i18nApi.t(hasFilters ? "index.emptyFilteredText" : "index.emptyText")) + "</p>",
         "</article>"
@@ -364,40 +364,74 @@
   }
 
   function buildEventRow(eventItem, language) {
-    var eventType = i18nApi.getEventTypeName(eventItem.type, language);
     var countryName = i18nApi.getCountryName(eventItem.countryCode, language);
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
-    var monthLabel = capitalize(i18nApi.getMonthName(eventItem.month, language));
     var locationLabel = [eventItem.city, countryName].filter(Boolean).join(", ");
     var detailUrl = buildDetailUrl(eventItem.id);
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
       buildPosterLink(eventItem, detailUrl),
-      '<div class="event-row-main">',
-      '<div class="flex flex-wrap items-center gap-2">',
-      '<span class="tag-chip">' + escapeHtml(eventType) + "</span>",
-      '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
-      buildManagedBadge(eventItem),
-      "</div>",
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 break-words font-display text-xl font-semibold leading-tight tracking-[-0.025em] text-ink sm:text-2xl">',
-      '<a href="' + escapeHtml(detailUrl) + '" class="rounded-sm transition hover:text-clove focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(eventItem.name) + "</a>",
-      "</h3>",
-      "</div>",
-      '<div class="event-row-dates text-sm leading-6 text-stone-700">',
-      '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.dates")) + "</p>",
-      '<p class="mt-1">' + escapeHtml(dateLabel) + "</p>",
-      "</div>",
-      '<div class="event-row-location text-sm leading-6 text-stone-700">',
-      '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
-      '<p class="mt-1">' + escapeHtml(locationLabel) + "</p>",
-      "</div>",
-      '<div class="event-row-actions flex flex-wrap items-center gap-2 lg:flex-col lg:items-end lg:justify-center lg:justify-self-end">',
+      '<div class="event-card-content">',
+      '<header class="event-card-header">',
+      '<div class="event-type-badges">' + buildEventTypeBadges(eventItem.types || eventItem.type, language) + "</div>",
       favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
-      '<a href="' + escapeHtml(detailUrl) + '" class="inline-flex items-center justify-center rounded-full bg-clove px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(i18nApi.t("index.viewDetails")) + "</a>",
+      "</header>",
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 min-w-0 font-display text-xl font-semibold leading-tight tracking-[-0.025em] text-ink">',
+      '<a href="' + escapeHtml(detailUrl) + '" class="event-card-title-link rounded-sm transition hover:text-clove focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(eventItem.name) + "</a>",
+      "</h3>",
+      buildEventMetadata(dateLabel, locationLabel),
+      '<footer class="event-card-footer">',
+      buildManagedBadge(eventItem),
+      '<a href="' + escapeHtml(detailUrl) + '" class="event-card-detail-link">',
+      '<span>' + escapeHtml(i18nApi.t("index.viewDetails")) + "</span>",
+      '<span class="event-card-detail-arrow" aria-hidden="true">→</span>',
+      "</a>",
+      "</footer>",
       "</div>",
       "</article>"
     ].join("");
+  }
+
+  function buildEventTypeBadges(value, language) {
+    return api.normalizeEventTypes(value).map(function (eventType) {
+      var modifier = ["FESTIVAL", "GALA", "WORKSHOPS", "MASTERCLASSES"].indexOf(eventType) === -1
+        ? "default"
+        : eventType.toLowerCase();
+      var label = i18nApi.getEventTypeName(eventType, language);
+
+      return '<span class="event-type-badge event-type-badge--' + modifier + '">' + escapeHtml(label) + "</span>";
+    }).join("");
+  }
+
+  function buildEventMetadata(dateLabel, locationLabel) {
+    var rows = [];
+
+    if (dateLabel) {
+      rows.push([
+        '<p class="event-card-meta-row">',
+        '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="event-card-meta-icon">',
+        '<rect x="3.5" y="5.5" width="17" height="15" rx="2.5"></rect>',
+        '<path stroke-linecap="round" d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17"></path>',
+        "</svg>",
+        '<span class="min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.dates")) + ': </span>' + escapeHtml(dateLabel) + "</span>",
+        "</p>"
+      ].join(""));
+    }
+
+    if (locationLabel) {
+      rows.push([
+        '<p class="event-card-meta-row">',
+        '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="event-card-meta-icon">',
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M19 10c0 4.8-7 11-7 11S5 14.8 5 10a7 7 0 1 1 14 0Z"></path>',
+        '<circle cx="12" cy="10" r="2.25"></circle>',
+        "</svg>",
+        '<span class="min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.locationLabel")) + ': </span>' + escapeHtml(locationLabel) + "</span>",
+        "</p>"
+      ].join(""));
+    }
+
+    return rows.length ? '<div class="event-card-meta">' + rows.join("") + "</div>" : "";
   }
 
   function buildPosterLink(eventItem, detailUrl) {
@@ -405,13 +439,13 @@
     var posterContent = thumbnailUrl
       ? [
         '<img src="' + escapeHtml(thumbnailUrl) + '" alt="' + escapeHtml(eventItem.name) + '"',
-        ' loading="lazy" decoding="async" fetchpriority="low" width="160" height="220"',
-        ' class="h-full w-full object-contain" data-event-poster-thumbnail>'
+        ' loading="lazy" decoding="async" fetchpriority="low" width="200" height="275"',
+        ' class="event-poster-image" data-event-poster-thumbnail>'
       ].join("")
       : buildPosterPlaceholder();
 
     return [
-      '<a href="' + escapeHtml(detailUrl) + '" class="event-row-poster block rounded-xl transition hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20"',
+      '<a href="' + escapeHtml(detailUrl) + '" class="event-card-poster block rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20"',
       ' aria-label="' + escapeHtml(i18nApi.t("index.posterLinkLabel", { name: eventItem.name })) + '">',
       '<span class="event-poster-frame" data-event-poster-frame>',
       posterContent,
@@ -631,10 +665,6 @@
     } else {
       url.searchParams.delete(name);
     }
-  }
-
-  function capitalize(value) {
-    return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
   }
 
   function escapeHtml(value) {

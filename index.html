@@ -201,69 +201,135 @@
       }
 
       .premium-row {
-        @apply grid gap-x-4 gap-y-3 rounded-[1.4rem] border border-clove/10 bg-white px-4 py-4 transition duration-200 hover:-translate-y-0.5 hover:border-clove/20 hover:shadow-soft sm:px-5 sm:py-5;
-        grid-template-columns: 4.5rem minmax(0, 1fr);
-        grid-template-areas:
-          "poster main"
-          "poster dates"
-          "poster location"
-          "poster actions";
-        align-items: start;
+        @apply grid h-full gap-4 rounded-[1.4rem] border border-clove/10 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-clove/20 hover:shadow-soft sm:p-5;
+        grid-template-columns: 5.25rem minmax(0, 1fr);
+        align-items: stretch;
       }
 
-      .event-row-poster {
-        grid-area: poster;
-        width: 4.5rem;
-        height: 6.1875rem;
+      .results-state-card {
+        grid-column: 1 / -1;
       }
 
-      .event-row-main {
-        grid-area: main;
-        min-width: 0;
-      }
-
-      .event-row-dates {
-        grid-area: dates;
-        min-width: 0;
-        overflow-wrap: anywhere;
-      }
-
-      .event-row-location {
-        grid-area: location;
-        min-width: 0;
-        overflow-wrap: anywhere;
-      }
-
-      .event-row-actions {
-        grid-area: actions;
-        min-width: 0;
+      .event-card-poster {
+        width: 5.25rem;
+        height: 7.25rem;
       }
 
       .event-poster-frame {
-        @apply flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-clove/15 bg-[#f7f9f6] shadow-sm;
+        @apply flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-clove/15 bg-[#f7f9f6] shadow-sm transition;
+      }
+
+      .event-poster-image {
+        @apply h-full w-full object-contain transition-transform duration-200;
+      }
+
+      .event-card-poster:hover .event-poster-frame {
+        @apply border-clove/25 shadow-soft;
+      }
+
+      .event-card-poster:hover .event-poster-image {
+        transform: scale(1.025);
+      }
+
+      .event-card-content {
+        @apply flex h-full flex-col;
+        min-width: 0;
+      }
+
+      .event-card-header {
+        @apply flex items-start gap-2;
+        min-width: 0;
+      }
+
+      .event-type-badges {
+        @apply flex flex-1 flex-wrap gap-1.5;
+        min-width: 0;
+      }
+
+      .event-type-badge {
+        @apply inline-flex max-w-full items-center rounded-full border px-2.5 py-1 text-[0.67rem] font-bold uppercase leading-none;
+      }
+
+      .event-type-badge--festival {
+        border-color: rgba(36, 96, 69, 0.20);
+        background-color: #eaf5ef;
+        color: #246045;
+      }
+
+      .event-type-badge--gala {
+        border-color: rgba(115, 87, 131, 0.20);
+        background-color: #f3edf8;
+        color: #735783;
+      }
+
+      .event-type-badge--workshops {
+        border-color: rgba(128, 96, 26, 0.22);
+        background-color: #fff4db;
+        color: #80601a;
+      }
+
+      .event-type-badge--masterclasses {
+        border-color: rgba(53, 98, 124, 0.20);
+        background-color: #eaf2f8;
+        color: #35627c;
+      }
+
+      .event-type-badge--default {
+        @apply border-clove/15 bg-clove/5 text-clove;
+      }
+
+      .event-card-title-link {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+      }
+
+      .event-card-meta {
+        @apply mt-4 grid gap-2.5;
+      }
+
+      .event-card-meta-row {
+        @apply flex items-start gap-2 text-sm leading-6 text-stone-700;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .event-card-meta-icon {
+        @apply mt-0.5 h-4 w-4 shrink-0 text-clove;
+      }
+
+      .event-card-footer {
+        @apply mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-clove/10 pt-3;
+      }
+
+      .event-card-detail-link {
+        @apply ml-auto inline-flex items-center gap-1 rounded-sm text-sm font-bold text-clove underline decoration-gold/70 underline-offset-4 transition hover:text-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20;
+      }
+
+      .event-card-detail-arrow {
+        @apply transition-transform duration-200;
+      }
+
+      .event-card-detail-link:hover .event-card-detail-arrow {
+        transform: translateX(0.2rem);
       }
 
       @media (min-width: 1024px) {
         .premium-row {
+          grid-template-columns: 6.25rem minmax(0, 1fr);
           column-gap: 1.25rem;
-          row-gap: 0;
-          grid-template-columns: 5rem minmax(0, 2.2fr) minmax(8.5rem, 1.2fr) minmax(7.5rem, 1fr) auto;
-          grid-template-areas: "poster main dates location actions";
-          align-items: center;
         }
 
-        .event-row-poster {
-          width: 5rem;
-          height: 6.875rem;
+        .event-card-poster {
+          width: 6.25rem;
+          height: 8.625rem;
         }
-      }
-
-      .tag-chip {
-        @apply inline-flex items-center rounded-full border border-clove/10 bg-clove/5 px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-clove;
       }
 
       .lumora-managed-chip {
-        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove;
+        @apply inline-flex max-w-full items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-2.5 py-1 text-[0.64rem] font-bold uppercase leading-tight tracking-[0.1em] text-clove;
       }
 
       .favorite-button {
@@ -473,7 +539,7 @@
           </div>
         </div>
 
-        <div id="results-list" class="mt-7 grid gap-5 sm:gap-6" aria-live="polite"></div>
+        <div id="results-list" class="mt-7 grid items-stretch gap-5 sm:gap-6 lg:grid-cols-2" aria-live="polite"></div>
         <nav
           id="pagination"
           class="mt-6 hidden flex flex-wrap items-center justify-center gap-2 border-t border-clove/10 pt-6"

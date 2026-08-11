@@ -58,9 +58,9 @@ El índice solo consume estos campos de cada evento:
 - `end_date`
 - `city`
 - `country_code`: ISO 3166-1 alfa-2; se presenta en ES/EN con `Intl.DisplayNames` y el código como fallback.
-- `event_type`: enum de API; se traduce en `js/i18n.js` y tiene fallback legible para valores nuevos.
+- `event_type`: uno o varios valores separados por comas; el índice los normaliza, elimina duplicados y presenta cada tipo en una insignia independiente. Los valores previstos son `FESTIVAL`, `GALA`, `WORKSHOPS` y `MASTERCLASSES`.
 - `is_lumora_event`: booleano; si es `true`, la fila muestra una insignia dorada localizada que indica que LumoraEvents gestiona el evento.
-- `poster_url`: URL HTTP/HTTPS opcional del cartel. El listado solicita una variante fija de 160 × 220 píxeles cuando procede de Cloudinary y muestra un placeholder local si falta o falla.
+- `poster_url`: URL HTTP/HTTPS opcional del cartel. El listado solicita una variante fija de 200 × 275 píxeles cuando procede de Cloudinary y muestra un placeholder local si falta o falla.
 
 No acoplar el índice al resto de propiedades devueltas por la API.
 
@@ -82,11 +82,11 @@ Parámetros opcionales confirmados:
 - Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 10 se mantienen implícitos para conservar una URL limpia.
 - Se muestran rango y total usando los metadatos del backend.
 - Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
-- Cada fila conserva tipo, mes derivado de `start_date`, nombre, ubicación y fechas.
-- Cada fila muestra a la izquierda una miniatura completa del cartel. Las URLs de Cloudinary usan la transformación `c_limit,w_160,h_220,q_auto:eco,f_auto`; las URLs externas válidas no se modifican y los valores ausentes, inválidos o fallidos muestran un placeholder SVG local.
+- El listado muestra una tarjeta por fila hasta `lg` y dos tarjetas de igual altura por fila desde 1024 px. Cada tarjeta presenta tipos, favorito, nombre, fecha, ubicación y un pie de acciones; no repite el mes fuera de la fecha completa.
+- Cada tarjeta muestra a la izquierda una miniatura completa del cartel. Las URLs de Cloudinary usan la transformación `c_limit,w_200,h_275,q_auto:eco,f_auto`; las URLs externas válidas no se modifican y los valores ausentes, inválidos o fallidos muestran un placeholder SVG local.
 - Tanto la miniatura como el nombre enlazan a la ficha del evento, sin convertir la tarjeta completa en un enlace para preservar sus controles internos.
-- Los eventos con `is_lumora_event: true` muestran junto al tipo y el mes la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
-- La ubicación solo aparece en su columna; no se repite debajo del nombre.
+- Los eventos con `is_lumora_event: true` muestran en el pie la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
+- Fecha y ubicación aparecen apiladas junto a iconos, sin labels visuales redundantes.
 - Los filtros no muestran labels visuales redundantes; conservan etiquetas ocultas para tecnologías de asistencia y el campo de nombre incluye una lupa.
 - Editar nombre, país o mes no lanza peticiones. Los valores se aplican únicamente al enviar el formulario con `Buscar`.
 - El selector de país contiene los 249 códigos ISO 3166-1 alfa-2, ordenados por su nombre localizado, pero envía el código mediante `country`.
