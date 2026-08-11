@@ -61,8 +61,138 @@
 
       .hero-shell {
         @apply relative overflow-hidden rounded-[1.8rem] border border-clove/10 text-ink;
-        background: linear-gradient(120deg, #fcfdfb 0%, #eef6ef 72%, #f2eff6 100%);
+        background: linear-gradient(120deg, #fcfdfb 0%, #eef6ef 64%, #f2eff6 100%);
         box-shadow: var(--shadow-hero);
+      }
+
+      .hero-glow {
+        position: absolute;
+        z-index: 0;
+        right: -2rem;
+        top: -10rem;
+        width: 42rem;
+        height: 42rem;
+        border-radius: 9999px;
+        background: radial-gradient(
+          circle,
+          rgba(130, 201, 90, 0.30) 0%,
+          rgba(36, 95, 71, 0.14) 36%,
+          rgba(217, 206, 230, 0.11) 57%,
+          rgba(36, 95, 71, 0) 74%
+        );
+        pointer-events: none;
+      }
+
+      /*
+       * The source image is square and contains a lot of transparent space
+       * on both sides. This frame crops that empty area via CSS, letting the
+       * dancer appear much larger without making the hero taller. The image
+       * is anchored at the top and enlarged so its lower area is cropped.
+       */
+      .hero-dancer-frame {
+        position: absolute;
+        z-index: 2;
+        top: -0.35rem;
+        right: 13rem;
+        width: 24rem;
+        height: 28rem;
+        overflow: hidden;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .hero-dancer {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        height: 124%;
+        width: auto;
+        max-width: none;
+        transform: translateX(-50%);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 10;
+        margin-top: 1.35rem;
+        max-width: 33rem;
+        padding-bottom: 0.2rem;
+      }
+
+      .hero-title {
+        max-width: 33rem;
+        font-size: clamp(2.65rem, 4.5vw, 3.75rem);
+        font-weight: 800;
+        line-height: 0.96;
+        letter-spacing: -0.055em;
+        text-wrap: balance;
+      }
+
+      .hero-subtitle {
+        margin-top: 0.85rem;
+        max-width: 28rem;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      @media (max-width: 767px) {
+        .hero-glow {
+          right: -13rem;
+          top: -7rem;
+          width: 32rem;
+          height: 32rem;
+          opacity: 0.9;
+        }
+
+        .hero-dancer-frame {
+          top: 4.2rem;
+          right: -4.75rem;
+          width: 18rem;
+          height: 22rem;
+          opacity: 0.13;
+        }
+
+        .hero-copy {
+          margin-top: 1.25rem;
+          max-width: none;
+        }
+
+        .hero-title {
+          max-width: 31rem;
+          font-size: clamp(2.35rem, 11vw, 3.1rem);
+          line-height: 0.98;
+        }
+
+        .hero-subtitle {
+          max-width: 31rem;
+          font-size: 0.925rem;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1023px) {
+        .hero-dancer-frame {
+          top: 1rem;
+          right: -1.5rem;
+          width: 21rem;
+          height: 24rem;
+          opacity: 0.58;
+        }
+
+        .hero-copy {
+          max-width: 58%;
+        }
+
+        .hero-title {
+          font-size: clamp(2.8rem, 6vw, 3.45rem);
+        }
+      }
+
+      @media (min-width: 1024px) and (max-width: 1180px) {
+        .hero-dancer-frame {
+          right: 9.5rem;
+        }
       }
 
       .search-shell {
@@ -113,7 +243,20 @@
 <body class="flex min-h-screen flex-col overflow-x-clip">
   <header class="px-4 pb-10 pt-4 sm:px-6 lg:px-8">
     <div class="hero-shell mx-auto max-w-6xl px-6 py-5 sm:px-8 sm:py-6 lg:px-10">
-      <div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-dancer-frame" aria-hidden="true">
+        <img
+          src="./assets/bellydancer-header.webp"
+          alt=""
+          width="420"
+          height="560"
+          class="hero-dancer"
+          decoding="async"
+          fetchpriority="high"
+        >
+      </div>
+
+      <div class="relative z-20">
         <div class="flex flex-wrap items-center justify-between gap-5">
           <a
             href="./index.html"
@@ -130,7 +273,7 @@
           </a>
 
           <nav
-            class="flex items-center gap-2 rounded-full border border-clove/10 bg-white/85 p-1.5 shadow-sm backdrop-blur"
+            class="relative z-30 flex items-center gap-2 rounded-full border border-clove/10 bg-white/85 p-1.5 shadow-sm backdrop-blur"
             aria-label="Language switcher"
             data-language-switcher
           >
@@ -139,15 +282,15 @@
           </nav>
         </div>
 
-        <div class="mt-6 w-full pb-1 sm:mt-7">
+        <div class="hero-copy">
           <h1
-            class="w-full font-display text-4xl font-extrabold leading-[1.04] tracking-[-0.045em] text-ink sm:text-5xl"
+            class="hero-title font-display text-ink"
             data-i18n="index.heroTitle"
           >
             Directorio de eventos de Bellydance
           </h1>
           <p
-            class="mt-3 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base"
+            class="hero-subtitle text-stone-600"
             data-i18n="index.heroSubtitle"
           >
             Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.
