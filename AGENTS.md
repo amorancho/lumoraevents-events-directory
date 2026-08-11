@@ -88,6 +88,7 @@ Parámetros opcionales confirmados:
 - El selector de país contiene los 249 códigos ISO 3166-1 alfa-2, ordenados por su nombre localizado, pero envía el código mediante `country`.
 - El selector de mes se construye en el navegador desde el mes actual e incluye 12 meses consecutivos. Muestra `mes YYYY` y envía `YYYY-MM`.
 - Pulsar `Buscar` aplica nombre, país y mes y vuelve a la página 1. Pulsar `Limpiar` restaura esos tres filtros y consulta de nuevo la página 1 sin modificar el tamaño de página seleccionado.
+- Inmediatamente bajo el buscador aparece una invitación secundaria para organizadores con un enlace `mailto:` a `info@lumoraevents.net`, localizada en ES/EN.
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
 - Cada fila permite marcar o desmarcar el evento como favorito mediante un corazón accesible.
