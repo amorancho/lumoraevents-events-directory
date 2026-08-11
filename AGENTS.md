@@ -60,6 +60,7 @@ El índice solo consume estos campos de cada evento:
 - `country_code`: ISO 3166-1 alfa-2; se presenta en ES/EN con `Intl.DisplayNames` y el código como fallback.
 - `event_type`: enum de API; se traduce en `js/i18n.js` y tiene fallback legible para valores nuevos.
 - `is_lumora_event`: booleano; si es `true`, la fila muestra una insignia dorada localizada que indica que LumoraEvents gestiona el evento.
+- `poster_url`: URL HTTP/HTTPS opcional del cartel. El listado solicita una variante fija de 160 × 220 píxeles cuando procede de Cloudinary y muestra un placeholder local si falta o falla.
 
 No acoplar el índice al resto de propiedades devueltas por la API.
 
@@ -82,6 +83,8 @@ Parámetros opcionales confirmados:
 - Se muestran rango y total usando los metadatos del backend.
 - Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
 - Cada fila conserva tipo, mes derivado de `start_date`, nombre, ubicación y fechas.
+- Cada fila muestra a la izquierda una miniatura completa del cartel. Las URLs de Cloudinary usan la transformación `c_limit,w_160,h_220,q_auto:eco,f_auto`; las URLs externas válidas no se modifican y los valores ausentes, inválidos o fallidos muestran un placeholder SVG local.
+- Tanto la miniatura como el nombre enlazan a la ficha del evento, sin convertir la tarjeta completa en un enlace para preservar sus controles internos.
 - Los eventos con `is_lumora_event: true` muestran junto al tipo y el mes la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
 - La ubicación solo aparece en su columna; no se repite debajo del nombre.
 - Los filtros no muestran labels visuales redundantes; conservan etiquetas ocultas para tecnologías de asistencia y el campo de nombre incluye una lupa.
@@ -146,7 +149,7 @@ Parámetros opcionales confirmados:
 - El listado está conectado al endpoint real.
 - La ficha detalle está conectada al endpoint público por ID.
 - El listado permite filtrar por nombre, país y mes, y escoger 10, 20 o 30 resultados por página.
-- Verificación del 2026-08-03: local respondió correctamente; producción devolvió HTTP 403 desde el entorno de desarrollo. Verificar despliegue, reglas de acceso y CORS antes de publicar el dominio.
+- Verificación del 2026-08-12: local y producción respondieron correctamente desde el entorno de desarrollo, pero el listado todavía no devuelve `poster_url`. El backend debe incluir únicamente ese campo en la respuesta pública para activar los carteles reales; mientras tanto la interfaz muestra el placeholder.
 - Confirmar el dominio web definitivo y actualizar canonical/SEO cuando se conozca.
 
 ## Criterios para cambios futuros

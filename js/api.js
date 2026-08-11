@@ -1,6 +1,7 @@
 (function () {
   var LOCAL_API_BASE_URL = "http://127.0.0.1:3000";
   var PRODUCTION_API_BASE_URL = "https://api.lumoraevents.net";
+  var POSTER_THUMBNAIL_TRANSFORMATION = "c_limit,w_160,h_220,q_auto:eco,f_auto";
 
   function getApiBaseUrl() {
     if (window.LUMORA_EVENTS_API_BASE_URL) {
@@ -117,6 +118,7 @@
       countryCode: String(eventItem.country_code || "").toUpperCase(),
       type: String(eventItem.event_type || ""),
       isLumoraEvent: eventItem.is_lumora_event === true,
+      posterUrl: normalizeHttpUrl(eventItem.poster_url),
       month: getMonthNumber(startDate)
     };
   }
@@ -183,6 +185,35 @@
     }
   }
 
+  function getPosterThumbnailUrl(posterUrl) {
+    var sourceUrl = String(posterUrl || "").trim();
+
+    if (!normalizeHttpUrl(sourceUrl)) {
+      return "";
+    }
+
+    var url = new URL(sourceUrl);
+    var uploadPath = "/image/upload/";
+    var uploadIndex = url.pathname.indexOf(uploadPath);
+
+    if (url.hostname.toLowerCase() !== "res.cloudinary.com" || uploadIndex === -1) {
+      return sourceUrl;
+    }
+
+    var transformationStart = uploadIndex + uploadPath.length;
+    var remainingPath = url.pathname.slice(transformationStart);
+    var pathSegments = remainingPath.split("/");
+
+    if (pathSegments.indexOf(POSTER_THUMBNAIL_TRANSFORMATION) !== -1) {
+      return sourceUrl;
+    }
+
+    url.pathname = url.pathname.slice(0, transformationStart) +
+      POSTER_THUMBNAIL_TRANSFORMATION + "/" + remainingPath;
+
+    return url.toString();
+  }
+
   function normalizeEmail(value) {
     var email = String(value || "").trim();
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "";
@@ -221,6 +252,7 @@
   window.LumoraEventsApi = {
     getApiBaseUrl: getApiBaseUrl,
     getDirectoryEvents: getDirectoryEvents,
-    getDirectoryEvent: getDirectoryEvent
+    getDirectoryEvent: getDirectoryEvent,
+    getPosterThumbnailUrl: getPosterThumbnailUrl
   };
 })();

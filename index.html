@@ -201,7 +201,61 @@
       }
 
       .premium-row {
-        @apply grid gap-x-6 gap-y-4 rounded-[1.4rem] border border-clove/10 bg-white px-5 py-5 transition duration-200 hover:-translate-y-0.5 hover:border-clove/20 hover:shadow-soft sm:px-6 sm:py-6 md:grid-cols-[minmax(0,2.2fr)_1.2fr_1fr_auto] md:items-center;
+        @apply grid gap-x-4 gap-y-3 rounded-[1.4rem] border border-clove/10 bg-white px-4 py-4 transition duration-200 hover:-translate-y-0.5 hover:border-clove/20 hover:shadow-soft sm:px-5 sm:py-5;
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        grid-template-areas:
+          "poster main"
+          "poster dates"
+          "poster location"
+          "poster actions";
+        align-items: start;
+      }
+
+      .event-row-poster {
+        grid-area: poster;
+        width: 4.5rem;
+        height: 6.1875rem;
+      }
+
+      .event-row-main {
+        grid-area: main;
+        min-width: 0;
+      }
+
+      .event-row-dates {
+        grid-area: dates;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .event-row-location {
+        grid-area: location;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .event-row-actions {
+        grid-area: actions;
+        min-width: 0;
+      }
+
+      .event-poster-frame {
+        @apply flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-clove/15 bg-[#f7f9f6] shadow-sm;
+      }
+
+      @media (min-width: 1024px) {
+        .premium-row {
+          column-gap: 1.25rem;
+          row-gap: 0;
+          grid-template-columns: 5rem minmax(0, 2.2fr) minmax(8.5rem, 1.2fr) minmax(7.5rem, 1fr) auto;
+          grid-template-areas: "poster main dates location actions";
+          align-items: center;
+        }
+
+        .event-row-poster {
+          width: 5rem;
+          height: 6.875rem;
+        }
       }
 
       .tag-chip {

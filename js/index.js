@@ -120,6 +120,20 @@
       }
     });
 
+    elements.resultsList.addEventListener("error", function (event) {
+      var image = event.target;
+
+      if (!image.matches || !image.matches("[data-event-poster-thumbnail]")) {
+        return;
+      }
+
+      var posterFrame = image.closest("[data-event-poster-frame]");
+
+      if (posterFrame) {
+        posterFrame.innerHTML = buildPosterPlaceholder();
+      }
+    }, true);
+
     elements.pagination.addEventListener("click", function (event) {
       var pageButton = event.target.closest("[data-page]");
 
@@ -359,29 +373,60 @@
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
-      '<div class="flex items-start justify-between gap-4 md:col-span-4">',
+      buildPosterLink(eventItem, detailUrl),
+      '<div class="event-row-main">',
       '<div class="flex flex-wrap items-center gap-2">',
       '<span class="tag-chip">' + escapeHtml(eventType) + "</span>",
       '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
       buildManagedBadge(eventItem),
       "</div>",
-      favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 break-words font-display text-xl font-semibold leading-tight tracking-[-0.025em] text-ink sm:text-2xl">',
+      '<a href="' + escapeHtml(detailUrl) + '" class="rounded-sm transition hover:text-clove focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(eventItem.name) + "</a>",
+      "</h3>",
       "</div>",
-      '<div class="min-w-0">',
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">' + escapeHtml(eventItem.name) + "</h3>",
-      "</div>",
-      '<div class="text-sm leading-6 text-stone-700">',
-      '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
-      '<p class="mt-1">' + escapeHtml(locationLabel) + "</p>",
-      "</div>",
-      '<div class="text-sm leading-6 text-stone-700">',
+      '<div class="event-row-dates text-sm leading-6 text-stone-700">',
       '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.dates")) + "</p>",
       '<p class="mt-1">' + escapeHtml(dateLabel) + "</p>",
       "</div>",
-      '<div class="md:justify-self-end">',
-      '<a href="' + detailUrl + '" class="inline-flex w-full items-center justify-center rounded-full bg-clove px-4 py-3 text-sm font-semibold text-white transition hover:bg-ink md:w-auto">' + escapeHtml(i18nApi.t("index.viewDetails")) + "</a>",
+      '<div class="event-row-location text-sm leading-6 text-stone-700">',
+      '<p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(i18nApi.t("common.locationLabel")) + "</p>",
+      '<p class="mt-1">' + escapeHtml(locationLabel) + "</p>",
+      "</div>",
+      '<div class="event-row-actions flex flex-wrap items-center gap-2 lg:flex-col lg:items-end lg:justify-center lg:justify-self-end">',
+      favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
+      '<a href="' + escapeHtml(detailUrl) + '" class="inline-flex items-center justify-center rounded-full bg-clove px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(i18nApi.t("index.viewDetails")) + "</a>",
       "</div>",
       "</article>"
+    ].join("");
+  }
+
+  function buildPosterLink(eventItem, detailUrl) {
+    var thumbnailUrl = api.getPosterThumbnailUrl(eventItem.posterUrl);
+    var posterContent = thumbnailUrl
+      ? [
+        '<img src="' + escapeHtml(thumbnailUrl) + '" alt="' + escapeHtml(eventItem.name) + '"',
+        ' loading="lazy" decoding="async" fetchpriority="low" width="160" height="220"',
+        ' class="h-full w-full object-contain" data-event-poster-thumbnail>'
+      ].join("")
+      : buildPosterPlaceholder();
+
+    return [
+      '<a href="' + escapeHtml(detailUrl) + '" class="event-row-poster block rounded-xl transition hover:-translate-y-0.5 hover:shadow-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20"',
+      ' aria-label="' + escapeHtml(i18nApi.t("index.posterLinkLabel", { name: eventItem.name })) + '">',
+      '<span class="event-poster-frame" data-event-poster-frame>',
+      posterContent,
+      "</span>",
+      "</a>"
+    ].join("");
+  }
+
+  function buildPosterPlaceholder() {
+    return [
+      '<svg aria-hidden="true" focusable="false" viewBox="0 0 48 48" fill="none" class="h-8 w-8 text-clove/45">',
+      '<rect x="9" y="11" width="30" height="28" rx="5" stroke="currentColor" stroke-width="2" />',
+      '<path d="M16 8v7M32 8v7M10 20h28" stroke="currentColor" stroke-width="2" stroke-linecap="round" />',
+      '<path d="m17 33 5-5 4 4 3-3 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />',
+      "</svg>"
     ].join("");
   }
 
