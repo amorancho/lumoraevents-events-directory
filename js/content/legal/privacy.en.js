@@ -19,6 +19,13 @@
         ]
       },
       {
+        title: "Preferences stored in the browser",
+        paragraphs: [
+          "The selected language and the identifiers of events marked as favorites are saved in local storage on the user's device and browser.",
+          "The favorites feature does not send these preferences to LumoraEvents. Users can remove them by clearing the website data in their browser settings."
+        ]
+      },
+      {
         title: "Website analytics",
         paragraphs: [
           "We use Counter.dev to obtain basic and aggregated statistics about website usage, such as visits and pages viewed.",

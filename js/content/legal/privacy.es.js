@@ -19,6 +19,13 @@
         ]
       },
       {
+        title: "Preferencias guardadas en el navegador",
+        paragraphs: [
+          "El idioma seleccionado y los identificadores de los eventos marcados como favoritos se guardan en el almacenamiento local del dispositivo y navegador del usuario.",
+          "La funcionalidad de favoritos no envía estas preferencias a LumoraEvents. El usuario puede eliminarlas borrando los datos del sitio desde la configuración del navegador."
+        ]
+      },
+      {
         title: "Analítica del sitio web",
         paragraphs: [
           "Utilizamos Counter.dev para obtener estadísticas básicas y agregadas sobre el uso del sitio web, como visitas y páginas consultadas.",

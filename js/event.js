@@ -1,6 +1,7 @@
 (function () {
   var api = window.LumoraEventsApi;
   var i18nApi = window.LumoraEventsI18n;
+  var favoritesApi = window.LumoraEventsFavorites;
 
   if (!api || !i18nApi) {
     return;
@@ -32,6 +33,9 @@
 
     i18nApi.initPage();
     bindEvents();
+    if (favoritesApi) {
+      favoritesApi.onChange(syncFavoriteButton);
+    }
     state.eventId = getEventIdFromUrl();
     state.returnUrl = getReturnUrlFromSession();
     applyBackToListUrls();
@@ -48,6 +52,18 @@
 
   function bindEvents() {
     elements.eventView.addEventListener("click", function (event) {
+      var favoriteButton = event.target.closest("[data-favorite-event-id]");
+
+      if (favoriteButton && favoritesApi) {
+        var result = favoritesApi.toggle(favoriteButton.getAttribute("data-favorite-event-id"));
+
+        if (result.isFirstFavorite) {
+          favoritesApi.showStorageNotice();
+        }
+
+        return;
+      }
+
       if (event.target.closest("[data-retry-event]")) {
         loadEvent();
       }
@@ -187,7 +203,10 @@
       '<div class="p-6 sm:p-8 lg:p-10">',
       '<div class="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(250px,320px)] lg:gap-10">',
       '<div class="min-w-0">',
-      '<h1 class="font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">' + escapeHtml(eventItem.name) + "</h1>",
+      '<div class="flex items-start justify-between gap-4">',
+      '<h1 class="min-w-0 font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">' + escapeHtml(eventItem.name) + "</h1>",
+      favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
+      "</div>",
       '<div class="mt-5 flex flex-wrap items-center gap-2">',
       '<span class="detail-pill">' + escapeHtml(eventType) + "</span>",
       buildManagedPill(eventItem),
@@ -323,6 +342,21 @@
       '<span>' + escapeHtml(i18nApi.t("event.managedByLumora")) + "</span>",
       "</span>"
     ].join("");
+  }
+
+  function getFavoriteLabels() {
+    return {
+      add: i18nApi.t("favorites.add"),
+      remove: i18nApi.t("favorites.remove")
+    };
+  }
+
+  function syncFavoriteButton() {
+    if (!favoritesApi) {
+      return;
+    }
+
+    favoritesApi.syncButtons(elements.eventView, getFavoriteLabels());
   }
 
   function buildDescriptionSection(description) {

@@ -1,6 +1,7 @@
 (function () {
   var api = window.LumoraEventsApi;
   var i18nApi = window.LumoraEventsI18n;
+  var favoritesApi = window.LumoraEventsFavorites;
 
   if (!api || !i18nApi) {
     return;
@@ -50,6 +51,9 @@
     state.filters = getFiltersFromUrl();
     saveCurrentListUrl();
     bindEvents();
+    if (favoritesApi) {
+      favoritesApi.onChange(syncFavoriteButtons);
+    }
     renderPageMeta();
     renderFilterOptions();
     loadEvents(getPageFromUrl());
@@ -80,6 +84,18 @@
     });
 
     elements.resultsList.addEventListener("click", function (event) {
+      var favoriteButton = event.target.closest("[data-favorite-event-id]");
+
+      if (favoriteButton && favoritesApi) {
+        var result = favoritesApi.toggle(favoriteButton.getAttribute("data-favorite-event-id"));
+
+        if (result.isFirstFavorite) {
+          favoritesApi.showStorageNotice();
+        }
+
+        return;
+      }
+
       var retryButton = event.target.closest("[data-retry]");
 
       if (retryButton) {
@@ -314,10 +330,13 @@
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
-      '<div class="flex flex-wrap items-center gap-2 md:col-span-4">',
+      '<div class="flex items-start justify-between gap-4 md:col-span-4">',
+      '<div class="flex flex-wrap items-center gap-2">',
       '<span class="tag-chip">' + escapeHtml(eventType) + "</span>",
       '<span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">' + escapeHtml(monthLabel) + "</span>",
       buildManagedBadge(eventItem),
+      "</div>",
+      favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
       "</div>",
       '<div class="min-w-0">',
       '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="font-display text-2xl font-semibold leading-tight tracking-[-0.025em] text-ink">' + escapeHtml(eventItem.name) + "</h3>",
@@ -351,6 +370,21 @@
       '<span>' + escapeHtml(i18nApi.t("index.managedByLumora")) + "</span>",
       "</span>"
     ].join("");
+  }
+
+  function getFavoriteLabels() {
+    return {
+      add: i18nApi.t("favorites.add"),
+      remove: i18nApi.t("favorites.remove")
+    };
+  }
+
+  function syncFavoriteButtons() {
+    if (!favoritesApi) {
+      return;
+    }
+
+    favoritesApi.syncButtons(elements.resultsList, getFavoriteLabels());
   }
 
   function buildDetailUrl(eventId) {

@@ -1,7 +1,7 @@
 (function () {
   window.LumoraEventsLegalContent.register("cookiePolicy", "es", {
     pageTitle: "Política de cookies | Bellydance Directory | LumoraEvents",
-    metaDescription: "Consulta la política de cookies y el uso de Counter.dev en Bellydance Directory.",
+    metaDescription: "Consulta la política de cookies, el almacenamiento local y el uso de Counter.dev en Bellydance Directory.",
     title: "Política de cookies",
     sections: [
       {
@@ -11,6 +11,13 @@
           "Para obtener estadísticas básicas y agregadas sobre el uso del sitio utilizamos Counter.dev.",
           "Counter.dev se utiliza como herramienta de analítica sencilla y respetuosa con la privacidad, sin utilizarla para crear perfiles publicitarios de los visitantes.",
           "Por este motivo, actualmente no mostramos un banner de aceptación de cookies no esenciales."
+        ]
+      },
+      {
+        title: "Almacenamiento local",
+        paragraphs: [
+          "El sitio utiliza el almacenamiento local del navegador (localStorage) para recordar el idioma seleccionado y los identificadores de los eventos que el usuario marca como favoritos.",
+          "Estas preferencias permanecen únicamente en ese dispositivo y navegador, no se utilizan para seguimiento publicitario y pueden eliminarse borrando los datos del sitio desde la configuración del navegador."
         ]
       },
       {

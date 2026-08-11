@@ -126,6 +126,11 @@
         backToList: "Volver al listado",
         locationLabel: "Ubicación"
       },
+      favorites: {
+        add: "Añadir a favoritos",
+        remove: "Quitar de favoritos",
+        storageNotice: "Tus favoritos se guardan en este dispositivo y navegador."
+      },
       legalPage: {
         loadingTitle: "Cargando información legal",
         loadingText: "Estamos preparando el contenido de esta página.",
@@ -220,6 +225,11 @@
         contactEmail: "Contact email",
         backToList: "Back to listing",
         locationLabel: "Location"
+      },
+      favorites: {
+        add: "Add to favorites",
+        remove: "Remove from favorites",
+        storageNotice: "Your favorites are stored on this device and browser."
       },
       legalPage: {
         loadingTitle: "Loading legal information",

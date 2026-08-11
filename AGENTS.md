@@ -23,6 +23,7 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 - `js/legal-content-loader.js`: carga bajo demanda únicamente el documento legal y el idioma activos; usa `import()` en HTTP/HTTPS y carga de script dinámica como fallback en `file:`.
 - `js/content/legal/*.js`: seis recursos independientes, uno por documento (`legal`, `privacy`, `cookies`) e idioma (`es`, `en`).
 - `js/i18n.js`: textos cortos de UI ES/EN, formato de fechas, países ISO y tipos de evento; no contiene el cuerpo de los documentos legales.
+- `js/favorites.js`: persistencia compartida de favoritos, estado accesible de los corazones y sincronización entre pestañas.
 
 No introducir herramientas de build sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
 
@@ -88,6 +89,7 @@ Parámetros opcionales confirmados:
 - Pulsar `Buscar` aplica todos los campos y vuelve a la página 1. Pulsar `Limpiar` restaura los valores iniciales y consulta de nuevo la página 1.
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
+- Cada fila permite marcar o desmarcar el evento como favorito mediante un corazón accesible.
 
 ## Comportamiento del detalle
 
@@ -101,10 +103,19 @@ Parámetros opcionales confirmados:
 - Si `is_lumora_event` es `true`, junto al tipo se reutiliza exactamente la insignia verde con destellos del listado.
 - Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.
 - `contact_email` es el destinatario preferente; si falta se usa `info@lumoraevents.net`.
+- La ficha permite marcar o desmarcar el mismo favorito que el listado.
+
+## Favoritos
+
+- Los favoritos se identifican únicamente mediante el `id` estable del evento y se guardan en `localStorage` bajo la clave `lumoraevents-favorite-event-ids`.
+- El estado se comparte entre el listado y la ficha, y se sincroniza entre pestañas del mismo navegador mediante el evento `storage`.
+- Al añadir un favorito cuando todavía no había ninguno se muestra durante unos segundos un aviso sutil y localizado indicando que los favoritos pertenecen a ese dispositivo y navegador.
+- Los botones de corazón exponen una etiqueta localizada y su estado mediante `aria-pressed`.
 
 ## Sistema visual actual
 
 - Dirección contemporánea basada en el verde del logo: canvas mineral `#f3f6f2`, tinta verde oscuro `#122019`, verde principal `#245f47`, verde lima `#82c95a` y lavanda `#76658d` como acento secundario.
+- Los favoritos activos utilizan frambuesa `#d13f68` como acento semántico puntual para que el corazón seleccionado sea inequívoco.
 - Toda la interfaz utiliza Manrope. Los títulos son sans serif, compactos y con peso alto; no usar tipografía editorial serif.
 - El hero es luminoso, compacto y funcional, con una transición verde/lavanda muy suave. No añadir retículas, rayas, círculos, cuadrados, rombos, ilustraciones geométricas ni otros adornos visuales.
 - Logo oficial: `https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png` (289 × 47 px).
