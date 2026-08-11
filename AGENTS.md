@@ -83,6 +83,7 @@ Parámetros opcionales confirmados:
 - Se muestran rango y total usando los metadatos del backend.
 - Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
 - El listado muestra una tarjeta por fila hasta `lg` y dos tarjetas de igual altura por fila desde 1024 px. Cada tarjeta presenta tipos, favorito, nombre, fecha, ubicación y un pie de acciones; no repite el mes fuera de la fecha completa.
+- Por debajo de 1024 px, el cartel acompaña únicamente al nombre, la fecha y la ubicación; los tipos y el pie ocupan después todo el ancho interior, y el favorito permanece en la esquina superior derecha. Desde `lg` se conserva la composición de escritorio con los tipos sobre el nombre y el pie en la columna de contenido.
 - Cada tarjeta muestra a la izquierda una miniatura completa del cartel. Las URLs de Cloudinary usan la transformación `c_limit,w_200,h_275,q_auto:eco,f_auto`; las URLs externas válidas no se modifican y los valores ausentes, inválidos o fallidos muestran un placeholder SVG local.
 - Tanto la miniatura como el nombre enlazan a la ficha del evento, sin convertir la tarjeta completa en un enlace para preservar sus controles internos.
 - Los eventos con `is_lumora_event: true` muestran en el pie la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.

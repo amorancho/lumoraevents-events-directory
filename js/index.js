@@ -368,19 +368,17 @@
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var locationLabel = [eventItem.city, countryName].filter(Boolean).join(", ");
     var detailUrl = buildDetailUrl(eventItem.id);
+    var eventTypeBadges = buildEventTypeBadges(eventItem.types || eventItem.type, language);
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
       buildPosterLink(eventItem, detailUrl),
-      '<div class="event-card-content">',
-      '<header class="event-card-header">',
-      '<div class="event-type-badges">' + buildEventTypeBadges(eventItem.types || eventItem.type, language) + "</div>",
-      favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
-      "</header>",
-      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="mt-3 min-w-0 font-display text-xl font-semibold leading-tight tracking-[-0.025em] text-ink">',
+      '<h3 id="event-' + escapeHtml(eventItem.id) + '" class="event-card-title font-display text-xl font-semibold leading-tight tracking-[-0.025em] text-ink">',
       '<a href="' + escapeHtml(detailUrl) + '" class="event-card-title-link rounded-sm transition hover:text-clove focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20">' + escapeHtml(eventItem.name) + "</a>",
       "</h3>",
+      favoritesApi ? '<div class="event-card-favorite">' + favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) + "</div>" : "",
       buildEventMetadata(dateLabel, locationLabel),
+      '<div class="event-card-types">' + eventTypeBadges + "</div>",
       '<footer class="event-card-footer">',
       buildManagedBadge(eventItem),
       '<a href="' + escapeHtml(detailUrl) + '" class="event-card-detail-link">',
@@ -388,7 +386,6 @@
       '<span class="event-card-detail-arrow" aria-hidden="true">→</span>',
       "</a>",
       "</footer>",
-      "</div>",
       "</article>"
     ].join("");
   }
@@ -409,24 +406,24 @@
 
     if (dateLabel) {
       rows.push([
-        '<p class="event-card-meta-row">',
+        '<p class="event-card-meta-row event-card-meta-row--date">',
         '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="event-card-meta-icon">',
         '<rect x="3.5" y="5.5" width="17" height="15" rx="2.5"></rect>',
         '<path stroke-linecap="round" d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17"></path>',
         "</svg>",
-        '<span class="min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.dates")) + ': </span>' + escapeHtml(dateLabel) + "</span>",
+        '<span class="event-card-meta-text min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.dates")) + ': </span>' + escapeHtml(dateLabel) + "</span>",
         "</p>"
       ].join(""));
     }
 
     if (locationLabel) {
       rows.push([
-        '<p class="event-card-meta-row">',
+        '<p class="event-card-meta-row event-card-meta-row--location">',
         '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="event-card-meta-icon">',
         '<path stroke-linecap="round" stroke-linejoin="round" d="M19 10c0 4.8-7 11-7 11S5 14.8 5 10a7 7 0 1 1 14 0Z"></path>',
         '<circle cx="12" cy="10" r="2.25"></circle>',
         "</svg>",
-        '<span class="min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.locationLabel")) + ': </span>' + escapeHtml(locationLabel) + "</span>",
+        '<span class="event-card-meta-text min-w-0"><span class="sr-only">' + escapeHtml(i18nApi.t("common.locationLabel")) + ': </span>' + escapeHtml(locationLabel) + "</span>",
         "</p>"
       ].join(""));
     }
