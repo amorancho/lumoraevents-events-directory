@@ -155,15 +155,12 @@
     }
 
     updateUrl(page, false);
-    loadEvents(page);
-    document.getElementById("results-heading").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    loadEvents(page, true);
   }
 
-  function loadEvents(page) {
+  function loadEvents(page, shouldScrollToResults) {
     var requestedPage = Number.isInteger(Number(page)) && Number(page) > 0 ? Number(page) : 1;
+    var scrollAfterLoad = Boolean(shouldScrollToResults);
 
     if (activeRequest) {
       activeRequest.abort();
@@ -185,7 +182,7 @@
     }).then(function (result) {
       if (result.pagination.totalPages > 0 && requestedPage > result.pagination.totalPages) {
         updateUrl(result.pagination.totalPages, true);
-        loadEvents(result.pagination.totalPages);
+        loadEvents(result.pagination.totalPages, scrollAfterLoad);
         return;
       }
 
@@ -196,6 +193,7 @@
       updateUrl(state.pagination.page, true);
       renderResults();
       renderPagination();
+      scrollToResultsAfterRender(scrollAfterLoad);
     }).catch(function (error) {
       if (error.name === "AbortError") {
         return;
@@ -205,6 +203,20 @@
       state.isLoading = false;
       state.hasError = true;
       renderErrorState();
+      scrollToResultsAfterRender(scrollAfterLoad);
+    });
+  }
+
+  function scrollToResultsAfterRender(shouldScroll) {
+    if (!shouldScroll) {
+      return;
+    }
+
+    window.requestAnimationFrame(function () {
+      document.getElementById("results-heading").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     });
   }
 

@@ -80,6 +80,7 @@ Parámetros opcionales confirmados:
 - Paginación solicitada al servidor con 10, 20 o 30 elementos por página; la opción inicial es 10. El selector se sitúa junto al contador de resultados, fuera del formulario de filtros, y aplica el cambio inmediatamente volviendo a la página 1.
 - Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 10 se mantienen implícitos para conservar una URL limpia.
 - Se muestran rango y total usando los metadatos del backend.
+- Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
 - Cada fila conserva tipo, mes derivado de `start_date`, nombre, ubicación y fechas.
 - Los eventos con `is_lumora_event: true` muestran junto al tipo y el mes la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
 - La ubicación solo aparece en su columna; no se repite debajo del nombre.
