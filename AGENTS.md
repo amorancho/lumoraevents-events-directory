@@ -74,12 +74,12 @@ Parámetros opcionales confirmados:
 | `country` | ISO de 2 letras | Coincidencia exacta; la API normaliza a mayúsculas. |
 | `month` | `YYYY-MM` | Incluye eventos que se solapen con el mes indicado. |
 | `page` | Entero positivo | Valor por defecto de API: 1. |
-| `page_size` | Entero entre 1 y 100 | Valor por defecto de API: 12; la interfaz siempre envía 10, 20 o 30. |
+| `page_size` | Entero entre 1 y 100 | Valor por defecto de API: 12; la interfaz siempre envía 20, 40 o 60. |
 
 ## Comportamiento del índice
 
-- Paginación solicitada al servidor con 10, 20 o 30 elementos por página; la opción inicial es 10. El selector se sitúa junto al contador de resultados, fuera del formulario de filtros, y aplica el cambio inmediatamente volviendo a la página 1.
-- Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 10 se mantienen implícitos para conservar una URL limpia.
+- Paginación solicitada al servidor con 20, 40 o 60 elementos por página; la opción inicial es 20. El selector se sitúa junto al contador de resultados, fuera del formulario de filtros, y aplica el cambio inmediatamente volviendo a la página 1.
+- Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 20 se mantienen implícitos para conservar una URL limpia.
 - Se muestran rango y total usando los metadatos del backend.
 - Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
 - El listado muestra una tarjeta por fila hasta `lg` y dos tarjetas de igual altura por fila desde 1024 px. Cada tarjeta presenta tipos, favorito, nombre, fecha, ubicación y un pie de acciones; no repite el mes fuera de la fecha completa.
@@ -149,7 +149,7 @@ Parámetros opcionales confirmados:
 
 - El listado está conectado al endpoint real.
 - La ficha detalle está conectada al endpoint público por ID.
-- El listado permite filtrar por nombre, país y mes, y escoger 10, 20 o 30 resultados por página.
+- El listado permite filtrar por nombre, país y mes, y escoger 20, 40 o 60 resultados por página.
 - Verificación del 2026-08-12: local y producción respondieron correctamente desde el entorno de desarrollo, pero el listado todavía no devuelve `poster_url`. El backend debe incluir únicamente ese campo en la respuesta pública para activar los carteles reales; mientras tanto la interfaz muestra el placeholder.
 - Confirmar el dominio web definitivo y actualizar canonical/SEO cuando se conozca.
 
@@ -158,5 +158,5 @@ Parámetros opcionales confirmados:
 - Mantener el contrato externo encapsulado en `js/api.js`.
 - Escapar cualquier dato de API antes de insertarlo mediante `innerHTML`.
 - Añadir textos de interfaz en ambos idiomas.
-- Probar como mínimo carga, error, vacío, cambio de idioma, cada filtro, filtros combinados, tamaños 10/20/30, navegación de páginas y restauración desde la query string.
+- Probar como mínimo carga, error, vacío, cambio de idioma, cada filtro, filtros combinados, tamaños 20/40/60, navegación de páginas y restauración desde la query string.
 - Actualizar este archivo en el mismo cambio cuando una decisión deje de ser válida.

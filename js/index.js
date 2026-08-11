@@ -7,8 +7,8 @@
     return;
   }
 
-  var DEFAULT_PAGE_SIZE = 10;
-  var PAGE_SIZE_OPTIONS = [10, 20, 30];
+  var DEFAULT_PAGE_SIZE = 20;
+  var PAGE_SIZE_OPTIONS = [20, 40, 60];
   var RETURN_URL_STORAGE_KEY = "lumoraevents-directory-return-url";
   var elements = {};
   var state = {
