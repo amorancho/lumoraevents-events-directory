@@ -76,9 +76,26 @@
         name: "",
         country: "",
         month: "",
-        pageSize: DEFAULT_PAGE_SIZE
+        pageSize: state.filters.pageSize
       };
       renderFilterOptions();
+      updateUrl(1, false);
+      loadEvents(1);
+    });
+
+    elements.pageSizeSelect.addEventListener("change", function () {
+      var pageSize = Number(elements.pageSizeSelect.value);
+
+      if (PAGE_SIZE_OPTIONS.indexOf(pageSize) === -1) {
+        pageSize = DEFAULT_PAGE_SIZE;
+        elements.pageSizeSelect.value = String(pageSize);
+      }
+
+      if (pageSize === state.filters.pageSize) {
+        return;
+      }
+
+      state.filters.pageSize = pageSize;
       updateUrl(1, false);
       loadEvents(1);
     });

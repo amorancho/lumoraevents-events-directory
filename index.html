@@ -161,7 +161,7 @@
     <div class="search-shell mx-auto max-w-6xl">
       <h2
         id="filters-heading"
-        class="text-sm font-semibold uppercase tracking-[0.26em] text-clove/80"
+        class="sr-only"
         data-i18n="index.filtersTitle"
       >
         Buscar eventos
@@ -169,25 +169,31 @@
 
       <form
         id="filters-form"
-        class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
+        class="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
       >
         <label class="block">
-          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.nameLabel">
+          <span class="sr-only" data-i18n="index.nameLabel">
             Nombre
           </span>
-          <input
-            id="name-input"
-            type="search"
-            class="filter-field w-full"
-            data-i18n-placeholder="index.namePlaceholder"
-            placeholder="Nombre del evento"
-            maxlength="150"
-            autocomplete="off"
-          >
+          <span class="relative block">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="pointer-events-none absolute left-4 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-clove/55">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path stroke-linecap="round" d="m16 16 4 4"></path>
+            </svg>
+            <input
+              id="name-input"
+              type="search"
+              class="filter-field w-full pl-11"
+              data-i18n-placeholder="index.namePlaceholder"
+              placeholder="Nombre del evento"
+              maxlength="150"
+              autocomplete="off"
+            >
+          </span>
         </label>
 
         <label class="block">
-          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.countryLabel">
+          <span class="sr-only" data-i18n="index.countryLabel">
             País
           </span>
           <select id="country-select" class="filter-field w-full">
@@ -196,7 +202,7 @@
         </label>
 
         <label class="block">
-          <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-stone-600" data-i18n="index.monthLabel">
+          <span class="sr-only" data-i18n="index.monthLabel">
             Mes
           </span>
           <select id="month-select" class="filter-field w-full">
@@ -204,18 +210,7 @@
           </select>
         </label>
 
-        <label class="block">
-          <span class="mb-2 block whitespace-nowrap text-xs font-semibold uppercase tracking-[0.16em] text-stone-600" data-i18n="index.pageSizeLabel">
-            Eventos por página
-          </span>
-          <select id="page-size-select" class="filter-field w-full">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
-        </label>
-
-        <div class="flex items-end gap-2 md:col-span-2 xl:col-span-1">
+        <div class="flex items-center gap-2 md:col-span-2 xl:col-span-1">
           <button
             type="submit"
             class="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-clove px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-ink"
@@ -248,7 +243,20 @@
               Explora los próximos festivales, competiciones, congresos y encuentros publicados en LumoraEvents.
             </p>
           </div>
-          <p id="results-count" class="text-sm font-semibold text-clove">0 eventos</p>
+          <div class="flex flex-wrap items-center gap-4 md:justify-end">
+            <p id="results-count" class="text-sm font-semibold text-clove">0 eventos</p>
+            <label class="inline-flex items-center gap-2 text-xs font-semibold text-stone-600">
+              <span data-i18n="index.pageSizeShortLabel">Por página</span>
+              <select
+                id="page-size-select"
+                class="rounded-full border border-clove/15 bg-[#f7f9f6] px-3 py-2 text-sm font-semibold text-clove outline-none transition hover:border-clove/30 focus:border-clove focus:bg-white focus:ring-4 focus:ring-gold/15"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+            </label>
+          </div>
         </div>
 
         <div id="results-list" class="mt-7 grid gap-5 sm:gap-6" aria-live="polite"></div>

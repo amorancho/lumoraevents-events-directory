@@ -77,16 +77,17 @@ Parámetros opcionales confirmados:
 
 ## Comportamiento del índice
 
-- Paginación solicitada al servidor con 10, 20 o 30 elementos por página; la opción inicial es 10.
+- Paginación solicitada al servidor con 10, 20 o 30 elementos por página; la opción inicial es 10. El selector se sitúa junto al contador de resultados, fuera del formulario de filtros, y aplica el cambio inmediatamente volviendo a la página 1.
 - Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 10 se mantienen implícitos para conservar una URL limpia.
 - Se muestran rango y total usando los metadatos del backend.
 - Cada fila conserva tipo, mes derivado de `start_date`, nombre, ubicación y fechas.
 - Los eventos con `is_lumora_event: true` muestran junto al tipo y el mes la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
 - La ubicación solo aparece en su columna; no se repite debajo del nombre.
-- Editar nombre, país, mes o tamaño no lanza peticiones. Los valores se aplican únicamente al enviar el formulario con `Buscar`.
+- Los filtros no muestran labels visuales redundantes; conservan etiquetas ocultas para tecnologías de asistencia y el campo de nombre incluye una lupa.
+- Editar nombre, país o mes no lanza peticiones. Los valores se aplican únicamente al enviar el formulario con `Buscar`.
 - El selector de país contiene los 249 códigos ISO 3166-1 alfa-2, ordenados por su nombre localizado, pero envía el código mediante `country`.
 - El selector de mes se construye en el navegador desde el mes actual e incluye 12 meses consecutivos. Muestra `mes YYYY` y envía `YYYY-MM`.
-- Pulsar `Buscar` aplica todos los campos y vuelve a la página 1. Pulsar `Limpiar` restaura los valores iniciales y consulta de nuevo la página 1.
+- Pulsar `Buscar` aplica nombre, país y mes y vuelve a la página 1. Pulsar `Limpiar` restaura esos tres filtros y consulta de nuevo la página 1 sin modificar el tamaño de página seleccionado.
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
 - Cada fila permite marcar o desmarcar el evento como favorito mediante un corazón accesible.
