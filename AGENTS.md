@@ -93,7 +93,7 @@ Parámetros opcionales confirmados:
 - El selector de país contiene los 249 códigos ISO 3166-1 alfa-2, ordenados por su nombre localizado, pero envía el código mediante `country`.
 - El selector de mes se construye en el navegador desde el mes actual e incluye 12 meses consecutivos. Muestra `mes YYYY` y envía `YYYY-MM`.
 - Pulsar `Buscar` aplica nombre, país y mes y vuelve a la página 1. Pulsar `Limpiar` restaura esos tres filtros y consulta de nuevo la página 1 sin modificar el tamaño de página seleccionado.
-- Inmediatamente bajo el buscador aparece una invitación secundaria para organizadores con un enlace `mailto:` a `info@lumoraevents.net`, localizada en ES/EN.
+- Inmediatamente bajo el buscador aparece una invitación secundaria para organizadores con un enlace `mailto:` a `bellydance@lumoraevents.net`, localizada en ES/EN.
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
 - Cada fila permite marcar o desmarcar el evento como favorito mediante un corazón accesible.
@@ -109,7 +109,7 @@ Parámetros opcionales confirmados:
 - Cada artista o maestro se presenta como un elemento visual independiente dentro del panel de artistas, nunca como una cadena separada por comas. El contrato esperado para cada elemento es `Nombre (ISO-2)`; la UI elimina el código y muestra junto al nombre una bandera SVG de `https://flagcdn.com/<iso-en-minúsculas>.svg`. El nombre localizado del país se conserva como texto alternativo y `title`. Los valores que no cumplan el patrón se muestran completos como fallback.
 - Si `is_lumora_event` es `true`, junto al tipo se reutiliza exactamente la insignia verde con destellos del listado.
 - Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.
-- `contact_email` es el destinatario preferente; si falta se usa `info@lumoraevents.net`.
+- `contact_email` es el destinatario preferente; si falta se usa `bellydance@lumoraevents.net`.
 - La ficha permite marcar o desmarcar el mismo favorito que el listado.
 
 ## Favoritos
@@ -130,7 +130,7 @@ Parámetros opcionales confirmados:
 - El buscador está separado del hero, lo solapa visualmente y se mantiene flotante en la parte superior al hacer scroll desde `lg` para evitar ocupar demasiado espacio en pantallas pequeñas.
 - Controles compactos con fondos minerales, foco verde y radios moderados; botones primarios verde oscuro.
 - Las filas de evento son tarjetas blancas limpias, con bordes verdes muy suaves, separación vertical amplia y padding generoso.
-- Índice, detalle y páginas legales comparten el mismo sistema cromático y un footer verde oscuro con logo, `info@lumoraevents.net` y enlaces a privacidad, cookies y aviso legal.
+- Índice, detalle y páginas legales comparten el mismo sistema cromático y un footer verde oscuro con logo, `bellydance@lumoraevents.net` y enlaces a privacidad, cookies y aviso legal.
 
 ## Internacionalización y fechas
 

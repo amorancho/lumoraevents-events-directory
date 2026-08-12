@@ -7,7 +7,7 @@
     return;
   }
 
-  var FALLBACK_CONTACT_EMAIL = "info@lumoraevents.net";
+  var FALLBACK_CONTACT_EMAIL = "bellydance@lumoraevents.net";
   var RETURN_URL_STORAGE_KEY = "lumoraevents-directory-return-url";
   var elements = {};
   var state = {
