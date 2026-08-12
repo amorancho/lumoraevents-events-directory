@@ -58,7 +58,7 @@ El índice solo consume estos campos de cada evento:
 - `end_date`
 - `city`
 - `country_code`: ISO 3166-1 alfa-2; se presenta en ES/EN con `Intl.DisplayNames` y el código como fallback.
-- `event_type`: uno o varios valores separados por comas; el índice los normaliza, elimina duplicados y presenta cada tipo en una insignia independiente. Los valores previstos son `FESTIVAL`, `GALA`, `WORKSHOPS` y `MASTERCLASSES`.
+- `event_type`: uno o varios valores separados por comas; el índice y la ficha eliminan valores vacíos y duplicados, presentan cada tipo en una insignia independiente y conservan exactamente el texto y las mayúsculas/minúsculas enviados por la API. Los valores previstos son `FESTIVAL`, `GALA`, `WORKSHOPS` y `MASTERCLASSES`.
 - `is_lumora_event`: booleano; si es `true`, la fila muestra una insignia dorada localizada que indica que LumoraEvents gestiona el evento.
 - `poster_url`: URL HTTP/HTTPS opcional del cartel. El listado solicita una variante fija de 200 × 275 píxeles cuando procede de Cloudinary y muestra un placeholder local si falta o falla.
 

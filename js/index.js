@@ -368,7 +368,7 @@
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var locationLabel = [eventItem.city, countryName].filter(Boolean).join(", ");
     var detailUrl = buildDetailUrl(eventItem.id);
-    var eventTypeBadges = buildEventTypeBadges(eventItem.types || eventItem.type, language);
+    var eventTypeBadges = buildEventTypeBadges(eventItem.types || eventItem.type);
 
     return [
       '<article class="premium-row" aria-labelledby="event-' + escapeHtml(eventItem.id) + '">',
@@ -390,14 +390,9 @@
     ].join("");
   }
 
-  function buildEventTypeBadges(value, language) {
+  function buildEventTypeBadges(value) {
     return api.normalizeEventTypes(value).map(function (eventType) {
-      var modifier = ["FESTIVAL", "GALA", "WORKSHOPS", "MASTERCLASSES"].indexOf(eventType) === -1
-        ? "default"
-        : eventType.toLowerCase();
-      var label = i18nApi.getEventTypeName(eventType, language);
-
-      return '<span class="event-type-badge event-type-badge--' + modifier + '">' + escapeHtml(label) + "</span>";
+      return '<span class="event-type-badge">' + escapeHtml(eventType) + "</span>";
     }).join("");
   }
 

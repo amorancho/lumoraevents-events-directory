@@ -188,7 +188,7 @@
   function renderEventState() {
     var eventItem = state.currentEvent;
     var language = i18nApi.getCurrentLanguage();
-    var eventType = i18nApi.getEventTypeName(eventItem.type, language);
+    var eventTypeBadges = buildEventTypeBadges(eventItem.types || eventItem.type);
     var countryName = i18nApi.getCountryName(eventItem.countryCode, language);
     var dateLabel = i18nApi.formatDateRange(eventItem.startDate, eventItem.endDate, language);
     var visualPosterUrl = eventItem.posterUrl || buildPosterPlaceholder(eventItem.name, countryName);
@@ -208,7 +208,7 @@
       favoritesApi ? favoritesApi.buildButton(eventItem.id, getFavoriteLabels()) : "",
       "</div>",
       '<div class="mt-5 flex flex-wrap items-center gap-2">',
-      '<span class="detail-pill">' + escapeHtml(eventType) + "</span>",
+      '<div class="event-type-badges">' + eventTypeBadges + "</div>",
       buildManagedPill(eventItem),
       "</div>",
       '<div class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-3">',
@@ -294,6 +294,12 @@
       '<p class="min-w-0 text-sm font-semibold leading-6 text-stone-700"><span class="sr-only">' + escapeHtml(label) + ": </span>" + escapeHtml(value) + "</p>",
       "</div>"
     ].join("");
+  }
+
+  function buildEventTypeBadges(value) {
+    return api.normalizeEventTypes(value).map(function (eventType) {
+      return '<span class="event-type-badge">' + escapeHtml(eventType) + "</span>";
+    }).join("");
   }
 
   function buildStylesSection(styles) {

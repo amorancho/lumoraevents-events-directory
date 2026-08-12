@@ -220,7 +220,7 @@
 
     return sourceValues.reduce(function (eventTypes, sourceValue) {
       String(sourceValue == null ? "" : sourceValue).split(",").forEach(function (item) {
-        var normalizedType = item.trim().toUpperCase();
+        var normalizedType = item.trim();
 
         if (normalizedType && eventTypes.indexOf(normalizedType) === -1) {
           eventTypes.push(normalizedType);
