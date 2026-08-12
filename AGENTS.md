@@ -17,7 +17,7 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 ## Arquitectura actual
 
 - `index.html` + `js/index.js`: vista de listado y estados de carga, error, vacío y paginación.
-- `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI.
+- `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI, incluido el catálogo de países disponibles en el directorio.
 - `event.html` + `js/event.js`: vista detalle conectada a la API, con estados de carga, error y 404.
 - `legal-notice.html`, `privacy-policy.html` y `cookie-policy.html` + `js/legal.js`: shells estáticos de las páginas legales y renderizado compartido del documento activo.
 - `js/legal-content-loader.js`: carga bajo demanda únicamente el documento legal y el idioma activos; usa `import()` en HTTP/HTTPS y carga de script dinámica como fallback en `file:`.
@@ -32,6 +32,7 @@ No introducir herramientas de build sin una razón explícita. Mantener JavaScri
 - Local: `http://127.0.0.1:3000`
 - Producción: `https://api.lumoraevents.net`
 - Listado actual: `GET /public/directory-events`
+- Países disponibles en el listado: `GET /public/directory-events/countries`
 - Detalle actual: `GET /public/directory-events/<id>`
 
 `js/api.js` selecciona local si la web se abre desde `file:`, `localhost` o `127.0.0.1`; en cualquier otro host utiliza producción. Para pruebas puntuales se puede definir `window.LUMORA_EVENTS_API_BASE_URL` antes de cargar `api.js`.
@@ -49,6 +50,8 @@ Respuesta confirmada del listado:
   }
 }
 ```
+
+Respuesta confirmada de países: un array JSON directo de códigos ISO 3166-1 alfa-2, por ejemplo `["ES", "FR", "PT"]`. La interfaz solicita este recurso en paralelo al listado inicial para no bloquear la presentación de eventos; si falla, usa como respaldo el catálogo ISO incluido en `js/i18n.js`.
 
 El índice solo consume estos campos de cada evento:
 
@@ -90,7 +93,7 @@ Parámetros opcionales confirmados:
 - Fecha y ubicación aparecen apiladas junto a iconos, sin labels visuales redundantes.
 - Los filtros no muestran labels visuales redundantes; conservan etiquetas ocultas para tecnologías de asistencia y el campo de nombre incluye una lupa.
 - Editar nombre, país o mes no lanza peticiones. Los valores se aplican únicamente al enviar el formulario con `Buscar`.
-- El selector de país contiene los 249 códigos ISO 3166-1 alfa-2, ordenados por su nombre localizado, pero envía el código mediante `country`.
+- El selector de país contiene los códigos ISO 3166-1 alfa-2 devueltos por `GET /public/directory-events/countries`, ordenados por su nombre localizado, y envía el código mediante `country`. La petición se realiza en paralelo a la carga de eventos y no la bloquea. Ante un fallo del endpoint se usa como respaldo el catálogo ISO incluido en `js/i18n.js`.
 - El selector de mes se construye en el navegador desde el mes actual e incluye 12 meses consecutivos. Muestra `mes YYYY` y envía `YYYY-MM`.
 - Pulsar `Buscar` aplica nombre, país y mes y vuelve a la página 1. Pulsar `Limpiar` restaura esos tres filtros y consulta de nuevo la página 1 sin modificar el tamaño de página seleccionado.
 - Inmediatamente bajo el buscador aparece una invitación secundaria para organizadores con un enlace `mailto:` a `bellydance@lumoraevents.net`, localizada en ES/EN.

@@ -64,6 +64,38 @@
     });
   }
 
+  function getDirectoryEventCountries(options) {
+    var settings = options || {};
+    var url = new URL("/public/directory-events/countries", getApiBaseUrl());
+
+    return window.fetch(url.toString(), {
+      headers: {
+        Accept: "application/json"
+      },
+      signal: settings.signal
+    }).then(function (response) {
+      if (!response.ok) {
+        throw createRequestError("Directory event countries request failed", response.status);
+      }
+
+      return response.json();
+    }).then(function (payload) {
+      if (!Array.isArray(payload)) {
+        throw new Error("Directory event countries response has an invalid shape");
+      }
+
+      return payload.reduce(function (countryCodes, value) {
+        var countryCode = String(value || "").trim().toUpperCase();
+
+        if (/^[A-Z]{2}$/.test(countryCode) && countryCodes.indexOf(countryCode) === -1) {
+          countryCodes.push(countryCode);
+        }
+
+        return countryCodes;
+      }, []);
+    });
+  }
+
   function getDirectoryEvent(id, options) {
     var eventId = String(id || "").trim();
     var settings = options || {};
@@ -269,6 +301,7 @@
   window.LumoraEventsApi = {
     getApiBaseUrl: getApiBaseUrl,
     getDirectoryEvents: getDirectoryEvents,
+    getDirectoryEventCountries: getDirectoryEventCountries,
     getDirectoryEvent: getDirectoryEvent,
     getPosterThumbnailUrl: getPosterThumbnailUrl,
     normalizeEventTypes: normalizeEventTypes

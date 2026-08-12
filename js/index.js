@@ -13,6 +13,7 @@
   var elements = {};
   var state = {
     events: [],
+    countryCodes: [],
     filters: {
       name: "",
       country: "",
@@ -57,11 +58,26 @@
     renderPageMeta();
     renderFilterOptions();
     loadEvents(getPageFromUrl());
+    loadCountryOptions();
 
     i18nApi.onLanguageChange(function () {
       renderPageMeta();
       renderFilterOptions();
       renderCurrentState();
+    });
+  }
+
+  function loadCountryOptions() {
+    elements.countrySelect.setAttribute("aria-busy", "true");
+
+    api.getDirectoryEventCountries().then(function (countryCodes) {
+      state.countryCodes = countryCodes;
+      renderFilterOptions();
+    }).catch(function () {
+      state.countryCodes = i18nApi.getCountryCodes();
+      renderFilterOptions();
+    }).then(function () {
+      elements.countrySelect.removeAttribute("aria-busy");
     });
   }
 
@@ -259,12 +275,20 @@
 
   function renderFilterOptions() {
     var language = i18nApi.getCurrentLanguage();
+    var availableCountryCodes = state.countryCodes.slice();
     var countryOptions = [{
       value: "",
       label: i18nApi.t("index.allCountries")
     }];
 
-    i18nApi.getCountryCodes().map(function (countryCode) {
+    if (
+      state.filters.country &&
+      availableCountryCodes.indexOf(state.filters.country) === -1
+    ) {
+      availableCountryCodes.push(state.filters.country);
+    }
+
+    availableCountryCodes.map(function (countryCode) {
       return {
         value: countryCode,
         label: i18nApi.getCountryName(countryCode, language)
