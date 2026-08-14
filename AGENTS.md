@@ -142,7 +142,7 @@ Parámetros opcionales confirmados:
 - El buscador está separado del hero, lo solapa visualmente y se mantiene flotante en la parte superior al hacer scroll desde `lg` para evitar ocupar demasiado espacio en pantallas pequeñas.
 - Controles compactos con fondos minerales, foco verde y radios moderados; botones primarios verde oscuro.
 - Las filas de evento son tarjetas blancas limpias, con bordes verdes muy suaves, separación vertical amplia y padding generoso.
-- Índice, detalle y páginas legales comparten el mismo sistema cromático y un footer verde oscuro con logo, `bellydance@lumoraevents.net` y enlaces a privacidad, cookies y aviso legal.
+- Índice, detalle y páginas legales comparten el mismo sistema cromático y un footer verde oscuro con logo, `bellydance@lumoraevents.net` y enlaces a privacidad, cookies y aviso legal. Las dos portadas incluyen además en la columna de contacto el Instagram oficial `@lumoraevents.app`.
 
 ## Internacionalización y fechas
 
