@@ -293,8 +293,8 @@
       buildDetailIcon(iconName),
       "</span>",
       '<div class="min-w-0">',
-      '<p class="text-xs font-bold uppercase tracking-[0.18em] text-clove">' + escapeHtml(label) + "</p>",
-      '<p class="mt-1 min-w-0 text-sm font-semibold leading-6 text-stone-700">' + escapeHtml(value) + "</p>",
+      '<p class="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-clove/80">' + escapeHtml(label) + "</p>",
+      '<p class="mt-1 min-w-0 text-base font-semibold leading-6 text-stone-700">' + escapeHtml(value) + "</p>",
       "</div>",
       "</div>"
     ].join("");
@@ -320,9 +320,9 @@
       buildDetailIcon("organizer"),
       "</span>",
       '<div class="min-w-0">',
-      '<p class="text-xs font-bold uppercase tracking-[0.18em] text-clove">' + escapeHtml(label) + "</p>",
+      '<p class="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-clove/80">' + escapeHtml(label) + "</p>",
       '<div class="mt-1 flex min-w-0 items-center gap-1.5">',
-      '<p class="min-w-0 text-sm font-semibold leading-6 text-stone-700">' + escapeHtml(eventItem.organizerName) + "</p>",
+      '<p class="min-w-0 text-base font-semibold leading-6 text-stone-700">' + escapeHtml(eventItem.organizerName) + "</p>",
       instagramLink,
       "</div>",
       "</div>",
