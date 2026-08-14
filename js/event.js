@@ -309,7 +309,7 @@
     elements.ogTitle.setAttribute("content", i18nApi.t("event.notFoundTitle") + " | LumoraEvents");
     elements.ogDescription.setAttribute("content", i18nApi.t("event.fallbackDescription"));
     elements.ogLocale.setAttribute("content", i18nApi.getCurrentLanguage() === "es" ? "es_ES" : "en_GB");
-    elements.ogImage.setAttribute("content", "https://placehold.co/1200x630/eef4ef/245f47?text=LumoraEvents");
+    elements.ogImage.setAttribute("content", getDirectoryOgImageUrl());
     updateCanonical(null);
   }
 
@@ -329,7 +329,7 @@
     elements.ogLocale.setAttribute("content", language === "es" ? "es_ES" : "en_GB");
     elements.ogImage.setAttribute(
       "content",
-      eventItem.posterUrl || "https://placehold.co/1200x630/eef4ef/245f47?text=LumoraEvents"
+      eventItem.posterUrl || getDirectoryOgImageUrl()
     );
     updateCanonical(eventItem.id);
   }
@@ -638,6 +638,12 @@
       "href",
       eventId ? baseUrl + "?id=" + encodeURIComponent(eventId) : baseUrl
     );
+  }
+
+  function getDirectoryOgImageUrl() {
+    return i18nApi.getCurrentLanguage() === "es"
+      ? "https://bellydance.lumoraevents.net/assets/og-bellydance-directory-es.jpg"
+      : "https://bellydance.lumoraevents.net/assets/og-bellydance-directory-en.jpg";
   }
 
   function formatEnumLabel(value) {

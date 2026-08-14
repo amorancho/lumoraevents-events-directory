@@ -277,7 +277,7 @@
     elements.ogTitle.setAttribute("content", i18nApi.t("index.pageTitle"));
     elements.ogDescription.setAttribute("content", i18nApi.t("index.metaDescription"));
     elements.ogUrl.setAttribute("content", canonicalUrl);
-    elements.ogLocale.setAttribute("content", i18nApi.getCurrentLanguage() === "es" ? "es_ES" : "en_GB");
+    elements.ogLocale.setAttribute("content", i18nApi.getCurrentLanguage() === "es" ? "es_ES" : "en_US");
     updateIndexingMeta();
   }
 

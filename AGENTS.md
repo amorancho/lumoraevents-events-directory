@@ -157,7 +157,7 @@ Parámetros opcionales confirmados:
 - Si el listado tiene cualquier parámetro de consulta —paginación, filtros o parámetros desconocidos— `js/index.js` añade `noindex,follow` y mantiene el canonical hacia la portada limpia del idioma correspondiente. Al volver a una URL sin query elimina ese robots dinámico.
 - `event.html` y las tres páginas legales incluyen siempre `noindex,follow`.
 - `robots.txt` permite el rastreo general y anuncia `sitemap.xml`; el sitemap contiene exclusivamente `/` y `/es/`.
-- Cada portada declara su imagen Open Graph JPEG localizada de 1200 × 630 píxeles desde `/assets/`, con dimensiones, tipo, texto alternativo y `twitter:image` equivalentes.
+- Cada portada declara su imagen Open Graph JPEG localizada de 1200 × 630 píxeles desde `/assets/`, con dimensiones, tipo, texto alternativo y `twitter:image` equivalentes. La portada inglesa usa `og:locale=en_US`, la española `og:locale=es_ES` y no quedan placeholders externos de imagen social.
 
 ## Analítica y cookies
 
