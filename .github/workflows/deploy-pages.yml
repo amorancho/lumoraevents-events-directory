@@ -37,7 +37,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir -p _site
-          cp index.html event.html legal-notice.html privacy-policy.html cookie-policy.html CNAME favicon32.png _site/
+          cp index.html event.html legal-notice.html privacy-policy.html cookie-policy.html robots.txt sitemap.xml CNAME favicon32.png _site/
           cp -R assets css es js _site/
 
       - name: Configure GitHub Pages

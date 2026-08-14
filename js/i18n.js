@@ -56,8 +56,8 @@
   var translations = {
     es: {
       index: {
-        pageTitle: "Directorio de eventos de Bellydance | LumoraEvents",
-        metaDescription: "Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo con el directorio de LumoraEvents.",
+        pageTitle: "Eventos de Bellydance y Danza Oriental | LumoraEvents",
+        metaDescription: "Encuentra festivales, competiciones, talleres y encuentros de bellydance y danza oriental en todo el mundo con LumoraEvents.",
         heroTitle: "Directorio de eventos de Bellydance",
         heroSubtitle: "Encuentra festivales, competiciones y encuentros de Bellydance en todo el mundo.",
         filtersTitle: "Buscar eventos",
@@ -162,8 +162,8 @@
     },
     en: {
       index: {
-        pageTitle: "Bellydance Event Directory | LumoraEvents",
-        metaDescription: "Find Bellydance festivals, competitions, and gatherings around the world in the LumoraEvents directory.",
+        pageTitle: "Bellydance Events Worldwide | LumoraEvents",
+        metaDescription: "Find bellydance festivals, competitions, workshops and gatherings around the world with LumoraEvents.",
         heroTitle: "Bellydance Event Directory",
         heroSubtitle: "Find Bellydance festivals, competitions, and gatherings around the world.",
         filtersTitle: "Search events",

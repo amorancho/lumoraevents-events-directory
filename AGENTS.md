@@ -150,6 +150,15 @@ Parámetros opcionales confirmados:
 - Las páginas legales reaccionan al mismo cambio de idioma y cargan el recurso específico del documento activo; los recursos legales no se importan desde `index.html`, `event.html` ni `js/i18n.js`.
 - Las fechas de la API son ISO con hora UTC. La UI extrae el componente `YYYY-MM-DD` para evitar cambios de día por zona horaria.
 
+## SEO técnico e indexación
+
+- Las únicas URLs indexables son la portada inglesa `https://bellydance.lumoraevents.net/` y la portada española `https://bellydance.lumoraevents.net/es/`.
+- Ambas portadas declaran canonical absoluto, alternativos `hreflang` para `en`, `es` y `x-default`, Open Graph textual localizado y JSON-LD con `Organization`, `WebSite` y `CollectionPage`. No se publica schema `Event` individual.
+- Si el listado tiene cualquier parámetro de consulta —paginación, filtros o parámetros desconocidos— `js/index.js` añade `noindex,follow` y mantiene el canonical hacia la portada limpia del idioma correspondiente. Al volver a una URL sin query elimina ese robots dinámico.
+- `event.html` y las tres páginas legales incluyen siempre `noindex,follow`.
+- `robots.txt` permite el rastreo general y anuncia `sitemap.xml`; el sitemap contiene exclusivamente `/` y `/es/`.
+- La imagen Open Graph definitiva sigue pendiente. Las portadas no declaran `og:image` hasta que exista el recurso final aprobado.
+
 ## Analítica y cookies
 
 - Todas las páginas cargan Counter.dev desde `https://cdn.counter.dev/script.js` con el identificador público del sitio para obtener estadísticas básicas y agregadas.
@@ -162,7 +171,7 @@ Parámetros opcionales confirmados:
 - La ficha detalle está conectada al endpoint público por ID.
 - El listado permite filtrar por nombre, país y mes, y escoger 20, 40 o 60 resultados por página.
 - Verificación del 2026-08-12: local y producción respondieron correctamente desde el entorno de desarrollo, pero el listado todavía no devuelve `poster_url`. El backend debe incluir únicamente ese campo en la respuesta pública para activar los carteles reales; mientras tanto la interfaz muestra el placeholder.
-- Confirmar el dominio web definitivo y actualizar canonical/SEO cuando se conozca.
+- Diseñar, aprobar y añadir la imagen Open Graph definitiva de las portadas en una fase posterior.
 
 ## Criterios para cambios futuros
 

@@ -44,8 +44,10 @@
     elements.resultsCount = document.getElementById("results-count");
     elements.pagination = document.getElementById("pagination");
     elements.metaDescription = document.querySelector('meta[name="description"]');
+    elements.canonical = document.querySelector('link[rel="canonical"]');
     elements.ogTitle = document.querySelector('meta[property="og:title"]');
     elements.ogDescription = document.querySelector('meta[property="og:description"]');
+    elements.ogUrl = document.querySelector('meta[property="og:url"]');
     elements.ogLocale = document.querySelector('meta[property="og:locale"]');
 
     i18nApi.initPage();
@@ -163,6 +165,7 @@
     window.addEventListener("popstate", function () {
       state.filters = getFiltersFromUrl();
       saveCurrentListUrl();
+      updateIndexingMeta();
       renderFilterOptions();
       loadEvents(getPageFromUrl());
     });
@@ -266,11 +269,42 @@
   }
 
   function renderPageMeta() {
+    var canonicalUrl = getDirectoryCanonicalUrl();
+
     document.title = i18nApi.t("index.pageTitle");
     elements.metaDescription.setAttribute("content", i18nApi.t("index.metaDescription"));
+    elements.canonical.setAttribute("href", canonicalUrl);
     elements.ogTitle.setAttribute("content", i18nApi.t("index.pageTitle"));
     elements.ogDescription.setAttribute("content", i18nApi.t("index.metaDescription"));
+    elements.ogUrl.setAttribute("content", canonicalUrl);
     elements.ogLocale.setAttribute("content", i18nApi.getCurrentLanguage() === "es" ? "es_ES" : "en_GB");
+    updateIndexingMeta();
+  }
+
+  function getDirectoryCanonicalUrl() {
+    return document.documentElement.getAttribute("data-lang") === "es"
+      ? "https://bellydance.lumoraevents.net/es/"
+      : "https://bellydance.lumoraevents.net/";
+  }
+
+  function updateIndexingMeta() {
+    var hasQueryParameters = new URLSearchParams(window.location.search).toString() !== "";
+    var robotsMeta = document.querySelector('meta[name="robots"]');
+
+    if (hasQueryParameters) {
+      if (!robotsMeta) {
+        robotsMeta = document.createElement("meta");
+        robotsMeta.setAttribute("name", "robots");
+        document.head.appendChild(robotsMeta);
+      }
+
+      robotsMeta.setAttribute("content", "noindex,follow");
+      return;
+    }
+
+    if (robotsMeta) {
+      robotsMeta.remove();
+    }
   }
 
   function renderFilterOptions() {
@@ -674,6 +708,7 @@
 
     window.history[replace ? "replaceState" : "pushState"]({}, "", url);
     saveCurrentListUrl();
+    updateIndexingMeta();
   }
 
   function setOptionalSearchParam(url, name, value) {

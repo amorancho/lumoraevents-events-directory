@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bellydance.lumoraevents.net/sitemap.xml
