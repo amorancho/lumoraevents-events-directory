@@ -211,10 +211,11 @@
       '<div class="event-type-badges">' + eventTypeBadges + "</div>",
       buildManagedPill(eventItem),
       "</div>",
-      '<div class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-3">',
-      buildDetailItem(i18nApi.t("common.venue"), eventItem.venue, "venue"),
-      buildDetailItem(i18nApi.t("common.locationLabel"), [eventItem.city, countryName].filter(Boolean).join(", "), "location"),
+      '<div class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-2">',
       buildDetailItem(i18nApi.t("common.dates"), dateLabel, "dates"),
+      buildOrganizerDetailItem(eventItem),
+      buildDetailItem(i18nApi.t("common.locationLabel"), [eventItem.city, countryName].filter(Boolean).join(", "), "location"),
+      buildDetailItem(i18nApi.t("common.venue"), eventItem.venue, "venue"),
       "</div>",
       buildStylesSection(eventItem.danceStyles),
       buildArtistsSection(eventItem, language),
@@ -291,9 +292,47 @@
       '<span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-clove/8 text-clove" title="' + escapeAttribute(label) + '" aria-hidden="true">',
       buildDetailIcon(iconName),
       "</span>",
-      '<p class="min-w-0 text-sm font-semibold leading-6 text-stone-700"><span class="sr-only">' + escapeHtml(label) + ": </span>" + escapeHtml(value) + "</p>",
+      '<div class="min-w-0">',
+      '<p class="text-xs font-bold uppercase tracking-[0.18em] text-clove">' + escapeHtml(label) + "</p>",
+      '<p class="mt-1 min-w-0 text-sm font-semibold leading-6 text-stone-700">' + escapeHtml(value) + "</p>",
+      "</div>",
       "</div>"
     ].join("");
+  }
+
+  function buildOrganizerDetailItem(eventItem) {
+    if (!eventItem.organizerName) {
+      return "";
+    }
+
+    var label = i18nApi.t("common.organizer");
+    var instagramLink = eventItem.organizerInstagram
+      ? [
+        '<a href="' + escapeAttribute(buildInstagramProfileUrl(eventItem.organizerInstagram)) + '" target="_blank" rel="noreferrer noopener" class="inline-flex shrink-0 rounded-md p-1 text-clove transition hover:bg-clove/8 hover:text-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20" aria-label="' + escapeAttribute(i18nApi.t("common.instagram") + ": " + eventItem.organizerName) + '" title="' + escapeAttribute(i18nApi.t("common.instagram")) + '">',
+        buildInstagramIcon(),
+        "</a>"
+      ].join("")
+      : "";
+
+    return [
+      '<div class="flex min-w-0 items-center gap-3">',
+      '<span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-clove/8 text-clove" title="' + escapeAttribute(label) + '" aria-hidden="true">',
+      buildDetailIcon("organizer"),
+      "</span>",
+      '<div class="min-w-0">',
+      '<p class="text-xs font-bold uppercase tracking-[0.18em] text-clove">' + escapeHtml(label) + "</p>",
+      '<div class="mt-1 flex min-w-0 items-center gap-1.5">',
+      '<p class="min-w-0 text-sm font-semibold leading-6 text-stone-700">' + escapeHtml(eventItem.organizerName) + "</p>",
+      instagramLink,
+      "</div>",
+      "</div>",
+      "</div>"
+    ].join("");
+  }
+
+  function buildInstagramProfileUrl(username) {
+    var normalizedUsername = String(username || "").trim().replace(/^@+/, "");
+    return "https://www.instagram.com/" + encodeURIComponent(normalizedUsername) + "/";
   }
 
   function buildEventTypeBadges(value) {
@@ -328,10 +367,21 @@
     var paths = {
       venue: '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M5.25 21V5.25A2.25 2.25 0 0 1 7.5 3h9a2.25 2.25 0 0 1 2.25 2.25V21M9 7.5h.008v.008H9V7.5Zm0 3.75h.008v.008H9v-.008Zm0 3.75h.008v.008H9V15Zm3-7.5h.008v.008H12V7.5Zm0 3.75h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm3-7.5h.008v.008H15V7.5Zm0 3.75h.008v.008H15v-.008ZM15 15h.008v.008H15V15Z" />',
       location: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21s6-5.12 6-11a6 6 0 1 0-12 0c0 5.88 6 11 6 11Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 10a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />',
-      dates: '<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M5.25 4.5h13.5A1.5 1.5 0 0 1 20.25 6v13.5h-16.5V6a1.5 1.5 0 0 1 1.5-1.5Z" />'
+      dates: '<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M5.25 4.5h13.5A1.5 1.5 0 0 1 20.25 6v13.5h-16.5V6a1.5 1.5 0 0 1 1.5-1.5Z" />',
+      organizer: '<path stroke-linecap="round" stroke-linejoin="round" d="m12 3 2.78 5.63 6.22.91-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 1.06-6.2L3 9.54l6.22-.91L12 3Z" />'
     };
 
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-5 w-5">' + (paths[iconName] || paths.location) + "</svg>";
+  }
+
+  function buildInstagramIcon() {
+    return [
+      '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4">',
+      '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />',
+      '<circle cx="12" cy="12" r="4" />',
+      '<circle cx="17.35" cy="6.65" r="0.8" fill="currentColor" stroke="none" />',
+      "</svg>"
+    ].join("");
   }
 
   function buildManagedPill(eventItem) {

@@ -67,7 +67,7 @@ El índice solo consume estos campos de cada evento:
 
 No acoplar el índice al resto de propiedades devueltas por la API.
 
-La ficha detalle consume además `description`, `venue`, `website_url`, `registration_url`, todas las redes sociales disponibles, `contact_email`, `poster_url`, `dance_styles`, `masters` y `updated_at`. Las URLs externas se validan como HTTP/HTTPS y el correo se valida antes de renderizarse.
+La ficha detalle consume además `description`, `venue`, `organizer_name`, `organizer_instagram`, `website_url`, `registration_url`, todas las redes sociales disponibles, `contact_email`, `poster_url`, `dance_styles`, `masters` y `updated_at`. `organizer_instagram` contiene el usuario de Instagram; la interfaz construye el enlace a su perfil. Las demás URLs externas se validan como HTTP/HTTPS y el correo se valida antes de renderizarse.
 
 Parámetros opcionales confirmados:
 
@@ -106,9 +106,9 @@ Parámetros opcionales confirmados:
 - El índice enlaza a `event.html?id=<id>` y la ficha consulta `GET /public/directory-events/<id>`. La URL del listado se guarda en `sessionStorage` bajo `lumoraevents-directory-return-url`: así conserva filtros, paginación y tamaño al volver sin exponer el origen en la URL del detalle. La ficha valida que el valor corresponda a `index.html` en el mismo origen y usa el listado limpio como fallback.
 - Un 404 o la ausencia de `id` muestran el estado de evento no encontrado; otros errores muestran reintento.
 - El resumen superior alinea los datos principales con un póster contenido y sin texto de pie. Bajo el nombre solo aparecen el tipo y, cuando corresponde, la marca Lumora; la ciudad y el país no se repiten ahí.
-- Lugar, ubicación combinada (`city`, país localizado) y fechas se presentan en una sola fila de tres datos: el icono y el valor son visibles, mientras el label se mantiene oculto para lectores de pantalla y como tooltip del icono.
+- Las fechas y el organizador forman la primera fila de datos; la ubicación combinada (`city`, país localizado) y el lugar forman la segunda. Los cuatro datos usan un icono y un label visual localizado en mayúsculas sobre su valor. El organizador usa una estrella y, cuando `organizer_instagram` tiene valor, muestra junto al nombre un icono de Instagram enlazado al perfil construido a partir de ese usuario.
 - Estilos y artistas pertenecen al mismo resumen superior y aparecen, en ese orden, dentro de dos paneles visuales equivalentes. Los estilos usan texto marcado con puntos verdes y los artistas muestran nombre más bandera; ninguno se repite en la zona inferior.
-- Se presentan nombre, tipo, ubicación, venue, fechas, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización. Si `description` está vacío o contiene solo espacios, no se renderizan ni el contenido ni el título de su sección.
+- Se presentan nombre, tipo, fechas, organizador, ubicación, venue, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización. Si `description` está vacío o contiene solo espacios, no se renderizan ni el contenido ni el título de su sección.
 - Cada artista o maestro se presenta como un elemento visual independiente dentro del panel de artistas, nunca como una cadena separada por comas. El contrato esperado para cada elemento es `Nombre (ISO-2)`; la UI elimina el código y muestra junto al nombre una bandera SVG de `https://flagcdn.com/<iso-en-minúsculas>.svg`. El nombre localizado del país se conserva como texto alternativo y `title`. Los valores que no cumplan el patrón se muestran completos como fallback.
 - Si `is_lumora_event` es `true`, junto al tipo se reutiliza exactamente la insignia verde con destellos del listado.
 - Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.

@@ -166,6 +166,8 @@
     return Object.assign({}, summary, {
       description: String(eventItem.description || ""),
       venue: String(eventItem.venue || ""),
+      organizerName: String(eventItem.organizer_name || "").trim(),
+      organizerInstagram: String(eventItem.organizer_instagram || "").trim(),
       websiteUrl: normalizeHttpUrl(eventItem.website_url),
       registrationUrl: normalizeHttpUrl(eventItem.registration_url),
       instagramUrl: normalizeHttpUrl(eventItem.instagram_url),
