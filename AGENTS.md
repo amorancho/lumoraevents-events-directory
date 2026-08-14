@@ -137,6 +137,7 @@ Parámetros opcionales confirmados:
 - Los favoritos activos utilizan frambuesa `#d13f68` como acento semántico puntual para que el corazón seleccionado sea inequívoco.
 - Toda la interfaz utiliza Manrope. Los títulos son sans serif, compactos y con peso alto; no usar tipografía editorial serif.
 - El hero es luminoso, compacto y funcional, con una transición verde/lavanda muy suave. No añadir retículas, rayas, círculos, cuadrados, rombos, ilustraciones geométricas ni otros adornos visuales.
+- La imagen decorativa del hero se entrega mediante `<picture>` con `/assets/bellydancer-header.avif` y conserva `/assets/bellydancer-header.webp` como fallback. Ambas variantes miden 627 × 627 píxeles y comparten los mismos atributos, clases y recorte responsive.
 - Logo oficial: `https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png` (289 × 47 px).
 - No mostrar bloques ni textos `Powered by LumoraEvents`.
 - El buscador está separado del hero, lo solapa visualmente y se mantiene flotante en la parte superior al hacer scroll desde `lg` para evitar ocupar demasiado espacio en pantallas pequeñas.

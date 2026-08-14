@@ -84,15 +84,18 @@
     <div class="hero-shell mx-auto max-w-6xl px-6 py-5 sm:px-8 sm:py-6 lg:px-10">
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-dancer-frame" aria-hidden="true">
-        <img
-          src="/assets/bellydancer-header.webp"
-          alt=""
-          width="627"
-          height="627"
-          class="hero-dancer"
-          decoding="async"
-          fetchpriority="high"
-        >
+        <picture>
+          <source srcset="/assets/bellydancer-header.avif" type="image/avif">
+          <img
+            src="/assets/bellydancer-header.webp"
+            alt=""
+            width="627"
+            height="627"
+            class="hero-dancer"
+            decoding="async"
+            fetchpriority="high"
+          >
+        </picture>
       </div>
 
       <div class="relative z-20">
