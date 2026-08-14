@@ -157,7 +157,7 @@ Parámetros opcionales confirmados:
 - Si el listado tiene cualquier parámetro de consulta —paginación, filtros o parámetros desconocidos— `js/index.js` añade `noindex,follow` y mantiene el canonical hacia la portada limpia del idioma correspondiente. Al volver a una URL sin query elimina ese robots dinámico.
 - `event.html` y las tres páginas legales incluyen siempre `noindex,follow`.
 - `robots.txt` permite el rastreo general y anuncia `sitemap.xml`; el sitemap contiene exclusivamente `/` y `/es/`.
-- La imagen Open Graph definitiva sigue pendiente. Las portadas no declaran `og:image` hasta que exista el recurso final aprobado.
+- Cada portada declara su imagen Open Graph JPEG localizada de 1200 × 630 píxeles desde `/assets/`, con dimensiones, tipo, texto alternativo y `twitter:image` equivalentes.
 
 ## Analítica y cookies
 
@@ -171,7 +171,7 @@ Parámetros opcionales confirmados:
 - La ficha detalle está conectada al endpoint público por ID.
 - El listado permite filtrar por nombre, país y mes, y escoger 20, 40 o 60 resultados por página.
 - Verificación del 2026-08-12: local y producción respondieron correctamente desde el entorno de desarrollo, pero el listado todavía no devuelve `poster_url`. El backend debe incluir únicamente ese campo en la respuesta pública para activar los carteles reales; mientras tanto la interfaz muestra el placeholder.
-- Diseñar, aprobar y añadir la imagen Open Graph definitiva de las portadas en una fase posterior.
+- Las imágenes Open Graph finales en inglés y español están configuradas y se publican con los assets estáticos del sitio.
 
 ## Criterios para cambios futuros
 
