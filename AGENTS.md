@@ -104,6 +104,7 @@ Parámetros opcionales confirmados:
 - El selector de mes se construye en el navegador desde el mes actual e incluye 12 meses consecutivos. Muestra `mes YYYY` y envía `YYYY-MM`.
 - Pulsar `Buscar` aplica nombre, país y mes y vuelve a la página 1. Pulsar `Limpiar` restaura esos tres filtros y consulta de nuevo la página 1 sin modificar el tamaño de página seleccionado.
 - Inmediatamente bajo el buscador aparece una invitación secundaria para organizadores con un enlace `mailto:` a `bellydance@lumoraevents.net`, localizada en ES/EN.
+- Después del listado y su paginación, cada portada incluye una sección editorial SEO visible y estática en el idioma de su URL. Combina una introducción con una lista semántica de tres claves en dos columnas desde escritorio y apiladas en móvil; el contenido vive directamente en cada HTML y no depende de JavaScript, la API ni `js/i18n.js`.
 - Los filtros se aplican en el servidor, nunca únicamente a la página descargada.
 - Hay estados visibles de carga, error con reintento y listado vacío.
 - Cada fila permite marcar o desmarcar el evento como favorito mediante un corazón accesible.
