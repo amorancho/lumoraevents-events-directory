@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found | LumoraEvents</title>
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="/css/bellydance-directory.css">
+</head>
+<body class="min-h-screen bg-sand text-ink">
+  <main class="relative flex min-h-screen items-center overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#fcfdfb] via-[#eef6ef] to-[#f2eff6]" aria-hidden="true"></div>
+
+    <section
+      class="relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-[1.8rem] border border-clove/10 bg-white/70 shadow-hero backdrop-blur lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.62fr)]"
+      aria-labelledby="not-found-title"
+    >
+      <div class="p-7 sm:p-10 lg:p-14">
+        <a id="directory-logo-link" href="/" class="inline-flex rounded-xl bg-white px-3 py-2 shadow-sm" aria-label="Back to Bellydance Directory">
+          <img
+            src="https://res.cloudinary.com/ddgxtuwdo/image/upload/v1781521973/copy_of_new_logo_lumoraevents_small_kwnjrc.png"
+            alt="LumoraEvents"
+            width="289"
+            height="47"
+            class="h-8 w-auto"
+            decoding="async"
+          >
+        </a>
+
+        <div class="mt-12 max-w-xl sm:mt-16">
+          <p id="not-found-eyebrow" class="text-xs font-bold uppercase tracking-[0.22em] text-clove">
+            404 · PAGE NOT FOUND
+          </p>
+          <h1 id="not-found-title" class="mt-4 font-display text-4xl font-extrabold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">
+            This page has left the stage
+          </h1>
+          <p id="not-found-copy" class="mt-5 text-base leading-8 text-stone-700">
+            The page you’re looking for doesn’t exist, may have moved, or the link may be incorrect.
+          </p>
+          <a
+            id="not-found-cta"
+            href="/"
+            class="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-clove px-5 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20"
+          >
+            <span id="not-found-cta-label">Back to the event directory</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="relative hidden min-h-[34rem] overflow-hidden border-l border-clove/10 bg-gradient-to-br from-[#eef6ef] to-[#e5f0e8] lg:block" aria-hidden="true">
+        <div class="absolute -left-24 top-10 h-80 w-80 rounded-full bg-gold/15 blur-3xl"></div>
+        <picture>
+          <source srcset="/assets/bellydancer-header.avif" type="image/avif">
+          <img
+            src="/assets/bellydancer-header.webp"
+            alt=""
+            width="627"
+            height="627"
+            class="absolute bottom-[-6rem] left-1/2 h-[38rem] w-auto max-w-none -translate-x-1/2 opacity-90"
+            decoding="async"
+          >
+        </picture>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      if (!window.location.pathname.startsWith("/es/")) {
+        return;
+      }
+
+      document.documentElement.lang = "es";
+      document.title = "Página no encontrada | LumoraEvents";
+      document.getElementById("not-found-eyebrow").textContent = "404 · PÁGINA NO ENCONTRADA";
+      document.getElementById("not-found-title").textContent = "Esta página ha salido del escenario";
+      document.getElementById("not-found-copy").textContent = "La página que buscas no existe, puede haber cambiado de sitio o el enlace no es correcto.";
+      document.getElementById("not-found-cta-label").textContent = "Volver al directorio";
+      document.getElementById("not-found-cta").href = "/es/";
+      document.getElementById("directory-logo-link").href = "/es/";
+      document.getElementById("directory-logo-link").setAttribute("aria-label", "Volver al directorio de Bellydance");
+    })();
+  </script>
+</body>
+</html>
