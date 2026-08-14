@@ -1,6 +1,6 @@
 (function () {
   var STORAGE_KEY = "lumoraevents-language";
-  var DEFAULT_LANGUAGE = "es";
+  var DEFAULT_LANGUAGE = "en";
   var listeners = [];
   var supportedLanguages = ["es", "en"];
   var localeMap = {
@@ -271,7 +271,12 @@
   var currentLanguage = getInitialLanguage();
 
   function getInitialLanguage() {
+    var routeLanguage = String(document.documentElement.getAttribute("data-lang") || "").trim();
     var savedLanguage = "";
+
+    if (supportedLanguages.indexOf(routeLanguage) >= 0) {
+      return routeLanguage;
+    }
 
     try {
       savedLanguage = window.localStorage.getItem(STORAGE_KEY) || "";
@@ -360,6 +365,10 @@
           return;
         }
 
+        if (target.tagName === "A" && target.hasAttribute("href")) {
+          return;
+        }
+
         setLanguage(target.getAttribute("data-lang"));
       });
 
@@ -370,10 +379,21 @@
   }
 
   function updateLanguageButtons() {
-    document.querySelectorAll("[data-lang]").forEach(function (button) {
-      var isActive = button.getAttribute("data-lang") === currentLanguage;
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    document.querySelectorAll("[data-language-switcher] [data-lang]").forEach(function (control) {
+      var isActive = control.getAttribute("data-lang") === currentLanguage;
+      control.classList.toggle("is-active", isActive);
+
+      if (control.tagName === "A") {
+        if (isActive) {
+          control.setAttribute("aria-current", "page");
+        } else {
+          control.removeAttribute("aria-current");
+        }
+        control.removeAttribute("aria-pressed");
+        return;
+      }
+
+      control.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
   }
 

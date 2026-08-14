@@ -24,57 +24,8 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/bellydance-directory.css">
   <script src="https://cdn.counter.dev/script.js" data-id="b4163310-ede9-4a5d-8386-8fe6df71a9fb" data-utcoffset="2"></script>
-  <style type="text/tailwindcss">
-    @theme {
-      --color-sand: #f3f6f2;
-      --color-ink: #122019;
-      --color-clove: #245f47;
-      --color-dusk: #76658d;
-      --color-gold: #82c95a;
-      --color-rose: #d9cee6;
-      --shadow-soft: 0 18px 48px rgba(30, 73, 53, 0.10);
-      --font-sans: "Manrope", sans-serif;
-      --font-display: "Manrope", sans-serif;
-    }
-
-    @layer base {
-      body {
-        @apply bg-sand text-ink;
-      }
-    }
-
-    @layer components {
-      .language-pill {
-        @apply rounded-full border border-transparent bg-transparent px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-clove transition hover:bg-clove/5;
-      }
-
-      .language-pill.is-active {
-        @apply border-clove bg-clove text-white shadow-soft;
-      }
-
-      .legal-card {
-        @apply rounded-[1.8rem] border border-clove/10 bg-white shadow-soft;
-      }
-
-      .legal-section {
-        @apply mt-10;
-      }
-
-      .legal-section h2 {
-        @apply font-display text-xl font-bold tracking-[-0.02em] text-ink sm:text-2xl;
-      }
-
-      .legal-section p {
-        @apply mt-4 text-sm leading-8 text-stone-700 sm:text-base;
-      }
-
-      .legal-section p + p {
-        @apply mt-3;
-      }
-    }
-  </style>
 </head>
 <body class="flex min-h-screen flex-col overflow-x-clip" data-legal-page="cookiePolicy">
   <header class="px-4 pb-6 pt-4 sm:px-6 lg:px-8">

@@ -515,15 +515,16 @@
     var searchParams = new URLSearchParams();
 
     searchParams.set("id", eventId);
+    searchParams.set("lang", i18nApi.getCurrentLanguage());
 
-    return "./event.html?" + searchParams.toString();
+    return "/event.html?" + searchParams.toString();
   }
 
   function saveCurrentListUrl() {
     try {
       window.sessionStorage.setItem(
         RETURN_URL_STORAGE_KEY,
-        "./index.html" + window.location.search + window.location.hash
+        window.location.pathname + window.location.search + window.location.hash
       );
     } catch (error) {
       // sessionStorage can be unavailable in restrictive browser modes.

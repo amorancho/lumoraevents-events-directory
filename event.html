@@ -24,89 +24,10 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/bellydance-directory.css">
   <script src="https://cdn.counter.dev/script.js" data-id="b4163310-ede9-4a5d-8386-8fe6df71a9fb" data-utcoffset="2"></script>
-  <style type="text/tailwindcss">
-    @theme {
-      --color-sand: #f3f6f2;
-      --color-ink: #122019;
-      --color-clove: #245f47;
-      --color-dusk: #76658d;
-      --color-gold: #82c95a;
-      --color-rose: #d9cee6;
-      --shadow-soft: 0 18px 48px rgba(30, 73, 53, 0.10);
-      --font-sans: "Manrope", sans-serif;
-      --font-display: "Manrope", sans-serif;
-    }
-
-    @layer base {
-      body {
-        @apply bg-sand text-ink;
-      }
-    }
-
-    @layer components {
-      .language-pill {
-        @apply rounded-full border border-transparent bg-transparent px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-clove transition hover:bg-clove/5;
-      }
-
-      .language-pill.is-active {
-        @apply border-clove bg-clove text-white shadow-soft;
-      }
-
-      .detail-card {
-        @apply rounded-[1.8rem] border border-clove/10 bg-white shadow-soft;
-      }
-
-      .event-type-badges {
-        @apply flex flex-wrap items-center gap-2;
-      }
-
-      .event-type-badge {
-        @apply inline-flex max-w-full items-center rounded-full border border-clove/10 bg-clove/[0.035] px-2.5 py-1 text-[0.7rem] font-semibold leading-none text-clove/80;
-      }
-
-      .lumora-managed-chip {
-        @apply inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gradient-to-r from-[#f1fae9] to-[#def3cd] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-clove;
-      }
-
-      .event-meta-panel {
-        @apply rounded-[1.2rem] border border-clove/15 bg-gradient-to-br from-[#f4faef] to-[#eaf3ec] px-5 py-4;
-      }
-
-      .event-meta-panel-title {
-        @apply text-xs font-bold uppercase tracking-[0.18em] text-clove;
-      }
-
-      .favorite-button {
-        @apply inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-clove/15 bg-white text-clove transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-gold/20;
-      }
-
-      .favorite-button:hover {
-        border-color: rgba(209, 63, 104, 0.5);
-        color: #d13f68;
-      }
-
-      .favorite-button.is-favorite {
-        border-color: #d13f68;
-        background-color: #d13f68;
-        color: #ffffff;
-        box-shadow: 0 5px 14px rgba(209, 63, 104, 0.24);
-      }
-
-      .favorite-button.is-favorite:hover {
-        border-color: #b92f57;
-        background-color: #b92f57;
-        color: #ffffff;
-      }
-
-      .favorite-notice {
-        @apply fixed bottom-5 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-2xl border border-clove/15 bg-white/95 px-4 py-3 text-sm leading-6 text-stone-700 shadow-soft backdrop-blur;
-      }
-    }
-  </style>
 </head>
-<body class="flex min-h-screen flex-col overflow-x-clip">
+<body class="flex min-h-screen flex-col overflow-x-clip" data-page="event">
   <header class="px-4 pb-6 pt-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-6xl rounded-[1.5rem] border border-clove/10 bg-white/90 px-5 py-4 shadow-soft backdrop-blur md:px-6">
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -135,8 +56,8 @@
           aria-label="Language switcher"
           data-language-switcher
         >
-          <button type="button" class="language-pill" data-lang="es">ES</button>
-          <button type="button" class="language-pill" data-lang="en">EN</button>
+          <a href="/event.html?lang=es" class="language-pill" data-lang="es">ES</a>
+          <a href="/event.html?lang=en" class="language-pill" data-lang="en">EN</a>
         </nav>
       </div>
     </div>

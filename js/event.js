@@ -31,12 +31,14 @@
     elements.ogLocale = document.querySelector('meta[property="og:locale"]');
     elements.ogImage = document.querySelector('meta[property="og:image"]');
 
+    applyLanguageFromUrl();
     i18nApi.initPage();
     bindEvents();
     if (favoritesApi) {
       favoritesApi.onChange(syncFavoriteButton);
     }
     state.eventId = getEventIdFromUrl();
+    applyLanguageSwitcherUrls();
     state.returnUrl = getReturnUrlFromSession();
     applyBackToListUrls();
 
@@ -74,31 +76,81 @@
     return String(new URLSearchParams(window.location.search).get("id") || "").trim();
   }
 
+  function applyLanguageFromUrl() {
+    var language = String(new URLSearchParams(window.location.search).get("lang") || "")
+      .trim()
+      .toLowerCase();
+
+    i18nApi.setLanguage(language === "es" ? "es" : "en");
+  }
+
+  function applyLanguageSwitcherUrls() {
+    document.querySelectorAll("[data-language-switcher] a[data-lang]").forEach(function (link) {
+      var searchParams = new URLSearchParams();
+
+      if (state.eventId) {
+        searchParams.set("id", state.eventId);
+      }
+
+      searchParams.set("lang", link.getAttribute("data-lang"));
+      link.setAttribute(
+        "href",
+        (window.location.protocol === "file:" ? "./event.html?" : "/event.html?") + searchParams.toString()
+      );
+    });
+  }
+
   function getReturnUrlFromSession() {
     var source = "";
+    var fallbackUrl = getDirectoryUrlForLanguage();
 
     try {
       source = String(window.sessionStorage.getItem(RETURN_URL_STORAGE_KEY) || "").trim();
     } catch (error) {
-      return "./index.html";
+      return fallbackUrl;
     }
 
     if (!source) {
-      return "./index.html";
+      return fallbackUrl;
     }
 
     try {
-      var expectedIndexUrl = new URL("./index.html", window.location.href);
       var candidateUrl = new URL(source, window.location.href);
+      var expectedUrl = new URL(fallbackUrl, window.location.href);
 
-      if (candidateUrl.origin !== expectedIndexUrl.origin || candidateUrl.pathname !== expectedIndexUrl.pathname) {
-        return "./index.html";
+      if (candidateUrl.origin !== expectedUrl.origin || !isExpectedDirectoryPath(candidateUrl.pathname)) {
+        return fallbackUrl;
       }
 
-      return "./index.html" + candidateUrl.search + candidateUrl.hash;
+      return window.location.protocol === "file:"
+        ? candidateUrl.href
+        : candidateUrl.pathname + candidateUrl.search + candidateUrl.hash;
     } catch (error) {
-      return "./index.html";
+      return fallbackUrl;
     }
+  }
+
+  function getDirectoryUrlForLanguage() {
+    var isSpanish = i18nApi.getCurrentLanguage() === "es";
+
+    if (window.location.protocol === "file:") {
+      return isSpanish ? "./es/index.html" : "./index.html";
+    }
+
+    return isSpanish ? "/es/" : "/";
+  }
+
+  function isExpectedDirectoryPath(pathname) {
+    var isSpanish = i18nApi.getCurrentLanguage() === "es";
+    var expectedFilePath = new URL(
+      isSpanish ? "./es/index.html" : "./index.html",
+      window.location.href
+    ).pathname;
+    var allowedPaths = isSpanish
+      ? ["/es/", "/es/index.html", expectedFilePath]
+      : ["/", "/index.html", expectedFilePath];
+
+    return allowedPaths.indexOf(pathname) >= 0;
   }
 
   function applyBackToListUrls() {

@@ -6,17 +6,22 @@ Este archivo es la referencia funcional y técnica viva del repositorio. Actual�
 
 Directorio web público de eventos de Bellydance de LumoraEvents. La experiencia prevista incluye el directorio, la ficha de evento y las páginas legales básicas:
 
-- `index.html`: listado paginado de próximos eventos.
+- `index.html`: listado paginado de próximos eventos en inglés, servido desde la raíz.
+- `es/index.html`: entrada española del mismo listado, servida desde `/es/`.
 - `event.html?id=<id>`: ficha completa de un evento.
 - `legal-notice.html`: aviso legal.
 - `privacy-policy.html`: política de privacidad.
 - `cookie-policy.html`: política de cookies.
 
-El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una aplicación estática sin build: HTML, Tailwind CSS cargado desde CDN y JavaScript del navegador.
+El repositorio se publica en GitHub Pages y se vincula a un dominio propio. La aplicación sigue siendo estática en runtime: HTML, CSS compilado y JavaScript del navegador. El único build transforma la fuente Tailwind v4 en CSS estático cuando cambia el código; los eventos continúan llegando directamente desde la API sin recompilar ni desplegar la web.
 
 ## Arquitectura actual
 
-- `index.html` + `js/index.js`: vista de listado y estados de carga, error, vacío y paginación.
+- `index.html` y `es/index.html` + `js/index.js`: dos entradas HTML con metadatos estáticos propios y una única vista compartida de listado, incluidos sus estados de carga, error, vacío y paginación.
+- `src/css/bellydance-directory.css`: única fuente Tailwind v4 del sitio; contiene `@theme`, `@layer`, `@apply` y las declaraciones `@source` para todos los HTML y el JavaScript que genera clases dinámicamente.
+- `css/bellydance-directory.css`: salida CSS estática, minificada y versionada que cargan todas las páginas mediante un `<link rel="stylesheet">` común. El sitio no usa el compilador Tailwind de navegador ni compila estilos en runtime.
+- `package.json` + `package-lock.json`: Tailwind v4 CLI fijado y scripts `build`, `build:css` y `watch:css`.
+- `.github/workflows/deploy-pages.yml`: en cada cambio de `main`, instala con `npm ci`, compila el CSS, prepara únicamente los archivos públicos y despliega el artefacto en GitHub Pages.
 - `js/api.js`: selección de entorno, llamadas HTTP y adaptación del contrato externo al modelo de UI, incluido el catálogo de países disponibles en el directorio.
 - `event.html` + `js/event.js`: vista detalle conectada a la API, con estados de carga, error y 404.
 - `legal-notice.html`, `privacy-policy.html` y `cookie-policy.html` + `js/legal.js`: shells estáticos de las páginas legales y renderizado compartido del documento activo.
@@ -25,7 +30,7 @@ El repositorio se publica en GitHub y se vinculará a un dominio propio. Es una 
 - `js/i18n.js`: textos cortos de UI ES/EN, formato de fechas, países ISO y tipos de evento; no contiene el cuerpo de los documentos legales.
 - `js/favorites.js`: persistencia compartida de favoritos, estado accesible de los corazones y sincronización entre pestañas.
 
-No introducir herramientas de build sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
+No introducir herramientas de build adicionales sin una razón explícita. Mantener JavaScript compatible con navegadores modernos y sin dependencias de runtime.
 
 ## API y entornos
 
@@ -83,6 +88,8 @@ Parámetros opcionales confirmados:
 
 - Paginación solicitada al servidor con 20, 40 o 60 elementos por página; la opción inicial es 20. El selector se sitúa junto al contador de resultados, fuera del formulario de filtros, y aplica el cambio inmediatamente volviendo a la página 1.
 - Nombre, país, mes, página y tamaño no predeterminado se reflejan en la query string de la URL. La página 1 y el tamaño 20 se mantienen implícitos para conservar una URL limpia.
+- La raíz `/` fija el idioma inglés mediante `data-lang="en"` y `/es/` fija el español mediante `data-lang="es"`; esta decisión de ruta siempre tiene prioridad sobre `localStorage`.
+- El selector de idioma del listado usa enlaces reales entre `/` y `/es/`, conservando el mismo aspecto visual.
 - Se muestran rango y total usando los metadatos del backend.
 - Al cambiar de página, el scroll vuelve suavemente al inicio del bloque de resultados después de renderizar la nueva respuesta; en escritorio deja espacio para el buscador sticky.
 - El listado muestra una tarjeta por fila hasta `lg` y dos tarjetas de igual altura por fila desde 1024 px. Cada tarjeta presenta tipos, favorito, nombre, fecha, ubicación y un pie de acciones; no repite el mes fuera de la fecha completa.
@@ -103,8 +110,9 @@ Parámetros opcionales confirmados:
 
 ## Comportamiento del detalle
 
-- El índice enlaza a `event.html?id=<id>` y la ficha consulta `GET /public/directory-events/<id>`. La URL del listado se guarda en `sessionStorage` bajo `lumoraevents-directory-return-url`: así conserva filtros, paginación y tamaño al volver sin exponer el origen en la URL del detalle. La ficha valida que el valor corresponda a `index.html` en el mismo origen y usa el listado limpio como fallback.
+- El índice enlaza a `event.html?id=<id>&lang=<en|es>` y la ficha consulta `GET /public/directory-events/<id>`. El parámetro `lang` tiene prioridad al inicializar la ficha. La URL del listado se guarda en `sessionStorage` bajo `lumoraevents-directory-return-url`: así conserva idioma de ruta, filtros, paginación y tamaño al volver sin exponer el origen en la URL del detalle. La ficha valida que el valor corresponda a `/`, `/index.html`, `/es/` o `/es/index.html` en el mismo origen y usa el listado limpio del idioma activo como fallback.
 - Un 404 o la ausencia de `id` muestran el estado de evento no encontrado; otros errores muestran reintento.
+- El selector de idioma de la ficha usa enlaces reales a la misma `event.html`, conserva el `id` actual y cambia `lang` entre `en` y `es`. Un `lang` válido siempre tiene prioridad sobre `localStorage`; si falta o no es válido, la ficha usa inglés.
 - El resumen superior alinea los datos principales con un póster contenido y sin texto de pie. Bajo el nombre solo aparecen el tipo y, cuando corresponde, la marca Lumora; la ciudad y el país no se repiten ahí.
 - Las fechas y el organizador forman la primera fila de datos; la ubicación combinada (`city`, país localizado) y el lugar forman la segunda. Los cuatro datos usan un icono y un label visual localizado en mayúsculas sobre su valor. El organizador usa una estrella y, cuando `organizer_instagram` tiene valor, muestra junto al nombre un icono de Instagram enlazado al perfil construido a partir de ese usuario.
 - Estilos y artistas pertenecen al mismo resumen superior y aparecen, en ese orden, dentro de dos paneles visuales equivalentes. Los estilos usan texto marcado con puntos verdes y los artistas muestran nombre más bandera; ninguno se repite en la zona inferior.
@@ -138,7 +146,7 @@ Parámetros opcionales confirmados:
 ## Internacionalización y fechas
 
 - Idiomas de interfaz: español (`es-ES`) e inglés (`en-GB`).
-- La preferencia se guarda en `localStorage` con la clave `lumoraevents-language`.
+- El inglés es el idioma principal. La preferencia se guarda en `localStorage` con la clave `lumoraevents-language`; las portadas la subordinan a `data-lang` y la ficha a `lang`, usando inglés en la ficha cuando el parámetro falta o no es válido.
 - Las páginas legales reaccionan al mismo cambio de idioma y cargan el recurso específico del documento activo; los recursos legales no se importan desde `index.html`, `event.html` ni `js/i18n.js`.
 - Las fechas de la API son ISO con hora UTC. La UI extrae el componente `YYYY-MM-DD` para evitar cambios de día por zona horaria.
 
@@ -161,5 +169,6 @@ Parámetros opcionales confirmados:
 - Mantener el contrato externo encapsulado en `js/api.js`.
 - Escapar cualquier dato de API antes de insertarlo mediante `innerHTML`.
 - Añadir textos de interfaz en ambos idiomas.
+- Ejecutar `npm run build` y versionar `css/bellydance-directory.css` cuando cambien la fuente Tailwind o las clases usadas en HTML/JavaScript.
 - Probar como mínimo carga, error, vacío, cambio de idioma, cada filtro, filtros combinados, tamaños 20/40/60, navegación de páginas y restauración desde la query string.
 - Actualizar este archivo en el mismo cambio cuando una decisión deje de ser válida.
