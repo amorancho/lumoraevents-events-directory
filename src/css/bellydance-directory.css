@@ -242,7 +242,7 @@
   }
 
   .event-type-badge {
-    @apply inline-flex max-w-full items-center rounded-full border border-clove/10 bg-clove/[0.035] px-2.5 py-1 text-[0.7rem] font-semibold leading-none text-clove/80;
+    @apply inline-flex max-w-full items-center rounded-full border border-clove/10 bg-clove/[0.035] px-2.5 py-1 text-[0.7rem] font-semibold leading-none text-clove/85;
   }
 
   .event-card-title-link {
