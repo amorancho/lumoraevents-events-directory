@@ -97,6 +97,7 @@ Parámetros opcionales confirmados:
 - Cada tarjeta muestra a la izquierda una miniatura completa del cartel. Las URLs de Cloudinary usan la transformación `c_limit,w_200,h_275,q_auto:eco,f_auto`; las URLs externas válidas no se modifican y los valores ausentes, inválidos o fallidos muestran un placeholder SVG local.
 - Tanto la miniatura como el nombre enlazan a la ficha del evento, sin convertir la tarjeta completa en un enlace para preservar sus controles internos.
 - Los eventos con `is_lumora_event: true` muestran en el pie la insignia `Gestionado por LumoraEvents` / `Managed by LumoraEvents`.
+- Los eventos cuya fecha `end_date` sea anterior a la fecha local actual muestran en ese mismo pie, junto a la acción de detalle, la insignia localizada `Evento finalizado` / `Event ended`; los que terminan hoy no se consideran finalizados.
 - Fecha y ubicación aparecen apiladas junto a iconos, sin labels visuales redundantes.
 - Los filtros no muestran labels visuales redundantes; conservan etiquetas ocultas para tecnologías de asistencia y el campo de nombre incluye una lupa.
 - Editar nombre, país o mes no lanza peticiones. Los valores se aplican únicamente al enviar el formulario con `Buscar`.
@@ -120,6 +121,7 @@ Parámetros opcionales confirmados:
 - Se presentan nombre, tipo, fechas, organizador, ubicación, venue, descripción, maestros, estilos, enlaces disponibles, correo de contacto y fecha de actualización. Si `description` está vacío o contiene solo espacios, no se renderizan ni el contenido ni el título de su sección.
 - Cada artista o maestro se presenta como un elemento visual independiente dentro del panel de artistas, nunca como una cadena separada por comas. El contrato esperado para cada elemento es `Nombre (ISO-2)`; la UI elimina el código y muestra junto al nombre una bandera SVG de `https://flagcdn.com/<iso-en-minúsculas>.svg`. El nombre localizado del país se conserva como texto alternativo y `title`. Los valores que no cumplan el patrón se muestran completos como fallback.
 - Si `is_lumora_event` es `true`, junto al tipo se reutiliza exactamente la insignia verde con destellos del listado.
+- Si `end_date` es anterior a la fecha local actual, junto al tipo se muestra la insignia localizada `Evento finalizado` / `Event ended`; los eventos que terminan hoy permanecen vigentes.
 - Si `poster_url` está vacío o la imagen falla al cargar, se genera un cartel SVG local como fallback.
 - `contact_email` es el destinatario preferente; si falta se usa `bellydance@lumoraevents.net`.
 - La ficha permite marcar o desmarcar el mismo favorito que el listado.

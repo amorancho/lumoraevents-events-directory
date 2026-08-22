@@ -75,6 +75,7 @@
         organizerContact: "Contáctanos",
         organizerTextAfter: "y estaremos encantados de añadir tu evento.",
         managedByLumora: "Gestionado por LumoraEvents",
+        eventEnded: "Evento finalizado",
         resultsTitle: "Próximos eventos",
         resultsIntro: "Explora los próximos festivales, competiciones, congresos y encuentros publicados en LumoraEvents.",
         viewDetails: "Ver detalles",
@@ -117,6 +118,7 @@
         contactEmailBody: "Hola,\n\nQuiero actualizar la información de este evento o conocer mejor LumoraEvents.\n",
         posterFallbackLabel: "Cartel no disponible",
         managedByLumora: "Gestionado por LumoraEvents",
+        eventEnded: "Evento finalizado",
         updatedAt: "Actualizado el {date}"
       },
       common: {
@@ -181,6 +183,7 @@
         organizerContact: "Contact us",
         organizerTextAfter: "and we'll be happy to add your event.",
         managedByLumora: "Managed by LumoraEvents",
+        eventEnded: "Event ended",
         resultsTitle: "Upcoming events",
         resultsIntro: "Browse upcoming festivals, competitions, congresses, and gatherings published on LumoraEvents.",
         viewDetails: "View details",
@@ -223,6 +226,7 @@
         contactEmailBody: "Hello,\n\nI would like to update this event information or learn more about LumoraEvents.\n",
         posterFallbackLabel: "Poster unavailable",
         managedByLumora: "Managed by LumoraEvents",
+        eventEnded: "Event ended",
         updatedAt: "Updated on {date}"
       },
       common: {

@@ -439,10 +439,13 @@
       '<div class="event-card-types">' + eventTypeBadges + "</div>",
       '<footer class="event-card-footer">',
       buildManagedBadge(eventItem),
+      '<div class="event-card-actions">',
+      buildEndedBadge(eventItem),
       '<a href="' + escapeHtml(detailUrl) + '" class="event-card-detail-link">',
       '<span>' + escapeHtml(i18nApi.t("index.viewDetails")) + "</span>",
       '<span class="event-card-detail-arrow" aria-hidden="true">→</span>',
       "</a>",
+      "</div>",
       "</footer>",
       "</article>"
     ].join("");
@@ -526,6 +529,22 @@
       '<path d="M15.6 12.1c.23 1.55 1.05 2.37 2.6 2.6-1.55.22-2.37 1.04-2.6 2.6-.22-1.56-1.04-2.38-2.6-2.6 1.56-.23 2.38-1.05 2.6-2.6Z" />',
       "</svg>",
       '<span>' + escapeHtml(i18nApi.t("index.managedByLumora")) + "</span>",
+      "</span>"
+    ].join("");
+  }
+
+  function buildEndedBadge(eventItem) {
+    if (!api.hasEventEnded(eventItem.endDate)) {
+      return "";
+    }
+
+    return [
+      '<span class="event-ended-chip">',
+      '<svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" class="h-3.5 w-3.5 shrink-0">',
+      '<circle cx="10" cy="10" r="7.25"></circle>',
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M10 5.75v4.5l3 1.75"></path>',
+      "</svg>",
+      '<span>' + escapeHtml(i18nApi.t("index.eventEnded")) + "</span>",
       "</span>"
     ].join("");
   }

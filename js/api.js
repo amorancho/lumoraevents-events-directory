@@ -265,6 +265,51 @@
     }, []);
   }
 
+  function hasEventEnded(endDate, today) {
+    var endDateParts = getDateParts(endDate);
+    var currentDate = today instanceof Date ? today : new Date();
+
+    if (!endDateParts || Number.isNaN(currentDate.getTime())) {
+      return false;
+    }
+
+    var endDateValue = Date.UTC(
+      endDateParts.year,
+      endDateParts.month - 1,
+      endDateParts.day
+    );
+    var todayValue = Date.UTC(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
+
+    return endDateValue < todayValue;
+  }
+
+  function getDateParts(value) {
+    var match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+    if (!match) {
+      return null;
+    }
+
+    var year = Number(match[1]);
+    var month = Number(match[2]);
+    var day = Number(match[3]);
+    var date = new Date(Date.UTC(year, month - 1, day));
+
+    if (
+      date.getUTCFullYear() !== year ||
+      date.getUTCMonth() !== month - 1 ||
+      date.getUTCDate() !== day
+    ) {
+      return null;
+    }
+
+    return { year: year, month: month, day: day };
+  }
+
   function normalizeEmail(value) {
     var email = String(value || "").trim();
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "";
@@ -306,6 +351,7 @@
     getDirectoryEventCountries: getDirectoryEventCountries,
     getDirectoryEvent: getDirectoryEvent,
     getPosterThumbnailUrl: getPosterThumbnailUrl,
-    normalizeEventTypes: normalizeEventTypes
+    normalizeEventTypes: normalizeEventTypes,
+    hasEventEnded: hasEventEnded
   };
 })();

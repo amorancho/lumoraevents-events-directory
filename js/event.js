@@ -261,6 +261,7 @@
       "</div>",
       '<div class="mt-5 flex flex-wrap items-center gap-2">',
       '<div class="event-type-badges">' + eventTypeBadges + "</div>",
+      buildEndedPill(eventItem),
       buildManagedPill(eventItem),
       "</div>",
       '<div class="mt-8 grid gap-x-5 gap-y-5 sm:grid-cols-2">',
@@ -448,6 +449,22 @@
       '<path d="M15.6 12.1c.23 1.55 1.05 2.37 2.6 2.6-1.55.22-2.37 1.04-2.6 2.6-.22-1.56-1.04-2.38-2.6-2.6 1.56-.23 2.38-1.05 2.6-2.6Z" />',
       "</svg>",
       '<span>' + escapeHtml(i18nApi.t("event.managedByLumora")) + "</span>",
+      "</span>"
+    ].join("");
+  }
+
+  function buildEndedPill(eventItem) {
+    if (!api.hasEventEnded(eventItem.endDate)) {
+      return "";
+    }
+
+    return [
+      '<span class="event-ended-chip">',
+      '<svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" class="h-3.5 w-3.5 shrink-0">',
+      '<circle cx="10" cy="10" r="7.25"></circle>',
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M10 5.75v4.5l3 1.75"></path>',
+      "</svg>",
+      '<span>' + escapeHtml(i18nApi.t("event.eventEnded")) + "</span>",
       "</span>"
     ].join("");
   }
