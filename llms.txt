@@ -1,0 +1,61 @@
+# Lumora Bellydance Event Directory
+
+> LumoraEvents' public international directory for bellydance and oriental dance events. It helps dancers, teachers, organizers and audiences discover festivals, competitions, congresses, workshops, masterclasses, galas and other bellydance gatherings around the world.
+
+The primary language of the directory is English and is served from the root path. The Spanish version is served under `/es/`.
+
+Use the root URL for English-language information and `/es/` for Spanish-language information.
+
+## English
+
+- [Bellydance Event Directory](https://bellydance.lumoraevents.net/): Search and browse upcoming bellydance and oriental dance events worldwide by event name, country and month. The directory includes festivals, competitions, congresses, workshops, masterclasses, galas and other gatherings.
+- [Privacy Policy](https://bellydance.lumoraevents.net/privacy-policy.html): Privacy information for the Bellydance Event Directory.
+- [Cookie Policy](https://bellydance.lumoraevents.net/cookie-policy.html): Cookie information for the Bellydance Event Directory.
+- [Legal Notice](https://bellydance.lumoraevents.net/legal-notice.html): Legal information for the Bellydance Event Directory.
+
+## Español
+
+- [Directorio de eventos de Bellydance](https://bellydance.lumoraevents.net/es/): Busca y explora próximos eventos de bellydance y danza oriental en todo el mundo por nombre, país y mes. El directorio reúne festivales, competiciones, congresos, talleres, masterclasses, galas y otros encuentros.
+- [Política de privacidad](https://bellydance.lumoraevents.net/privacy-policy.html): Información de privacidad del directorio.
+- [Política de cookies](https://bellydance.lumoraevents.net/cookie-policy.html): Información sobre cookies del directorio.
+- [Aviso legal](https://bellydance.lumoraevents.net/legal-notice.html): Información legal del directorio.
+
+## Directory purpose
+
+The directory is intended as a practical discovery tool for the international bellydance community.
+
+Users can use it to:
+
+- Find upcoming bellydance and oriental dance events.
+- Search events by name.
+- Filter events by country.
+- Filter events by month.
+- Discover festivals, competitions, congresses and other gatherings.
+- Find workshops, masterclasses and galas.
+- Access practical information published for each listed event.
+- Discover events outside their own country.
+- Contact LumoraEvents to suggest an event that is not yet listed.
+
+Event listings are loaded dynamically by the website, so the homepage is the main discovery entry point for current directory content.
+
+## Submit or suggest an event
+
+If an event is missing from the directory, organizers or community members can contact LumoraEvents:
+
+- Email: bellydance@lumoraevents.net
+
+## Related LumoraEvents resources
+
+- [LumoraEvents](https://lumoraevents.net/): Main LumoraEvents website and information about its event-management platform and services.
+- [LumoraEvents Platform](https://app.lumoraevents.net/): Event-management web application.
+- [Instagram](https://www.instagram.com/lumoraevents.app/): Official LumoraEvents Instagram account.
+
+## Language selection
+
+- English: https://bellydance.lumoraevents.net/
+- Spanish: https://bellydance.lumoraevents.net/es/
+
+## Contact
+
+- Email: bellydance@lumoraevents.net
+- Instagram: @lumoraevents.app
